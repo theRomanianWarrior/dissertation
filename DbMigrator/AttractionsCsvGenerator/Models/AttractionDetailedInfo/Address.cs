@@ -26,7 +26,7 @@ public record Address
     public string Pedestrian { get; set; }
     
     [JsonPropertyName("country_code")]
-    public string Country_code { get; set; }
+    public string CountryCode { get; set; }
     
     [JsonPropertyName("neighbourhood")]
     public string Neighbourhood { get; set; }

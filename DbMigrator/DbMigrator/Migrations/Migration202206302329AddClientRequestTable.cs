@@ -7,7 +7,7 @@ namespace DbMigrator.Migrations
     {
         private const string PreferencesPackageTable = "PreferencesPackage";
         private const string ClientRequestTable = "ClientRequest";
-        private const string RecommandationTable = "Recommandation";
+        private const string RecommendationTable = "Recommendation";
         private const string ServiceEvaluationTable = "ServiceEvaluation";
         private const string CustomerTable = "Customer";
 
@@ -16,7 +16,7 @@ namespace DbMigrator.Migrations
             Create.Table(ClientRequestTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("PreferencesPackageId").AsGuid().ForeignKey(PreferencesPackageTable, "Id")
-                .WithColumn("RecommandationId").AsGuid().ForeignKey(RecommandationTable, "Id")
+                .WithColumn("RecommendationId").AsGuid().ForeignKey(RecommendationTable, "Id")
                 .WithColumn("Evaluation").AsGuid().ForeignKey(ServiceEvaluationTable, "Id")
                 .WithColumn("CustomerId").AsGuid().ForeignKey(CustomerTable, "Id")
                 .WithColumn("RequestTimestamp").AsDateTime();

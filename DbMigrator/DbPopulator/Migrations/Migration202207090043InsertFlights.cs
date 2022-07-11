@@ -64,8 +64,6 @@ public class Migration202207090043InsertFlights : AutoReversingMigration
             Insert.IntoTable(FlightTable)
                 .Row(flightDbModel);
             
-            Console.WriteLine(flightDbModel.Id);
-            
             var economyFlightPrice = new FlightPrice()
             {
                 Id = Guid.NewGuid(),

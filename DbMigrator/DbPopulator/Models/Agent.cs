@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DbPopulator.Models
+﻿namespace DbPopulator.Models
 {
     public record Agent
     {

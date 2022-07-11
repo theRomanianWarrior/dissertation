@@ -40,8 +40,8 @@ public static class Program
                 var detailedInfo = await HttpClientCall.GetRequestAsync<AttractionDetailedInfoModel>(getAttractionDetailedInfoApiLink);
                 detailedInfo.Address.Town = city.City; /* This is for the special characters in the name of cities. */
                 citiesAttractions.Add(detailedInfo);
-                Console.WriteLine(detailedInfo.Address.Town);
             }
+            Console.WriteLine(city.City);
         }
 
         Console.WriteLine("Cities attractions retrieval done.");
@@ -58,17 +58,8 @@ public static class Program
     
     private static async Task Main()
     {
-        //var citiesCoordinate = ReadCitiesCoordinatesFromCsv();
-        //var citiesAttractions = await GetCityAttractionsAsync(citiesCoordinate);
-        //CreateCsvAndStoreCitiesAttractions(citiesAttractions);
-        string myString = "Моя семья";
-        byte[] bytes = Encoding.Default.GetBytes(myString);
-        myString = Encoding.UTF8.GetString(bytes);
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
-        Console.WriteLine(myString);
-        
-        using var writer = new StreamWriter(@"C:\Users\emihailov\OneDrive - ENDAVA\Desktop\DbMigrator\DbPopulator\CsvDataProcessing\CsvForDatabasePopulating\testare.csv");
-        using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-        csv.WriteRecords(myString);
+        var citiesCoordinate = ReadCitiesCoordinatesFromCsv();
+        var citiesAttractions = await GetCityAttractionsAsync(citiesCoordinate);
+        CreateCsvAndStoreCitiesAttractions(citiesAttractions);
     }
 }

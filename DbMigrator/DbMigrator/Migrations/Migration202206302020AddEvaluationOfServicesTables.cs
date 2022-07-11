@@ -7,7 +7,7 @@ namespace DbMigrator.Migrations
     {
         private const string FlightEvaluationTable = "FlightEvaluation";
         private const string PropertyEvaluationTable = "ProperyEvaluation";
-        private const string AttractionTable = "Attraction";
+        private const string OpenTripMapAttractionTable = "OpenTripMapAttraction";
         private const string AllAttractionEvaluationPointTable = "AllAttractionEvaluationPoint";
         private const string AttractionEvaluationTable = "AttractionEvaluation";
         private const string ServiceEvaluationTable = "ServiceEvaluation";
@@ -37,7 +37,7 @@ namespace DbMigrator.Migrations
             Create.Table(AttractionEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("AttractionPointId").AsGuid().ForeignKey(AllAttractionEvaluationPointTable, "Id")
-                .WithColumn("EvaluatedAttractionId").AsGuid().ForeignKey(AttractionTable, "Id")
+                .WithColumn("EvaluatedAttractionId").AsString().ForeignKey(OpenTripMapAttractionTable, "Xid")
                 .WithColumn("Rate").AsInt16();
 
             Create.Table(ServiceEvaluationTable)
