@@ -27,7 +27,7 @@ namespace DbMigrator.Migrations
                 .WithColumn("PropertyType").AsInt16()
                 .WithColumn("PlaceType").AsInt16()
                 .WithColumn("RoomsAndBeds").AsInt16()
-                .WithColumn("Amenties").AsInt16()
+                .WithColumn("Amenities").AsInt16()
                 .WithColumn("FinalFlightRating").AsInt16();
 
             Create.Table(AllAttractionEvaluationPointTable)

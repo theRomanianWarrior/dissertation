@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DbPopulator.Models
 {
@@ -9,6 +10,6 @@ namespace DbPopulator.Models
         public Guid PlaceType { get; set; }
         public Guid RoomsAndBeds { get; set; }
         public bool Pets { get; set; }
-        public Guid Amenties { get; set; }
+        public Guid Amenities { get; set; }
     }
 }

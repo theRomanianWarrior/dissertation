@@ -10,8 +10,8 @@ namespace DbMigrator.Migrations
         private const string FlightPriceTable = "FlightPrice";
         private const string FlightClassTable = "FlightClass";
         private const string FlightCompanyTable = "FlightCompany";
-        private const string FlightWeekItineraryTable = "FlightWeekItinerary";
-        private const string WeekDayTable = "WeekDay";
+        private const string WeekDaysOfFlightTable = "WeekDaysOfFlight";
+        private const string AvailableDepartureTimeTable = "AvailableDepartureTime";
         private const string CityTable = "City";
 
         public override void Up()
@@ -29,24 +29,28 @@ namespace DbMigrator.Migrations
                 .WithColumn("Id").AsInt16().PrimaryKey().Identity()
                 .WithColumn("Class").AsString(10);
 
+            Create.Table(WeekDaysOfFlightTable)
+                .WithColumn("Id").AsGuid().PrimaryKey()
+                .WithColumn("DaysList").AsString(100);
+            
+            Create.Table(AvailableDepartureTimeTable)
+                .WithColumn("Id").AsGuid().PrimaryKey()
+                .WithColumn("DepartureHour").AsString(50);
+            
             Create.Table(FlightTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("DepartureAirportId").AsGuid().ForeignKey(AirportTable, "Id")
                 .WithColumn("ArrivalAirportId").AsGuid().ForeignKey(AirportTable, "Id")
                 .WithColumn("Duration").AsInt16()
-                .WithColumn("CompanyId").AsGuid().ForeignKey(FlightCompanyTable, "Id");
+                .WithColumn("CompanyId").AsGuid().ForeignKey(FlightCompanyTable, "Id")
+                .WithColumn("WeekDaysOfFlightId").AsGuid().ForeignKey(WeekDaysOfFlightTable, "Id")
+                .WithColumn("AvailableDepartureTimeId").AsGuid().ForeignKey(AvailableDepartureTimeTable, "Id");
 
             Create.Table(FlightPriceTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("FlightId").AsGuid().ForeignKey(FlightTable, "Id")
                 .WithColumn("ClassId").AsInt16().ForeignKey(FlightClassTable, "Id")
                 .WithColumn("Price").AsInt16();
-
-            Create.Table(FlightWeekItineraryTable)
-                .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("DayOfWeekId").AsInt16().ForeignKey(WeekDayTable, "Id")
-                .WithColumn("FlightId").AsGuid().ForeignKey(FlightTable, "Id")
-                .WithColumn("DepartureTime").AsInt16();
-        }
+            }
     }
 }

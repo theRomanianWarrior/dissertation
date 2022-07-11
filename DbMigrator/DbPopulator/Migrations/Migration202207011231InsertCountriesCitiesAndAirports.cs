@@ -1,4 +1,6 @@
-﻿using DbPopulator.Migrations.DatabasePopulatingData;
+﻿using DbPopulator.CsvDataProcessing;
+using DbPopulator.CsvDataProcessing.CsvForDatabasePopulating;
+using DbPopulator.CsvDataProcessing.CsvModels;
 using DbPopulator.Models;
 using FluentMigrator;
 
@@ -10,14 +12,14 @@ namespace DbPopulator.Migrations
         private const string CountryTable = "Country";
         private const string CityTable = "City";
         private const string AirportTable = "Airport";
-
+        
         public override void Up()
         {
-            var airports = GetAirportsFromCsv.ReadAirportsFromCsv();
+            var airports = ProcessCsvData<AirportsCsvModel>.ReadRecordsFromCsv(CsvLocation.AirportCsvLocation);
 
             var groupedByCountryAirports = airports.GroupBy(x => x.Country);
 
-            Console.WriteLine("Beggin the population of the database.");
+            Console.WriteLine("Begin the population of the database.");
 
             foreach (var country in groupedByCountryAirports)
             {
@@ -28,11 +30,7 @@ namespace DbPopulator.Migrations
                     Name = country.Key
                 });
 
-                List<AirportsModel> citiesOfCountry = new();
-                foreach (var city in country)
-                {
-                    citiesOfCountry.Add(city);
-                }
+                var citiesOfCountry = country.ToList();
 
                 var groupedCities = citiesOfCountry.GroupBy(c => c.City);
 
@@ -51,12 +49,15 @@ namespace DbPopulator.Migrations
 
                     foreach(var airport in city)
                     {
-                        Insert.IntoTable(AirportTable).Row(new Airport()
+                        var airportDbModel = new Airport()
                         {
                             Id = Guid.NewGuid(),
                             Name = airport.Name,
                             CityId = currentCity.Id
-                        });
+                        };
+                        
+                        CommonUsedTablesData.Airports.Add(airportDbModel);
+                        Insert.IntoTable(AirportTable).Row(airportDbModel);
                     }
                 }
             }

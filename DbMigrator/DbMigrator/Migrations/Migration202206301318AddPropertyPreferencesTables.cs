@@ -8,7 +8,7 @@ namespace DbMigrator.Migrations
         private const string PropertyTypePreferenceTable = "PropertyTypePreference";
         private const string PlaceTypePreferenceTable = "PlaceTypePreference";
         private const string RoomsAndBedsPreferenceTable = "RoomsAndBedsPreference";
-        private const string AmentiesPreferenceTable = "AmentiesPreference";
+        private const string AmenitiesPreferenceTable = "AmenitiesPreference";
         private const string PropertyPreferenceTable = "PropertyPreference";
 
         public override void Up()
@@ -32,7 +32,7 @@ namespace DbMigrator.Migrations
                 .WithColumn("Beds").AsInt16()
                 .WithColumn("Bathrooms").AsInt16();
 
-            Create.Table(AmentiesPreferenceTable)
+            Create.Table(AmenitiesPreferenceTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("WiFi").AsBoolean()
                 .WithColumn("Kitchen").AsBoolean()
@@ -49,7 +49,7 @@ namespace DbMigrator.Migrations
                 .WithColumn("PlaceType").AsGuid().ForeignKey(PlaceTypePreferenceTable, "Id")
                 .WithColumn("RoomsAndBeds").AsGuid().ForeignKey(RoomsAndBedsPreferenceTable, "Id")
                 .WithColumn("Pets").AsBoolean()
-                .WithColumn("Amenties").AsGuid().ForeignKey(AmentiesPreferenceTable, "Id");
+                .WithColumn("Amenities").AsGuid().ForeignKey(AmenitiesPreferenceTable, "Id");
         }
     }
 }

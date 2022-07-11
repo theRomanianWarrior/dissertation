@@ -36,6 +36,10 @@ namespace DbMigrator.Migrations
                 .WithColumn("SourceAgentId").AsGuid().ForeignKey(AgentTable, "Id")
                 .WithColumn("Status").AsString(15);
 
+            Create.Index($"ix_{PropertyRecommandationTable}_PropertyId")
+                .OnTable(PropertyRecommandationTable)
+                .OnColumn("PropertyId");
+            
             Create.Table(AllAttractionRecommandationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("SourceAgentId").AsGuid().ForeignKey(AgentTable, "Id");

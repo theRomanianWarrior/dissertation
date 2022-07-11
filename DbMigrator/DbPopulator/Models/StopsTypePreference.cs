@@ -1,4 +1,7 @@
-﻿namespace DbPopulator.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace DbPopulator.Models
 {
     public record StopsTypePreference
     {

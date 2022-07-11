@@ -1,6 +1,6 @@
-﻿namespace DbPopulator.Migrations.DatabasePopulatingData
+﻿namespace DbPopulator.CsvDataProcessing.CsvModels
 {
-    public record AirportsModel
+    public record AirportsCsvModel
     {
         public string Name { get; set; } = null!;
         public string City { get; set; } = null!;

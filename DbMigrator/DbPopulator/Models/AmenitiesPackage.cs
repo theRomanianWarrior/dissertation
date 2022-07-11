@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DbPopulator.Models
 {
-    public record AmentiesPreference
+    public record AmenitiesPackage
     {
         public Guid Id { get; set; }
         public bool WiFi { get; set; }

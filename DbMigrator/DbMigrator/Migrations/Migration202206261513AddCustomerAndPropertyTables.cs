@@ -10,7 +10,7 @@ namespace DbMigrator.Migrations
         private const string PropertyTypeTable = "PropertyType";
         private const string PlaceTypeTable = "PlaceType";
         private const string RoomAndBedTable = "RoomAndBed";
-        private const string AmentiesPackageTable = "AmentiesPackage";
+        private const string AmenitiesPackageTable = "AmenitiesPackage";
         private const string CityTable = "City";
 
         public override void Up()
@@ -33,11 +33,11 @@ namespace DbMigrator.Migrations
 
             Create.Table(RoomAndBedTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("Bedroom").AsBoolean()
-                .WithColumn("Ded").AsBoolean()
-                .WithColumn("Bathroom").AsBoolean();
+                .WithColumn("Bedroom").AsInt16()
+                .WithColumn("Bed").AsInt16()
+                .WithColumn("Bathroom").AsInt16();
 
-            Create.Table(AmentiesPackageTable)
+            Create.Table(AmenitiesPackageTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("WiFi").AsBoolean()
                 .WithColumn("Kitchen").AsBoolean()
@@ -50,12 +50,12 @@ namespace DbMigrator.Migrations
 
             Create.Table(PropertyTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("Name").AsString(30)
+                .WithColumn("Name").AsString(200)
                 .WithColumn("PropertyTypeId").AsInt16().ForeignKey(PropertyTypeTable, "Id")
                 .WithColumn("PlaceTypeId").AsInt16().ForeignKey(PlaceTypeTable, "Id")
                 .WithColumn("RoomAndBedId").AsGuid().ForeignKey(RoomAndBedTable, "Id")
                 .WithColumn("Pet").AsBoolean()
-                .WithColumn("AmentiesPackageId").AsGuid().ForeignKey(AmentiesPackageTable, "Id")
+                .WithColumn("AmenitiesPackageId").AsGuid().ForeignKey(AmenitiesPackageTable, "Id")
                 .WithColumn("PricePerDay").AsInt16()
                 .WithColumn("CityId").AsGuid().ForeignKey(CityTable, "Id");
         }

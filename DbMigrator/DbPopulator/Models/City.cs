@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DbPopulator.Models
 {
-    public class City
+    public record City
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
