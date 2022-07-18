@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Agent
 {
-    public record TrustedAgent
+    public class TrustedAgent
     {
         public Guid Id { get; set; }
         public Guid AgentId { get; set; }

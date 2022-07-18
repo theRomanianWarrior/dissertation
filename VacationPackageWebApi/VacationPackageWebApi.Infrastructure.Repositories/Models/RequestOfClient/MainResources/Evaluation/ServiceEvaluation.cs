@@ -1,7 +1,14 @@
-﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation
+﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
+
+namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation
 {
-    public record ServiceEvaluation
+    public class ServiceEvaluation
     {
+        public ServiceEvaluation()
+        {
+            ClientRequests = new HashSet<ClientRequest>();
+        }
+
         public Guid Id { get; set; }
         public Guid FlightEvaluationId { get; set; }
         public Guid PropertyEvaluationId { get; set; }
@@ -10,5 +17,6 @@
         public virtual AllAttractionEvaluationPoint AttractionEvaluation { get; set; }
         public virtual FlightEvaluation FlightEvaluation { get; set; }
         public virtual ProperyEvaluation PropertyEvaluation { get; set; }
+        public virtual ICollection<ClientRequest> ClientRequests { get; set; }
     }
 }

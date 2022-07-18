@@ -15,7 +15,8 @@ namespace VacationPackageWebApi.Application.Services
         public async Task<PreferencesResponse> RequestVacationPackage(PreferencesRequest preferencesPayload)
         {
             await _preferencesPackageRepository.SavePreferences(preferencesPayload);
-            return await _preferencesPackageRepository.GetFullPackageRecommendations(preferencesPayload);
+            //return await _preferencesPackageRepository.GetFullPackageRecommendations(preferencesPayload);
+            return null;
         }
     }
 }

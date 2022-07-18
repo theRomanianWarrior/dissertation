@@ -1,8 +1,15 @@
-﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Flight
 {
-    public record WeekDaysOfFlight
+    public class WeekDaysOfFlight
     {
+        public WeekDaysOfFlight()
+        {
+            Flights = new HashSet<Flight>();
+        }
+
         public Guid Id { get; set; }
         public string DaysList { get; set; }
+
+        public virtual ICollection<Flight> Flights { get; set; }
     }
 }

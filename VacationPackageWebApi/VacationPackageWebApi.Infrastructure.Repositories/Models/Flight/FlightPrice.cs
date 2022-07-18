@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Flight
 {
-    public record FlightPrice
+    public class FlightPrice
     {
         public Guid Id { get; set; }
         public Guid FlightId { get; set; }

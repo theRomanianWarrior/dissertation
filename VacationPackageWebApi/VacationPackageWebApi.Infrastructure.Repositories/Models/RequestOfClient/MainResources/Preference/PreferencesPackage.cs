@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
 {
-    public record PreferencesPackage
+    public class PreferencesPackage
     {
+        public PreferencesPackage()
+        {
+            ClientRequests = new HashSet<ClientRequest>();
+        }
+
         public Guid Id { get; set; }
         public Guid CustomerFlight { get; set; }
         public Guid CustomerProperty { get; set; }
@@ -21,5 +25,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
         public virtual City DepartureCityNavigation { get; set; }
         public virtual City DestinationCityNavigation { get; set; }
         public virtual AgeCategoryPreference PersonsByAgeNavigation { get; set; }
+        public virtual ICollection<ClientRequest> ClientRequests { get; set; }
     }
 }

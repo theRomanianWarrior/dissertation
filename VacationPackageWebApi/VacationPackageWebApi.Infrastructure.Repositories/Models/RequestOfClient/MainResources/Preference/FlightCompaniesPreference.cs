@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.Flight;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
 {
-    public record FlightCompaniesPreference
+    public class FlightCompaniesPreference
     {
         public Guid Id { get; set; }
         public Guid FlightPreferenceId { get; set; }

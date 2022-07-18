@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Flight
 {
-    public record AvailableDepartureTime
+    public class AvailableDepartureTime
     {
+        public AvailableDepartureTime()
+        {
+            Flights = new HashSet<Flight>();
+        }
+
         public Guid Id { get; set; }
         public string DepartureHour { get; set; }
+
+        public virtual ICollection<Flight> Flights { get; set; }
     }
 }

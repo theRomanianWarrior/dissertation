@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
 {
-    public record RoomsAndBedsPreference
+    public class RoomsAndBedsPreference
     {
+        public RoomsAndBedsPreference()
+        {
+            PropertyPreferences = new HashSet<PropertyPreference>();
+        }
+
         public Guid Id { get; set; }
         public short Bedrooms { get; set; }
         public short Beds { get; set; }
         public short Bathrooms { get; set; }
+
+        public virtual ICollection<PropertyPreference> PropertyPreferences { get; set; }
     }
 }

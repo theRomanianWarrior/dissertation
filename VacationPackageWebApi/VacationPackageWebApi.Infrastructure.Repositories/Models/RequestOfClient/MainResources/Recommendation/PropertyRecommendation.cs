@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Recommendation
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation
 {
-    public record PropertyRecommendation
+    public class PropertyRecommendation
     {
+        public PropertyRecommendation()
+        {
+            Recommendations = new HashSet<Recommendation>();
+        }
+
         public Guid Id { get; set; }
         public Guid PropertyId { get; set; }
         public Guid SourceAgentId { get; set; }
         public string Status { get; set; }
 
-        public virtual Property Property { get; set; }
+        public virtual Property.Property Property { get; set; }
         public virtual Agent.Agent SourceAgent { get; set; }
+        public virtual ICollection<Recommendation> Recommendations { get; set; }
     }
 }

@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Property
 {
-    public record PlaceType
+    public class PlaceType
     {
+        public PlaceType()
+        {
+            Properties = new HashSet<Property>();
+        }
+
         public short Id { get; set; }
         public string Type { get; set; }
+
+        public virtual ICollection<Property> Properties { get; set; }
     }
 }

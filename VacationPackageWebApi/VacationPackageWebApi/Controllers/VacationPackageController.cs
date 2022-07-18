@@ -19,8 +19,7 @@ namespace VacationPackageWebApi.API.Controllers
         [HttpPost]
         public async Task<ActionResult> RequestVacationRecommendation([FromBody] PreferencesRequest preferencesPayload)
         {
-            var diud = JsonSerializer.Serialize(preferencesPayload);
-            //PreferencesResponse recommandationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload);
+            var recommandationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload);
             return Created(string.Empty,"Oke");
         }
     }

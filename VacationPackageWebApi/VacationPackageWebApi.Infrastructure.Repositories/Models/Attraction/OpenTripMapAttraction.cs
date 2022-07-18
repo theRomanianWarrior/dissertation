@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Attraction
 {
-    public record OpenTripMapAttraction
+    public class OpenTripMapAttraction
     {
+        public OpenTripMapAttraction()
+        {
+            AttractionEvaluations = new HashSet<AttractionEvaluation>();
+            AttractionRecommendations = new HashSet<AttractionRecommendation>();
+        }
+
         public string Xid { get; set; }
         public string Name { get; set; }
         public string Town { get; set; }
@@ -36,5 +43,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Attraction
         public string Html { get; set; }
         public double Lon { get; set; }
         public double Lat { get; set; }
+
+        public virtual ICollection<AttractionEvaluation> AttractionEvaluations { get; set; }
+        public virtual ICollection<AttractionRecommendation> AttractionRecommendations { get; set; }
     }
 }

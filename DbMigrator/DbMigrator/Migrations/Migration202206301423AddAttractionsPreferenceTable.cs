@@ -11,10 +11,13 @@ namespace DbMigrator.Migrations
         {
             Create.Table(AttractionPreferenceTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("Museum").AsBoolean()
-                .WithColumn("Park").AsBoolean()
-                .WithColumn("Fortress").AsBoolean()
-                .WithColumn("Church").AsBoolean();
+                .WithColumn("Natural").AsBoolean()
+                .WithColumn("Cultural").AsBoolean()
+                .WithColumn("Historical").AsBoolean()
+                .WithColumn("Religion").AsBoolean()
+                .WithColumn("Architecture").AsBoolean()
+                .WithColumn("IndustrialFacilities").AsBoolean()
+                .WithColumn("Other").AsBoolean();
         }
     }
 }

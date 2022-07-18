@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
 
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models
+namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Property
 {
-    public record Property
+    public class Property
     {
+        public Property()
+        {
+            PropertyRecommendations = new HashSet<PropertyRecommendation>();
+        }
+
         public Guid Id { get; set; }
         public string Name { get; set; }
         public short PropertyTypeId { get; set; }
@@ -20,5 +25,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models
         public virtual PlaceType PlaceType { get; set; }
         public virtual PropertyType PropertyType { get; set; }
         public virtual RoomAndBed RoomAndBed { get; set; }
+        public virtual ICollection<PropertyRecommendation> PropertyRecommendations { get; set; }
     }
 }

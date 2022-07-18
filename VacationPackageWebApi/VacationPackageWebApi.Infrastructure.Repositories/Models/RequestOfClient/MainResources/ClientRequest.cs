@@ -1,9 +1,9 @@
 ﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference;
 
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient
+namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources
 {
-    public record ClientRequest
+    public class ClientRequest
     {
         public Guid Id { get; set; }
         public Guid PreferencesPackageId { get; set; }
@@ -12,7 +12,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
         public Guid CustomerId { get; set; }
         public DateTime RequestTimestamp { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        public virtual Customer.Customer Customer { get; set; }
         public virtual ServiceEvaluation EvaluationNavigation { get; set; }
         public virtual PreferencesPackage PreferencesPackage { get; set; }
         public virtual Recommendation.Recommendation Recommendation { get; set; }

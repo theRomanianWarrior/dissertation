@@ -3,6 +3,7 @@ using VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts;
 using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper;
+using PreferencesPackage = VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference.PreferencesPackage;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 {
@@ -20,9 +21,10 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
             throw new NotImplementedException();
         }
 
-        public Task SavePreferences(PreferencesRequest preferencesPayload)
+        public async Task<Task> SavePreferences(PreferencesRequest preferencesPayload)
         {
-            throw new NotImplementedException();
+            await ComposePreferencesPackageAsync(preferencesPayload);
+            return Task.CompletedTask;
         }
 
         private async Task<PreferencesPackage> ComposePreferencesPackageAsync(PreferencesRequest preferencesPayload)
@@ -53,9 +55,9 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 
             await _context.SaveChangesAsync();
             
-            var departureFlightPreference = FlightPreferenceMapper.ToEntity(preferencesPayload.CustomerFlightNavigation.DepartureNavigation, departurePeriodsPreference);
-            var returnFlightPreference = FlightPreferenceMapper.ToEntity(preferencesPayload.CustomerFlightNavigation.ReturnNavigation, departurePeriodsPreference);
-            var propertyPreference = PropertyPreferenceMapper.ToEntity(preferencesPayload.CustomerPropertyNavigation, amenitiesPreference.Id, placeTypePreference.Id, propertyTypePreference.Id, roomsAndBedsPreference.Id);
+            var departureFlightPreference = preferencesPayload.CustomerFlightNavigation.DepartureNavigation.ToEntity(departurePeriodsPreference);
+            var returnFlightPreference = preferencesPayload.CustomerFlightNavigation.ReturnNavigation.ToEntity(departurePeriodsPreference);
+            var propertyPreference = preferencesPayload.CustomerPropertyNavigation.ToEntity(amenitiesPreference.Id, placeTypePreference.Id, propertyTypePreference.Id, roomsAndBedsPreference.Id);
 
             await _context.FlightPreferences.AddAsync(departureFlightPreference!);
             await _context.FlightPreferences.AddAsync(returnFlightPreference!);
@@ -63,12 +65,12 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 
             await _context.SaveChangesAsync();
 
-            var flightDirectionPreference = FlightDirectionPreferenceMapper.ToEntity(preferencesPayload.CustomerFlightNavigation, departureFlightPreference!, returnFlightPreference!);
-            await _context.FlightDirectionPreferences.AddAsync(flightDirectionPreference!);
+            var flightDirectionPreference = preferencesPayload.CustomerFlightNavigation.ToEntity(departureFlightPreference!, returnFlightPreference!);
+            await _context.FlightDirectionPreferences.AddAsync(flightDirectionPreference);
 
             foreach (var flightCompanyPreferenceDto in preferencesPayload.FlightCompaniesNavigationList)
             {
-                var flightCompanyId = _context.FlightCompanies.Where(c => c.Name == flightCompanyPreferenceDto.Company.Name).SingleOrDefault()!.Id;
+                var flightCompanyId = _context.FlightCompanies.SingleOrDefault(c => c.Name == flightCompanyPreferenceDto.Company.Name)!.Id;
 
                 if (flightCompanyPreferenceDto.FlightDirection == "Departure")
                 {
@@ -85,10 +87,10 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 
             await _context.SaveChangesAsync();
 
-            var departureCityId = _context.Cities.Where(c => c.Name == preferencesPayload.DepartureCityNavigation.Name).SingleOrDefault()!.Id;
-            var destinationCityId = _context.Cities.Where(c => c.Name == preferencesPayload.DestinationCityNavigation.Name).SingleOrDefault()!.Id;
+            var departureCityId = _context.Cities.SingleOrDefault(c => c.Name == preferencesPayload.DepartureCityNavigation.Name)!.Id;
+            var destinationCityId = _context.Cities.SingleOrDefault(c => c.Name == preferencesPayload.DestinationCityNavigation.Name)!.Id;
 
-            var preferencesPackage = PreferencesPackageMapper.ToEntity(preferencesPayload, attractionPreference.Id, flightDirectionPreference.Id, propertyPreference.Id, departureCityId, destinationCityId, ageCategoryPreference.Id);
+            var preferencesPackage = preferencesPayload.ToEntity(attractionPreference.Id, flightDirectionPreference.Id, propertyPreference.Id, departureCityId, destinationCityId, ageCategoryPreference.Id);
             
             _context.PreferencesPackages.Add(preferencesPackage);
             await _context.SaveChangesAsync();

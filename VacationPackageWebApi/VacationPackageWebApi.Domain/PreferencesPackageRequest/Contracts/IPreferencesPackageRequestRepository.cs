@@ -2,7 +2,7 @@
 {
     public interface IPreferencesPackageRequestRepository
     {
-        Task SavePreferences(PreferencesRequest preferencesPayload);
+        public Task<Task> SavePreferences(PreferencesRequest preferencesPayload);
         Task<PreferencesResponse> GetFullPackageRecommendations(PreferencesRequest preferencesPayload);
     }
 }

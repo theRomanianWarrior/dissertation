@@ -1,9 +1,14 @@
 ﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.Attraction;
 
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Recommendation
+namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation
 {
-    public record AttractionRecommendation
+    public class AttractionRecommendation
     {
+        public AttractionRecommendation()
+        {
+            Recommendations = new HashSet<Recommendation>();
+        }
+
         public Guid Id { get; set; }
         public string AttractionId { get; set; }
         public Guid SourceAgentId { get; set; }
@@ -13,5 +18,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
         public virtual AllAttractionRecommendation AllAttractionRecommendation { get; set; }
         public virtual OpenTripMapAttraction Attraction { get; set; }
         public virtual Agent.Agent SourceAgent { get; set; }
+        public virtual ICollection<Recommendation> Recommendations { get; set; }
     }
 }

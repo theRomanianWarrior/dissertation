@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
 {
-    public record PropertyPreference
+    public class PropertyPreference
     {
+        public PropertyPreference()
+        {
+            PreferencesPackages = new HashSet<PreferencesPackage>();
+        }
+
         public Guid Id { get; set; }
         public Guid PropertyType { get; set; }
         public Guid PlaceType { get; set; }
@@ -16,5 +20,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
         public virtual PlaceTypePreference PlaceTypeNavigation { get; set; }
         public virtual PropertyTypePreference PropertyTypeNavigation { get; set; }
         public virtual RoomsAndBedsPreference RoomsAndBedsNavigation { get; set; }
+        public virtual ICollection<PreferencesPackage> PreferencesPackages { get; set; }
     }
 }

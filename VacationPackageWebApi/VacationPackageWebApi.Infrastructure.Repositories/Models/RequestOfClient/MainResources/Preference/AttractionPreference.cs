@@ -1,7 +1,14 @@
-﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
+﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
+
+namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
 {
-    public record AttractionPreference
+    public class AttractionPreference
     {
+        public AttractionPreference()
+        {
+            PreferencesPackages = new HashSet<PreferencesPackage>();
+        }
+
         public Guid Id { get; set; }
         public bool Natural { get; set; }
         public bool Cultural { get; set; }
@@ -10,5 +17,7 @@
         public bool Architecture { get; set; }
         public bool IndustrialFacilities { get; set; }
         public bool Other { get; set; }
+
+        public virtual ICollection<PreferencesPackage> PreferencesPackages { get; set; }
     }
 }

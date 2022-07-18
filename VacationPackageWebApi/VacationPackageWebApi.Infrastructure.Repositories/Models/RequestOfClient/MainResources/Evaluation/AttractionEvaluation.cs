@@ -2,7 +2,7 @@
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation
 {
-    public record AttractionEvaluation
+    public class AttractionEvaluation
     {
         public Guid Id { get; set; }
         public Guid AttractionPointId { get; set; }
