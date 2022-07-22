@@ -10,4 +10,8 @@
     <ProjectReference Include="..\VacationPackageWebApi.Domain\VacationPackageWebApi.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+  </ItemGroup>
+
 </Project>

@@ -1,9 +1,10 @@
-﻿using VacationPackageWebApi.Domain.PreferencesPackageRequest;
+﻿using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
+using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts;
 
 namespace VacationPackageWebApi.Application.Services
 {
-    public class PreferencesPackageService
+    public class PreferencesPackageService : IPreferencesPackageService
     {
         private readonly IPreferencesPackageRequestRepository _preferencesPackageRepository;
 
@@ -11,7 +12,7 @@ namespace VacationPackageWebApi.Application.Services
         {
             _preferencesPackageRepository = preferencesPackageRepository;
         }
-
+        
         public async Task<PreferencesResponse> RequestVacationPackage(PreferencesRequest preferencesPayload)
         {
             await _preferencesPackageRepository.SavePreferences(preferencesPayload);

@@ -51,6 +51,6 @@ namespace DbMigrator.Migrations
                 .WithColumn("FlightId").AsGuid().ForeignKey(FlightTable, "Id")
                 .WithColumn("ClassId").AsInt16().ForeignKey(FlightClassTable, "Id")
                 .WithColumn("Price").AsInt16();
-            }
+        }
     }
 }

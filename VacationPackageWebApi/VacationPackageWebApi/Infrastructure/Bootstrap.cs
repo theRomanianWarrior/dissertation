@@ -1,6 +1,13 @@
 ﻿using System.Text.Json;
+using ActressMas;
 using VacationPackageWebApi.Application.Services;
+using VacationPackageWebApi.Domain.AgentsEnvironment.Contracts;
+using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
+using VacationPackageWebApi.Domain.Attractions.Contracts;
+using VacationPackageWebApi.Domain.Flight.Contracts;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts;
+using VacationPackageWebApi.Domain.Property.Contracts;
+using VacationPackageWebApi.Domain.Services;
 using VacationPackageWebApi.Infrastructure.Repositories;
 using VacationPackageWebApi.Infrastructure.Repositories.Repositories;
 
@@ -32,12 +39,22 @@ namespace VacationPackageWebApi.API.Infrastructure
 
             return app;
         }
-
+        
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             // Add services to the container.
-            services.AddScoped<PreferencesPackageService>();
+            services.AddScoped<IAgentService, AgentService>();
+            services.AddScoped<IPreferencesPackageService, PreferencesPackageService>();
+            services.AddScoped<IFlightService, FlightService>();
+            services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<IAttractionService, AttractionService>();
+            services.AddScoped<IMasLoaderService, MasLoaderService>();
+
             services.AddScoped<IPreferencesPackageRequestRepository, PreferencesPackageRequestRepository>();
+            services.AddScoped<IFlightRepository, FlightRepository>();
+            services.AddScoped<IAgentRepository, AgentRepository>();
+            services.AddScoped<IPropertyRepository, PropertyRepository>();
+            services.AddScoped<IAttractionRepository, AttractionsRepository>();
 
             services.AddControllers();
 
@@ -47,8 +64,15 @@ namespace VacationPackageWebApi.API.Infrastructure
 
             AddDb(services, configuration);
 
+            LoadMassEnvironment(services);
         }
 
+        private static void LoadMassEnvironment(IServiceCollection services)
+        {
+            var masLoaderService = services.BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<IMasLoaderService>();
+            masLoaderService.LoadMasEnvironmentAsync();
+        }
+        
         private static void AddDb(IServiceCollection services, IConfiguration configuration)
         {
             var vacationPackageDatabaseOptions = configuration.GetOptions<VacationPackageDatabaseOptions>(VacationPackageDatabaseOptions.ConfigKey);

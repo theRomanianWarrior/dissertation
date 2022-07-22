@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="ActressMas, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\00_Dissertation\ActressMas\ActressMAS v3.0\ActressMas Dll\ActressMas.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

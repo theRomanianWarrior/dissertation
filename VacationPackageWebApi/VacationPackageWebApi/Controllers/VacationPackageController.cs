@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using VacationPackageWebApi.Application.Services;
+using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
+using VacationPackageWebApi.Domain.Property.Contracts;
 
 namespace VacationPackageWebApi.API.Controllers
 {
@@ -9,17 +11,55 @@ namespace VacationPackageWebApi.API.Controllers
     [ApiController]
     public class VacationPackageController : Controller
     {
-        private readonly PreferencesPackageService _preferencesPackageService;
+        private readonly IPreferencesPackageService _preferencesPackageService;
+        private readonly IAgentService _agentService;
+        private readonly IFlightService _flightService;
+        private readonly IPropertyService _propertyService;
+        private readonly IAttractionService _attractionService;
+        private readonly IMasLoaderService _masLoaderService;
 
-        public VacationPackageController(PreferencesPackageService preferencesPackageService)
+        public VacationPackageController(IPreferencesPackageService preferencesPackageService, IAgentService agentService, IFlightService flightService, IPropertyService propertyService, IAttractionService attractionService, IMasLoaderService masLoaderService)
         {
             _preferencesPackageService = preferencesPackageService;
+            _agentService = agentService;
+            _flightService = flightService;
+            _propertyService = propertyService;
+            _attractionService = attractionService;
+            _masLoaderService = masLoaderService;
         }
 
         [HttpPost]
         public async Task<ActionResult> RequestVacationRecommendation([FromBody] PreferencesRequest preferencesPayload)
         {
-            var recommandationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload);
+            var recommendationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload);
+            return Created(string.Empty,"Oke");
+        }
+        
+        [HttpGet]
+        public async Task<ActionResult> GetFlights()
+        {
+            //var recommendationPackage =  await _flightService.GetAllFlightsAsync();
+            return Created(string.Empty,"Oke");
+        }
+        
+        [HttpGet]
+        public async Task<ActionResult> GetStays()
+        {
+            //var stays = await _propertyService.GetAllPropertiesAsync();
+            return Created(string.Empty,"Oke");
+        }
+        
+        [HttpGet]
+        public async Task<ActionResult> GetAttractions()
+        {
+            //var stays = await _attractionService.GetAllAttractionsAsync();
+            return Created(string.Empty,"Oke");
+        }
+        
+        [HttpGet]
+        public async Task<ActionResult> TestMasLoader()
+        {
+            //await _masLoaderService.LoadMasEnvironment();
             return Created(string.Empty,"Oke");
         }
     }

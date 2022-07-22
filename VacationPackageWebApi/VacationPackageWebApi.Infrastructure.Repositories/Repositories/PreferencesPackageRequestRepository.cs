@@ -16,11 +16,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
             _context = context;
         }
 
-        public Task<PreferencesResponse> GetFullPackageRecommendations(PreferencesRequest preferencesPayload)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Task> SavePreferences(PreferencesRequest preferencesPayload)
         {
             await ComposePreferencesPackageAsync(preferencesPayload);
@@ -72,16 +67,20 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
             {
                 var flightCompanyId = _context.FlightCompanies.SingleOrDefault(c => c.Name == flightCompanyPreferenceDto.Company.Name)!.Id;
 
-                if (flightCompanyPreferenceDto.FlightDirection == "Departure")
+                switch (flightCompanyPreferenceDto.FlightDirection)
                 {
-                    var departureFlightCompanyPreference = FlightCompaniesPreferenceMapper.ToEntity(flightCompanyId, departureFlightPreference!.Id);
-                    await _context.FlightCompaniesPreferences.AddAsync(departureFlightCompanyPreference!);
-                }
-
-                if (flightCompanyPreferenceDto.FlightDirection == "Return")
-                {
-                    var returnFlightCompanyPreference = FlightCompaniesPreferenceMapper.ToEntity(flightCompanyId, returnFlightPreference!.Id);
-                    await _context.FlightCompaniesPreferences.AddAsync(returnFlightCompanyPreference!);
+                    case "Departure":
+                    {
+                        var departureFlightCompanyPreference = FlightCompaniesPreferenceMapper.ToEntity(flightCompanyId, departureFlightPreference!.Id);
+                        await _context.FlightCompaniesPreferences.AddAsync(departureFlightCompanyPreference!);
+                        break;
+                    }
+                    case "Return":
+                    {
+                        var returnFlightCompanyPreference = FlightCompaniesPreferenceMapper.ToEntity(flightCompanyId, returnFlightPreference!.Id);
+                        await _context.FlightCompaniesPreferences.AddAsync(returnFlightCompanyPreference!);
+                        break;
+                    }
                 }
             }
 

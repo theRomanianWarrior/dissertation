@@ -1,5 +1,4 @@
 using VacationPackageWebApi.API.Infrastructure;
-using VacationPackageWebApi.Infrastructure.Repositories;
 
 var builder = Bootstrap.CreateAppBuilder(args);
 
