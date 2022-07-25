@@ -34,33 +34,5 @@ namespace VacationPackageWebApi.API.Controllers
             var recommendationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload);
             return Created(string.Empty,"Oke");
         }
-        
-        [HttpGet]
-        public async Task<ActionResult> GetFlights()
-        {
-            //var recommendationPackage =  await _flightService.GetAllFlightsAsync();
-            return Created(string.Empty,"Oke");
-        }
-        
-        [HttpGet]
-        public async Task<ActionResult> GetStays()
-        {
-            //var stays = await _propertyService.GetAllPropertiesAsync();
-            return Created(string.Empty,"Oke");
-        }
-        
-        [HttpGet]
-        public async Task<ActionResult> GetAttractions()
-        {
-            //var stays = await _attractionService.GetAllAttractionsAsync();
-            return Created(string.Empty,"Oke");
-        }
-        
-        [HttpGet]
-        public async Task<ActionResult> TestMasLoader()
-        {
-            //await _masLoaderService.LoadMasEnvironment();
-            return Created(string.Empty,"Oke");
-        }
     }
 }

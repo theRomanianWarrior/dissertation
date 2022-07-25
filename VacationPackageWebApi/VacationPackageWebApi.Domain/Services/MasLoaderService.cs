@@ -1,6 +1,8 @@
 ﻿using ActressMas;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
+using VacationPackageWebApi.Domain.Mas;
 using VacationPackageWebApi.Domain.Mas.Mapper;
+using VacationPackageWebApi.Domain.Mas.Singleton;
 
 namespace VacationPackageWebApi.Domain.Services;
 
@@ -21,7 +23,6 @@ public class MasLoaderService : IMasLoaderService
     
     public async Task LoadMasEnvironmentAsync()
     {
-        var masEnv = new EnvironmentMas();
         var masVacationAgents = (await _agentService.GetAllAgentsAsync()).Select(a => a.ToMasObject()).ToList();
 
         var flights = (await _flightService.GetAllFlightsAsync()).ToHashSet();
@@ -40,7 +41,10 @@ public class MasLoaderService : IMasLoaderService
                 .Where(a => a.StoredInLocalDbOfAgentWithId == masAgent.TourismAgent.Id).ToList();
 
             masAgent.Name = masAgent.TourismAgent.Name;
-            masEnv.Add(masAgent);
+            MasEnvironmentSingleton.Instance.Add(masAgent);
         }
+        
+        MasEnvironmentSingleton.Instance.Add(MasCoordinatorSingleton.Instance);
+        MasEnvironmentSingleton.Instance.Start();
     }
 }

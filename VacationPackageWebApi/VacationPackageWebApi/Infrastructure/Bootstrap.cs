@@ -23,7 +23,7 @@ namespace VacationPackageWebApi.API.Infrastructure
         public static WebApplicationBuilder CreateAppBuilder(string[] args)
             => WebApplication.CreateBuilder(args);
 
-        public static WebApplication BuildApp(WebApplicationBuilder builder)
+        public static WebApplication BuildApp(WebApplicationBuilder builder, EnvironmentMas masEnv)
         {
             var configuration = GetConfiguration();
 
@@ -49,6 +49,7 @@ namespace VacationPackageWebApi.API.Infrastructure
             services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<IAttractionService, AttractionService>();
             services.AddScoped<IMasLoaderService, MasLoaderService>();
+            services.AddScoped<IRecommendationService, RecommendationService>();
 
             services.AddScoped<IPreferencesPackageRequestRepository, PreferencesPackageRequestRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();

@@ -7,17 +7,18 @@ namespace VacationPackageWebApi.Application.Services
     public class PreferencesPackageService : IPreferencesPackageService
     {
         private readonly IPreferencesPackageRequestRepository _preferencesPackageRepository;
-
-        public PreferencesPackageService(IPreferencesPackageRequestRepository preferencesPackageRepository)
+        private readonly IRecommendationService _recommendationService;
+        
+        public PreferencesPackageService(IPreferencesPackageRequestRepository preferencesPackageRepository, IRecommendationService recommendationService)
         {
             _preferencesPackageRepository = preferencesPackageRepository;
+            _recommendationService = recommendationService;
         }
         
         public async Task<PreferencesResponse> RequestVacationPackage(PreferencesRequest preferencesPayload)
         {
             await _preferencesPackageRepository.SavePreferences(preferencesPayload);
-            //return await _preferencesPackageRepository.GetFullPackageRecommendations(preferencesPayload);
-            return null;
+            return await _recommendationService.GetFullRecommendationsPackage(preferencesPayload);
         }
     }
 }

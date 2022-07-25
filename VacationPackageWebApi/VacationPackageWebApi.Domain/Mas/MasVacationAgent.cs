@@ -1,6 +1,5 @@
 ﻿using ActressMas;
 using VacationPackageWebApi.Domain.AgentsEnvironment.AgentModels;
-using VacationPackageWebApi.Domain.Enums;
 
 namespace VacationPackageWebApi.Domain.Mas;
 
@@ -19,7 +18,6 @@ public class MasVacationAgent : Agent
 
     public override void Act(Message message)
     {
-        
     }
 
     public override void ActDefault()
