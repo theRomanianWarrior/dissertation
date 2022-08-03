@@ -11,7 +11,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
             {
                 Id = Guid.NewGuid(),
                 DeparturePeriodPreferenceId = departurePeriodsPreference.Id,
-                Stops = flightPreferenceDto!.StopsNavigation.Type
+                Stops = flightPreferenceDto!.StopsNavigation.Type,
+                Class = flightPreferenceDto.Class.Class
             };
         }
     }

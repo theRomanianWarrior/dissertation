@@ -10,5 +10,10 @@
         public AirportBusinessModel DepartureAirport { get; set; }
         public WeekDaysOfFlightBusinessModel WeekDaysOfFlight { get; set; }
         public List<FlightPriceBusinessModel> FlightPriceList { get; set; }
+
+        public FlightBusinessModel()
+        {
+            Id = Guid.Empty;
+        }
     }
 }

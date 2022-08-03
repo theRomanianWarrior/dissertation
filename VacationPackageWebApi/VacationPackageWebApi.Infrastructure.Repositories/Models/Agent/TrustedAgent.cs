@@ -1,6 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Agent
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Agent
 {
     public class TrustedAgent
     {

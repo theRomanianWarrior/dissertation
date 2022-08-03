@@ -17,7 +17,7 @@ namespace DbMigrator.Migrations
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("PreferencesPackageId").AsGuid().ForeignKey(PreferencesPackageTable, "Id")
                 .WithColumn("RecommendationId").AsGuid().ForeignKey(RecommendationTable, "Id")
-                .WithColumn("Evaluation").AsGuid().ForeignKey(ServiceEvaluationTable, "Id")
+                .WithColumn("Evaluation").AsGuid().Nullable().ForeignKey(ServiceEvaluationTable, "Id")
                 .WithColumn("CustomerId").AsGuid().ForeignKey(CustomerTable, "Id")
                 .WithColumn("RequestTimestamp").AsDateTime();
         }

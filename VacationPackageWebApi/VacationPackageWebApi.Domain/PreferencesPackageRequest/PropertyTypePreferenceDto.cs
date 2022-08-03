@@ -1,4 +1,6 @@
-﻿namespace VacationPackageWebApi.Domain.PreferencesPackageRequest
+﻿using VacationPackageWebApi.Domain.Enums;
+
+namespace VacationPackageWebApi.Domain.PreferencesPackageRequest
 {
     public record PropertyTypePreferenceDto
     {

@@ -5,7 +5,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
 {
     public static class PreferencesPackageMapper
     {
-        public static PreferencesPackage ToEntity(this PreferencesRequest preferencesRequest, Guid customerAttractionId, Guid customerFlightId, Guid customerPropertyId, Guid departureCityId, Guid destinationCityId, Guid personsByAgeId)
+        public static PreferencesPackage ToEntity(this PreferencesRequest preferencesRequest, Guid? customerAttractionId, Guid? customerFlightId, Guid? customerPropertyId, Guid departureCityId, Guid destinationCityId, Guid personsByAgeId)
         {
             return new PreferencesPackage
             {

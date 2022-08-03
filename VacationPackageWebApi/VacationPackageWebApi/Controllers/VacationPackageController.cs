@@ -32,7 +32,12 @@ namespace VacationPackageWebApi.API.Controllers
         public async Task<ActionResult> RequestVacationRecommendation([FromBody] PreferencesRequest preferencesPayload)
         {
             var recommendationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload);
-            return Created(string.Empty,"Oke");
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = JsonSerializer.Serialize(recommendationPackage, options);
+
+           Console.WriteLine(jsonString);
+            return Created(string.Empty, recommendationPackage);
         }
     }
 }

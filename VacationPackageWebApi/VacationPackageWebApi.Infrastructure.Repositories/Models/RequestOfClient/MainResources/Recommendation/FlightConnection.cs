@@ -1,6 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation
 {
     public class FlightConnection
     {

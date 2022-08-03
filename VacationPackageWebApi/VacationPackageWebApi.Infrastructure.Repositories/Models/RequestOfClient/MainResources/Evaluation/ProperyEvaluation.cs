@@ -1,6 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation
 {
     public class ProperyEvaluation
     {

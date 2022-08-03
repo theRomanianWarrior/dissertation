@@ -13,7 +13,7 @@ public static class AgentMapping
             Id = agent.Id,
             Status = true,
             Name = agent.Name,
-            CurrentTask = Guid.Empty,
+            CurrentTask = TaskType.Default,
             ConfInd = new Dictionary<TaskType, double>
             {
                 {

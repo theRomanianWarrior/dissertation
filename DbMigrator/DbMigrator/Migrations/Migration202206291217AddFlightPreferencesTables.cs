@@ -11,6 +11,7 @@ namespace DbMigrator.Migrations
         private const string FlightCompaniesPreferenceTable = "FlightCompaniesPreference";
         private const string FlightDirectionPreferenceTable = "FlightDirectionPreference";
         private const string FlightCompanyTable = "FlightCompany";
+        private const string FlightClassTable = "FlightClass";
 
         public override void Up()
         {
@@ -28,8 +29,9 @@ namespace DbMigrator.Migrations
 
             Create.Table(FlightPreferenceTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("DeparturePeriodPreferenceId").AsGuid().ForeignKey(DeparturePeriodsPreferenceTable, "Id")
-                .WithColumn("Stops").AsInt16().ForeignKey(StopsTypePreferenceTable, "Id");
+                .WithColumn("DeparturePeriodPreferenceId").AsGuid().Nullable().ForeignKey(DeparturePeriodsPreferenceTable, "Id")
+                .WithColumn("Stops").AsInt16().Nullable().ForeignKey(StopsTypePreferenceTable, "Id")
+                .WithColumn("Class").AsInt16().Nullable().ForeignKey(FlightClassTable, "Id");
 
             Create.Table(FlightCompaniesPreferenceTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()

@@ -1,5 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Property
 {

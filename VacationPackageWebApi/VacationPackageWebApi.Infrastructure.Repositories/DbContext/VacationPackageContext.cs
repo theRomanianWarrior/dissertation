@@ -5,6 +5,7 @@ using VacationPackageWebApi.Infrastructure.Repositories.Models.Attraction;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.Customer;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.Flight;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.Property;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference;
@@ -18,51 +19,53 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
         {
         }
 
-        public DbSet<AgeCategoryPreference> AgeCategoryPreferences { get; set; } = null!;
-        public DbSet<Agent> Agents { get; set; } = null!;
-        public DbSet<Airport> Airports { get; set; } = null!;
-        public DbSet<AllAttractionEvaluationPoint> AllAttractionEvaluationPoints { get; set; } = null!;
-        public DbSet<AllAttractionRecommendation> AllAttractionRecommendations { get; set; } = null!;
-        public DbSet<AmenitiesPackage> AmenitiesPackages { get; set; } = null!;
-        public DbSet<AmenitiesPreference> AmenitiesPreferences { get; set; } = null!;
-        public DbSet<AttractionEvaluation> AttractionEvaluations { get; set; } = null!;
-        public DbSet<AttractionPreference> AttractionPreferences { get; set; } = null!;
-        public DbSet<AttractionRecommendation> AttractionRecommendations { get; set; } = null!;
-        public DbSet<AvailableDepartureTime> AvailableDepartureTimes { get; set; } = null!;
-        public DbSet<City> Cities { get; set; } = null!;
-        public DbSet<ClientRequest> ClientRequests { get; set; } = null!;
-        public DbSet<Country> Countries { get; set; } = null!;
-        public DbSet<Customer> Customers { get; set; } = null!;
-        public DbSet<DeparturePeriodsPreference> DeparturePeriodsPreferences { get; set; } = null!;
-        public DbSet<Flight> Flights { get; set; } = null!;
-        public DbSet<FlightClass> FlightClasses { get; set; } = null!;
-        public DbSet<FlightCompaniesPreference> FlightCompaniesPreferences { get; set; } = null!;
-        public DbSet<FlightCompany> FlightCompanies { get; set; } = null!;
-        public DbSet<FlightConnection> FlightConnections { get; set; } = null!;
-        public DbSet<FlightDirectionPreference> FlightDirectionPreferences { get; set; } = null!;
-        public DbSet<FlightEvaluation> FlightEvaluations { get; set; } = null!;
-        public DbSet<FlightPreference> FlightPreferences { get; set; } = null!;
-        public DbSet<FlightPrice> FlightPrices { get; set; } = null!;
-        public DbSet<FlightRecommendation> FlightRecommendations { get; set; } = null!;
-        public DbSet<OpenTripMapAttraction> OpenTripMapAttractions { get; set; } = null!;
-        public DbSet<PlaceType> PlaceTypes { get; set; } = null!;
-        public DbSet<PlaceTypePreference> PlaceTypePreferences { get; set; } = null!;
-        public DbSet<PreferencesPackage> PreferencesPackages { get; set; } = null!;
-        public DbSet<Property> Properties { get; set; } = null!;
-        public DbSet<PropertyPreference> PropertyPreferences { get; set; } = null!;
-        public DbSet<PropertyRecommendation> PropertyRecommendations { get; set; } = null!;
-        public DbSet<PropertyType> PropertyTypes { get; set; } = null!;
-        public DbSet<PropertyTypePreference> PropertyTypePreferences { get; set; } = null!;
-        public DbSet<ProperyEvaluation> ProperyEvaluations { get; set; } = null!;
-        public DbSet<Recommendation> Recommendations { get; set; } = null!;
-        public DbSet<RoomAndBed> RoomAndBeds { get; set; } = null!;
-        public DbSet<RoomsAndBedsPreference> RoomsAndBedsPreferences { get; set; } = null!;
-        public DbSet<ServiceEvaluation> ServiceEvaluations { get; set; } = null!;
-        public DbSet<StopsTypePreference> StopsTypePreferences { get; set; } = null!;
-        public DbSet<TrustServiceEvaluation> TrustServiceEvaluations { get; set; } = null!;
-        public DbSet<TrustedAgent> TrustedAgents { get; set; } = null!;
-        public DbSet<TrustedAgentRate> TrustedAgentRates { get; set; } = null!;
-        public DbSet<WeekDaysOfFlight> WeekDaysOfFlights { get; set; } = null!;
+        public virtual DbSet<AgeCategoryPreference> AgeCategoryPreferences { get; set; }
+        public virtual DbSet<Agent> Agents { get; set; }
+        public virtual DbSet<Airport> Airports { get; set; }
+        public virtual DbSet<AllAttractionEvaluationPoint> AllAttractionEvaluationPoints { get; set; }
+        public virtual DbSet<AllAttractionRecommendation> AllAttractionRecommendations { get; set; }
+        public virtual DbSet<AmenitiesPackage> AmenitiesPackages { get; set; }
+        public virtual DbSet<AmenitiesPreference> AmenitiesPreferences { get; set; }
+        public virtual DbSet<AttractionEvaluation> AttractionEvaluations { get; set; }
+        public virtual DbSet<AttractionPreference> AttractionPreferences { get; set; }
+        public virtual DbSet<AttractionRecommendation> AttractionRecommendations { get; set; }
+        public virtual DbSet<AvailableDepartureTime> AvailableDepartureTimes { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<ClientRequest> ClientRequests { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<CustomerPersonalAgentRate> CustomerPersonalAgentRates { get; set; }
+        public virtual DbSet<DeparturePeriodsPreference> DeparturePeriodsPreferences { get; set; }
+        public virtual DbSet<Flight> Flights { get; set; }
+        public virtual DbSet<FlightClass> FlightClasses { get; set; }
+        public virtual DbSet<FlightCompaniesPreference> FlightCompaniesPreferences { get; set; }
+        public virtual DbSet<FlightCompany> FlightCompanies { get; set; }
+        public virtual DbSet<FlightConnection> FlightConnections { get; set; }
+        public virtual DbSet<FlightDirectionEvaluation> FlightDirectionEvaluations { get; set; }
+        public virtual DbSet<FlightDirectionPreference> FlightDirectionPreferences { get; set; }
+        public virtual DbSet<FlightEvaluation> FlightEvaluations { get; set; }
+        public virtual DbSet<FlightPreference> FlightPreferences { get; set; }
+        public virtual DbSet<FlightPrice> FlightPrices { get; set; }
+        public virtual DbSet<FlightRecommendation> FlightRecommendations { get; set; }
+        public virtual DbSet<OpenTripMapAttraction> OpenTripMapAttractions { get; set; }
+        public virtual DbSet<PlaceType> PlaceTypes { get; set; }
+        public virtual DbSet<PlaceTypePreference> PlaceTypePreferences { get; set; }
+        public virtual DbSet<PreferencesPackage> PreferencesPackages { get; set; }
+        public virtual DbSet<Property> Properties { get; set; }
+        public virtual DbSet<PropertyPreference> PropertyPreferences { get; set; }
+        public virtual DbSet<PropertyRecommendation> PropertyRecommendations { get; set; }
+        public virtual DbSet<PropertyType> PropertyTypes { get; set; }
+        public virtual DbSet<PropertyTypePreference> PropertyTypePreferences { get; set; }
+        public virtual DbSet<ProperyEvaluation> ProperyEvaluations { get; set; }
+        public virtual DbSet<Recommendation> Recommendations { get; set; }
+        public virtual DbSet<RoomAndBed> RoomAndBeds { get; set; }
+        public virtual DbSet<RoomsAndBedsPreference> RoomsAndBedsPreferences { get; set; }
+        public virtual DbSet<ServiceEvaluation> ServiceEvaluations { get; set; }
+        public virtual DbSet<StopsTypePreference> StopsTypePreferences { get; set; }
+        public virtual DbSet<TrustServiceEvaluation> TrustServiceEvaluations { get; set; }
+        public virtual DbSet<TrustedAgent> TrustedAgents { get; set; }
+        public virtual DbSet<TrustedAgentRate> TrustedAgentRates { get; set; }
+        public virtual DbSet<WeekDaysOfFlight> WeekDaysOfFlights { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -114,8 +117,14 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.HasOne(d => d.InitialAssignedAgent)
+                    .WithMany(p => p.AllAttractionRecommendationInitialAssignedAgents)
+                    .HasForeignKey(d => d.InitialAssignedAgentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AllAttractionRecommendation_InitialAssignedAgentId_Agent_Id");
+
                 entity.HasOne(d => d.SourceAgent)
-                    .WithMany(p => p.AllAttractionRecommendations)
+                    .WithMany(p => p.AllAttractionRecommendationSourceAgents)
                     .HasForeignKey(d => d.SourceAgentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_AllAttractionRecommendation_SourceAgentId_Agent_Id");
@@ -169,13 +178,11 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
             {
                 entity.ToTable("AttractionRecommendation");
 
+                entity.HasIndex(e => e.AttractionId, "ix_AttractionRecommendation_AttractionId");
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.AttractionId).IsRequired();
-
-                entity.Property(e => e.Status)
-                    .IsRequired()
-                    .HasMaxLength(15);
 
                 entity.HasOne(d => d.AllAttractionRecommendation)
                     .WithMany(p => p.AttractionRecommendations)
@@ -188,12 +195,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .HasForeignKey(d => d.AttractionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_AttractionRecommendation_AttractionId_OpenTripMapAttraction_");
-
-                entity.HasOne(d => d.SourceAgent)
-                    .WithMany(p => p.AttractionRecommendations)
-                    .HasForeignKey(d => d.SourceAgentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_AttractionRecommendation_SourceAgentId_Agent_Id");
             });
 
             modelBuilder.Entity<AvailableDepartureTime>(entity =>
@@ -239,7 +240,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                 entity.HasOne(d => d.EvaluationNavigation)
                     .WithMany(p => p.ClientRequests)
                     .HasForeignKey(d => d.Evaluation)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ClientRequest_Evaluation_ServiceEvaluation_Id");
 
                 entity.HasOne(d => d.PreferencesPackage)
@@ -289,6 +289,25 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<CustomerPersonalAgentRate>(entity =>
+            {
+                entity.ToTable("CustomerPersonalAgentRate");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Agent)
+                    .WithMany(p => p.CustomerPersonalAgentRates)
+                    .HasForeignKey(d => d.AgentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CustomerPersonalAgentRate_AgentId_Agent_Id");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.CustomerPersonalAgentRates)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CustomerPersonalAgentRate_CustomerId_Customer_Id");
             });
 
             modelBuilder.Entity<DeparturePeriodsPreference>(entity =>
@@ -380,6 +399,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
             {
                 entity.ToTable("FlightConnection");
 
+                entity.HasIndex(e => e.FlightId, "ix_FlightConnection_FlightId");
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.HasOne(d => d.Flight)
@@ -393,6 +414,25 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .HasForeignKey(d => d.FlightRecommendationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_FlightConnection_FlightRecommendationId_FlightRecommendation");
+            });
+
+            modelBuilder.Entity<FlightDirectionEvaluation>(entity =>
+            {
+                entity.ToTable("FlightDirectionEvaluation");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.DepartureNavigation)
+                    .WithMany(p => p.FlightDirectionEvaluationDepartureNavigations)
+                    .HasForeignKey(d => d.Departure)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FlightDirectionEvaluation_Departure_FlightEvaluation_Id");
+
+                entity.HasOne(d => d.ReturnNavigation)
+                    .WithMany(p => p.FlightDirectionEvaluationReturnNavigations)
+                    .HasForeignKey(d => d.Return)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FlightDirectionEvaluation_Return_FlightEvaluation_Id");
             });
 
             modelBuilder.Entity<FlightDirectionPreference>(entity =>
@@ -427,16 +467,19 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.HasOne(d => d.ClassNavigation)
+                    .WithMany(p => p.FlightPreferences)
+                    .HasForeignKey(d => d.Class)
+                    .HasConstraintName("FK_FlightPreference_Class_FlightClass_Id");
+
                 entity.HasOne(d => d.DeparturePeriodPreference)
                     .WithMany(p => p.FlightPreferences)
                     .HasForeignKey(d => d.DeparturePeriodPreferenceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_FlightPreference_DeparturePeriodPreferenceId_DeparturePeriod");
 
                 entity.HasOne(d => d.StopsNavigation)
                     .WithMany(p => p.FlightPreferences)
                     .HasForeignKey(d => d.Stops)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_FlightPreference_Stops_StopsTypePreference_Id");
             });
 
@@ -465,12 +508,14 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Status)
-                    .IsRequired()
-                    .HasMaxLength(15);
+                entity.HasOne(d => d.InitialAssignedAgent)
+                    .WithMany(p => p.FlightRecommendationInitialAssignedAgents)
+                    .HasForeignKey(d => d.InitialAssignedAgentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FlightRecommendation_InitialAssignedAgentId_Agent_Id");
 
                 entity.HasOne(d => d.SourceAgent)
-                    .WithMany(p => p.FlightRecommendations)
+                    .WithMany(p => p.FlightRecommendationSourceAgents)
                     .HasForeignKey(d => d.SourceAgentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_FlightRecommendation_SourceAgentId_Agent_Id");
@@ -600,19 +645,16 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                 entity.HasOne(d => d.CustomerAttractionNavigation)
                     .WithMany(p => p.PreferencesPackages)
                     .HasForeignKey(d => d.CustomerAttraction)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PreferencesPackage_CustomerAttraction_AttractionPreference_I");
 
                 entity.HasOne(d => d.CustomerFlightNavigation)
                     .WithMany(p => p.PreferencesPackages)
                     .HasForeignKey(d => d.CustomerFlight)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PreferencesPackage_CustomerFlight_FlightDirectionPreference_");
 
                 entity.HasOne(d => d.CustomerPropertyNavigation)
                     .WithMany(p => p.PreferencesPackages)
                     .HasForeignKey(d => d.CustomerProperty)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PreferencesPackage_CustomerProperty_PropertyPreference_Id");
 
                 entity.HasOne(d => d.DepartureCityNavigation)
@@ -684,25 +726,21 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                 entity.HasOne(d => d.AmenitiesNavigation)
                     .WithMany(p => p.PropertyPreferences)
                     .HasForeignKey(d => d.Amenities)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PropertyPreference_Amenities_AmenitiesPreference_Id");
 
                 entity.HasOne(d => d.PlaceTypeNavigation)
                     .WithMany(p => p.PropertyPreferences)
                     .HasForeignKey(d => d.PlaceType)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PropertyPreference_PlaceType_PlaceTypePreference_Id");
 
                 entity.HasOne(d => d.PropertyTypeNavigation)
                     .WithMany(p => p.PropertyPreferences)
                     .HasForeignKey(d => d.PropertyType)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PropertyPreference_PropertyType_PropertyTypePreference_Id");
 
                 entity.HasOne(d => d.RoomsAndBedsNavigation)
                     .WithMany(p => p.PropertyPreferences)
                     .HasForeignKey(d => d.RoomsAndBeds)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PropertyPreference_RoomsAndBeds_RoomsAndBedsPreference_Id");
             });
 
@@ -714,9 +752,11 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Status)
-                    .IsRequired()
-                    .HasMaxLength(15);
+                entity.HasOne(d => d.InitialAssignedAgent)
+                    .WithMany(p => p.PropertyRecommendationInitialAssignedAgents)
+                    .HasForeignKey(d => d.InitialAssignedAgentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PropertyRecommendation_InitialAssignedAgentId_Agent_Id");
 
                 entity.HasOne(d => d.Property)
                     .WithMany(p => p.PropertyRecommendations)
@@ -725,7 +765,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .HasConstraintName("FK_PropertyRecommendation_PropertyId_Property_Id");
 
                 entity.HasOne(d => d.SourceAgent)
-                    .WithMany(p => p.PropertyRecommendations)
+                    .WithMany(p => p.PropertyRecommendationSourceAgents)
                     .HasForeignKey(d => d.SourceAgentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PropertyRecommendation_SourceAgentId_Agent_Id");
@@ -766,7 +806,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .WithMany(p => p.Recommendations)
                     .HasForeignKey(d => d.AttractionRecommendationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Recommendation_AttractionRecommendationId_AttractionRecommen");
+                    .HasConstraintName("FK_Recommendation_AttractionRecommendationId_AllAttractionRecom");
 
                 entity.HasOne(d => d.FlightRecommendation)
                     .WithMany(p => p.Recommendations)
@@ -811,7 +851,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .WithMany(p => p.ServiceEvaluations)
                     .HasForeignKey(d => d.FlightEvaluationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ServiceEvaluation_FlightEvaluationId_FlightEvaluation_Id");
+                    .HasConstraintName("FK_ServiceEvaluation_FlightEvaluationId_FlightDirectionEvaluati");
 
                 entity.HasOne(d => d.PropertyEvaluation)
                     .WithMany(p => p.ServiceEvaluations)
@@ -902,7 +942,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .IsRequired()
                     .HasMaxLength(100);
             });
-
             base.OnModelCreating(modelBuilder);
         }
     }

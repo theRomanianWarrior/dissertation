@@ -1,6 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
 {
     public class PreferencesPackage
     {
@@ -10,9 +8,9 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
         }
 
         public Guid Id { get; set; }
-        public Guid CustomerFlight { get; set; }
-        public Guid CustomerProperty { get; set; }
-        public Guid CustomerAttraction { get; set; }
+        public Guid? CustomerFlight { get; set; }
+        public Guid? CustomerProperty { get; set; }
+        public Guid? CustomerAttraction { get; set; }
         public Guid PersonsByAge { get; set; }
         public Guid DepartureCity { get; set; }
         public Guid DestinationCity { get; set; }

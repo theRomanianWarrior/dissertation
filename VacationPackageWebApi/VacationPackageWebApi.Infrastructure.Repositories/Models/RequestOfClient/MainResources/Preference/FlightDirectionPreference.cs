@@ -1,6 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
 {
     public class FlightDirectionPreference
     {

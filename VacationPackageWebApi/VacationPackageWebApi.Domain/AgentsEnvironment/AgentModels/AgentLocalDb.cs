@@ -6,7 +6,7 @@ namespace VacationPackageWebApi.Domain.AgentsEnvironment.AgentModels;
 
 public record AgentLocalDb
 {
-    public List<AttractionBusinessModel> AttractionsList { get; set; }
-    public List<FlightBusinessModel> FlightsList { get; set; }
-    public List<PropertyBusinessModel> StaysList { get; set; }
+    public HashSet<AttractionBusinessModel> AttractionsList { get; set; }
+    public HashSet<FlightBusinessModel> FlightsList { get; set; }
+    public HashSet<PropertyBusinessModel> StaysList { get; set; }
 }

@@ -1,6 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation
 {
     public class Recommendation
     {
@@ -14,7 +12,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
         public Guid PropertyRecommendationId { get; set; }
         public Guid AttractionRecommendationId { get; set; }
 
-        public virtual AttractionRecommendation AttractionRecommendation { get; set; }
+        public virtual AllAttractionRecommendation AttractionRecommendation { get; set; }
         public virtual FlightRecommendation FlightRecommendation { get; set; }
         public virtual PropertyRecommendation PropertyRecommendation { get; set; }
         public virtual ICollection<ClientRequest> ClientRequests { get; set; }

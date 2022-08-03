@@ -11,17 +11,22 @@ namespace DbMigrator.Migrations
         private const string AllAttractionEvaluationPointTable = "AllAttractionEvaluationPoint";
         private const string AttractionEvaluationTable = "AttractionEvaluation";
         private const string ServiceEvaluationTable = "ServiceEvaluation";
+        private const string FlightDirectionEvaluationTable = "FlightDirectionEvaluation";
 
         public override void Up()
         {
             Create.Table(FlightEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("Class").AsInt16()
-                .WithColumn("TypeOfFlight").AsInt16()
-                .WithColumn("Stops").AsInt16()
-                .WithColumn("Connections").AsInt16()
+                .WithColumn("Price").AsInt16()
+                .WithColumn("Company").AsInt16()
                 .WithColumn("FinalFlightRating").AsInt16();
 
+            Create.Table(FlightDirectionEvaluationTable)
+                .WithColumn("Id").AsGuid().PrimaryKey()
+                .WithColumn("Departure").AsGuid().ForeignKey(FlightEvaluationTable, "Id")
+                .WithColumn("Return").AsGuid().ForeignKey(FlightEvaluationTable, "Id");
+            
             Create.Table(PropertyEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("PropertyType").AsInt16()
@@ -42,7 +47,7 @@ namespace DbMigrator.Migrations
 
             Create.Table(ServiceEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("FlightEvaluationId").AsGuid().ForeignKey(FlightEvaluationTable, "Id")
+                .WithColumn("FlightEvaluationId").AsGuid().ForeignKey(FlightDirectionEvaluationTable, "Id")
                 .WithColumn("PropertyEvaluationId").AsGuid().ForeignKey(PropertyEvaluationTable, "Id")
                 .WithColumn("AttractionEvaluationId").AsGuid().ForeignKey(AllAttractionEvaluationPointTable, "Id");
         }

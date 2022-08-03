@@ -1,6 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Flight
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Flight
 {
     public class Airport
     {

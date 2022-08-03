@@ -1,6 +1,6 @@
-﻿using DbPopulator.CsvDataProcessing;
+﻿using DbMigrator.Models;
+using DbPopulator.CsvDataProcessing;
 using DbPopulator.CsvDataProcessing.CsvForDatabasePopulating;
-using DbPopulator.Models;
 using FluentMigrator;
 
 namespace DbPopulator.Migrations;

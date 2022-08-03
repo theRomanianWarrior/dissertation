@@ -22,9 +22,9 @@ namespace DbMigrator.Migrations
 
             Create.Table(PreferencesPackageTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("CustomerFlight").AsGuid().ForeignKey(FlightDirectionPreferenceTable, "Id")
-                .WithColumn("CustomerProperty").AsGuid().ForeignKey(PropertyPreferenceTable, "Id")
-                .WithColumn("CustomerAttraction").AsGuid().ForeignKey(AttractionPreferenceTable, "Id")
+                .WithColumn("CustomerFlight").AsGuid().Nullable().ForeignKey(FlightDirectionPreferenceTable, "Id")
+                .WithColumn("CustomerProperty").AsGuid().Nullable().ForeignKey(PropertyPreferenceTable, "Id")
+                .WithColumn("CustomerAttraction").AsGuid().Nullable().ForeignKey(AttractionPreferenceTable, "Id")
                 .WithColumn("PersonsByAge").AsGuid().ForeignKey(AgeCategoryPreferenceTable, "Id")
                 .WithColumn("DepartureCity").AsGuid().ForeignKey(CityTable, "Id")
                 .WithColumn("DestinationCity").AsGuid().ForeignKey(CityTable, "Id")

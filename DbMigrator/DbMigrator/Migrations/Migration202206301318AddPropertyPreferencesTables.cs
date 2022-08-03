@@ -45,11 +45,11 @@ namespace DbMigrator.Migrations
 
             Create.Table(PropertyPreferenceTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("PropertyType").AsGuid().ForeignKey(PropertyTypePreferenceTable, "Id")
-                .WithColumn("PlaceType").AsGuid().ForeignKey(PlaceTypePreferenceTable, "Id")
-                .WithColumn("RoomsAndBeds").AsGuid().ForeignKey(RoomsAndBedsPreferenceTable, "Id")
+                .WithColumn("PropertyType").AsGuid().Nullable().ForeignKey(PropertyTypePreferenceTable, "Id")
+                .WithColumn("PlaceType").AsGuid().Nullable().ForeignKey(PlaceTypePreferenceTable, "Id")
+                .WithColumn("RoomsAndBeds").AsGuid().Nullable().ForeignKey(RoomsAndBedsPreferenceTable, "Id")
                 .WithColumn("Pets").AsBoolean()
-                .WithColumn("Amenities").AsGuid().ForeignKey(AmenitiesPreferenceTable, "Id");
+                .WithColumn("Amenities").AsGuid().Nullable().ForeignKey(AmenitiesPreferenceTable, "Id");
         }
     }
 }

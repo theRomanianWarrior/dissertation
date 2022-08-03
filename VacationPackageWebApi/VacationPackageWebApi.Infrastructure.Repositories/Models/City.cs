@@ -1,5 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-using VacationPackageWebApi.Infrastructure.Repositories.Models.Flight;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.Flight;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models

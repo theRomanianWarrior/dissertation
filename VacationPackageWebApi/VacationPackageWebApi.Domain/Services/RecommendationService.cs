@@ -1,21 +1,29 @@
 ﻿using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
+using VacationPackageWebApi.Domain.Helpers;
+using VacationPackageWebApi.Domain.Mas.BusinessLogic;
 using VacationPackageWebApi.Domain.Mas.Singleton;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
+using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 
 namespace VacationPackageWebApi.Domain.Services;
 
 public class RecommendationService : IRecommendationService
 {
-    public Task<PreferencesResponse> GetFullRecommendationsPackage(PreferencesRequest preferencesPayload)
+    public async Task<PreferencesResponse?> GetFullRecommendationsPackage(PreferencesRequest preferencesPayload)
     {
-        MasEnvironmentSingleton.Instance.Memory["preferencesPayload"] = preferencesPayload;
-        MasCoordinatorSingleton.Instance.Broadcast("new_recommendation_request");
-       // Wait the response from each agent of those 3 services ->
-       // One flight agent, one attractions agent, one stay agent
-    }
+        List<string> listOfAvailableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+        var cancellationTokenSource = new CancellationTokenSource();
 
-    private void Coordinator()
-    {
+        await CommonRecommendationLogic.SetPreferencesPayload(preferencesPayload);
         
+        MasCoordinatorSingleton.Instance.SendToMany(listOfAvailableAgents, "new_recommendation_request");
+
+        cancellationTokenSource.CancelAfter(30000);
+
+        await TimeoutFunctionHandler.CheckRecommendationReadyUntilSuccessOrTimeout(cancellationTokenSource.Token); //////!!!!!!!!!!!!!
+
+        if (MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] != "done") return null!; // was canceled
+        var readRecommendation = MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] as PreferencesResponse;
+        return readRecommendation!;
     }
 }

@@ -4,6 +4,7 @@
     {
         Flight = 1,
         Property,
-        Attractions
+        Attractions,
+        Default
     }
 }

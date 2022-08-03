@@ -1,8 +1,8 @@
-﻿using DbPopulator.CsvDataProcessing;
+﻿using DbMigrator.Models;
+using DbPopulator.CsvDataProcessing;
 using DbPopulator.CsvDataProcessing.CsvForDatabasePopulating;
 using DbPopulator.CsvDataProcessing.CsvModels;
 using DbPopulator.Enums;
-using DbPopulator.Models;
 using FluentMigrator;
 using FluentMigrator.SqlServer;
 

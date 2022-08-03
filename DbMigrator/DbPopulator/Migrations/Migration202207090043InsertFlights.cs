@@ -1,8 +1,8 @@
-﻿using DbPopulator.CsvDataProcessing;
+﻿using DbMigrator.Models;
+using DbPopulator.CsvDataProcessing;
 using DbPopulator.CsvDataProcessing.CsvForDatabasePopulating;
 using DbPopulator.CsvDataProcessing.CsvModels;
 using DbPopulator.Enums;
-using DbPopulator.Models;
 using FluentMigrator;
 using FluentMigrator.SqlServer;
 
@@ -48,7 +48,7 @@ public class Migration202207090043InsertFlights : AutoReversingMigration
             
             var departureAirportId = CommonUsedTablesData.Airports.SingleOrDefault(a => a.Name == flight.DepartureAirportName)!.Id;
 
-            var arrivalAirportId = CommonUsedTablesData.Airports.SingleOrDefault(a => a.Name == flight.DepartureAirportName)!.Id;
+            var arrivalAirportId = CommonUsedTablesData.Airports.SingleOrDefault(a => a.Name == flight.ArrivalAirportName)!.Id;
 
             var flightDbModel = new Flight()
             {

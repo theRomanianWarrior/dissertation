@@ -1,4 +1,5 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.Customer;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Agent
 {
@@ -6,10 +7,13 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Agent
     {
         public Agent()
         {
-            AllAttractionRecommendations = new HashSet<AllAttractionRecommendation>();
-            AttractionRecommendations = new HashSet<AttractionRecommendation>();
-            FlightRecommendations = new HashSet<FlightRecommendation>();
-            PropertyRecommendations = new HashSet<PropertyRecommendation>();
+            AllAttractionRecommendationInitialAssignedAgents = new HashSet<AllAttractionRecommendation>();
+            AllAttractionRecommendationSourceAgents = new HashSet<AllAttractionRecommendation>();
+            CustomerPersonalAgentRates = new HashSet<CustomerPersonalAgentRate>();
+            FlightRecommendationInitialAssignedAgents = new HashSet<FlightRecommendation>();
+            FlightRecommendationSourceAgents = new HashSet<FlightRecommendation>();
+            PropertyRecommendationInitialAssignedAgents = new HashSet<PropertyRecommendation>();
+            PropertyRecommendationSourceAgents = new HashSet<PropertyRecommendation>();
             TrustedAgentAgents = new HashSet<TrustedAgent>();
             TrustedAgentTrustedAgentNavigations = new HashSet<TrustedAgent>();
         }
@@ -20,10 +24,13 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Agent
         public float PropertySelfExpertRate { get; set; }
         public float AttractionsSelfExpertRate { get; set; }
 
-        public virtual ICollection<AllAttractionRecommendation> AllAttractionRecommendations { get; set; }
-        public virtual ICollection<AttractionRecommendation> AttractionRecommendations { get; set; }
-        public virtual ICollection<FlightRecommendation> FlightRecommendations { get; set; }
-        public virtual ICollection<PropertyRecommendation> PropertyRecommendations { get; set; }
+        public virtual ICollection<AllAttractionRecommendation> AllAttractionRecommendationInitialAssignedAgents { get; set; }
+        public virtual ICollection<AllAttractionRecommendation> AllAttractionRecommendationSourceAgents { get; set; }
+        public virtual ICollection<CustomerPersonalAgentRate> CustomerPersonalAgentRates { get; set; }
+        public virtual ICollection<FlightRecommendation> FlightRecommendationInitialAssignedAgents { get; set; }
+        public virtual ICollection<FlightRecommendation> FlightRecommendationSourceAgents { get; set; }
+        public virtual ICollection<PropertyRecommendation> PropertyRecommendationInitialAssignedAgents { get; set; }
+        public virtual ICollection<PropertyRecommendation> PropertyRecommendationSourceAgents { get; set; }
         public virtual ICollection<TrustedAgent> TrustedAgentAgents { get; set; }
         public virtual ICollection<TrustedAgent> TrustedAgentTrustedAgentNavigations { get; set; }
     }

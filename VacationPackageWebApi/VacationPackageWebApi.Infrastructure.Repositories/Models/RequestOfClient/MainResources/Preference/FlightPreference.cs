@@ -1,4 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.Flight;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference
 {
@@ -12,9 +12,11 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
         }
 
         public Guid Id { get; set; }
-        public Guid DeparturePeriodPreferenceId { get; set; }
-        public short Stops { get; set; }
+        public Guid? DeparturePeriodPreferenceId { get; set; }
+        public short? Stops { get; set; }
+        public short? Class { get; set; }
 
+        public virtual FlightClass ClassNavigation { get; set; }
         public virtual DeparturePeriodsPreference DeparturePeriodPreference { get; set; }
         public virtual StopsTypePreference StopsNavigation { get; set; }
         public virtual ICollection<FlightCompaniesPreference> FlightCompaniesPreferences { get; set; }

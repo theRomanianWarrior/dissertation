@@ -1,4 +1,4 @@
-﻿using DbPopulator.Models;
+﻿using DbMigrator.Models;
 using FluentMigrator;
 
 namespace DbPopulator.Migrations

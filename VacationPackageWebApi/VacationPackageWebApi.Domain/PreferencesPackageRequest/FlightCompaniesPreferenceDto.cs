@@ -5,6 +5,5 @@ namespace VacationPackageWebApi.Domain.PreferencesPackageRequest
     public record FlightCompaniesPreferenceDto
     {
         public FlightCompanyDto Company { get; set; }
-        public string FlightDirection { get; set; }
     }
 }

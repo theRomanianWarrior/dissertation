@@ -1,5 +1,4 @@
-﻿using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
-using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Customer
 {
@@ -8,6 +7,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Customer
         public Customer()
         {
             ClientRequests = new HashSet<ClientRequest>();
+            CustomerPersonalAgentRates = new HashSet<CustomerPersonalAgentRate>();
         }
 
         public Guid Id { get; set; }
@@ -18,5 +18,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Customer
         public string Email { get; set; }
 
         public virtual ICollection<ClientRequest> ClientRequests { get; set; }
+        public virtual ICollection<CustomerPersonalAgentRate> CustomerPersonalAgentRates { get; set; }
     }
 }

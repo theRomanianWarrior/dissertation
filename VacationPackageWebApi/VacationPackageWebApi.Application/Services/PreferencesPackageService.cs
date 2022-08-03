@@ -1,6 +1,7 @@
 ﻿using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts;
+using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 
 namespace VacationPackageWebApi.Application.Services
 {
@@ -15,7 +16,7 @@ namespace VacationPackageWebApi.Application.Services
             _recommendationService = recommendationService;
         }
         
-        public async Task<PreferencesResponse> RequestVacationPackage(PreferencesRequest preferencesPayload)
+        public async Task<PreferencesResponse?> RequestVacationPackage(PreferencesRequest preferencesPayload)
         {
             await _preferencesPackageRepository.SavePreferences(preferencesPayload);
             return await _recommendationService.GetFullRecommendationsPackage(preferencesPayload);

@@ -19,6 +19,12 @@ public static class StringUtils
 
     }
 
+    public static List<TimeOnly> ConvertStringTimeListToTimeOnly(this string timeData)
+    {
+        var myStr = timeData.Split(' ');
+        return myStr.Select(TimeOnly.Parse).ToList();
+    }
+    
     public static string MaskEntireString(this string input)
     {
         return !string.IsNullOrEmpty(input) ? GenerateNewMaskedString(input.Length) : string.Empty;
