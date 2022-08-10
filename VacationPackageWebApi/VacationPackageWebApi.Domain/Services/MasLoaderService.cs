@@ -1,7 +1,12 @@
 ﻿using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
+using VacationPackageWebApi.Domain.Attractions;
+using VacationPackageWebApi.Domain.Flight;
+using VacationPackageWebApi.Domain.Mas;
+using VacationPackageWebApi.Domain.Mas.BusinessLogic;
 using VacationPackageWebApi.Domain.Mas.Initializer;
 using VacationPackageWebApi.Domain.Mas.Mapper;
 using VacationPackageWebApi.Domain.Mas.Singleton;
+using VacationPackageWebApi.Domain.Property;
 
 namespace VacationPackageWebApi.Domain.Services;
 
@@ -24,26 +29,19 @@ public class MasLoaderService : IMasLoaderService
     {
         try
         {
-            var masVacationAgents = (await _agentService.GetAllAgentsAsync()).Select(a => a.ToMasObject()).ToList();
+            var masVacationAgents = (await _agentService.GetAllAgentsAsync()).Select(a => a.ToMasObject()).Take(3).ToList();
 
             var flights = (await _flightService.GetAllFlightsAsync()).ToHashSet();
             var properties = (await _propertyService.GetAllPropertiesAsync()).ToHashSet();
             var attractions = (await _attractionService.GetAllAttractionsAsync()).ToHashSet();
-        
-            foreach (var masAgent in masVacationAgents)
-            {
-                masAgent.TourismAgent.FlightsList = flights
-                    .Where(f => f.StoredInLocalDbOfAgentWithId == masAgent.TourismAgent.Id).ToHashSet();
-            
-                masAgent.TourismAgent.StaysList = properties
-                    .Where(p => p.StoredInLocalDbOfAgentWithId == masAgent.TourismAgent.Id).ToHashSet();
-            
-                masAgent.TourismAgent.AttractionsList = attractions
-                    .Where(a => a.StoredInLocalDbOfAgentWithId == masAgent.TourismAgent.Id).ToHashSet();
 
-                masAgent.Name = masAgent.TourismAgent.Name;
-                MasEnvironmentSingleton.Instance.Add(masAgent);
-            }
+            InitializeAgentsLocalDatabase(masVacationAgents);
+
+            StoreInAgentsLocalDbFlights(flights, masVacationAgents);
+            StoreInAgentsLocalDbProperties(properties, masVacationAgents);
+            StoreInAgentsLocalDbAttractions(attractions, masVacationAgents);
+
+            AddAgentsToMasEnvironment(masVacationAgents);
         
             await MasEnvVarsInitializer.InitializeAll();
         
@@ -51,7 +49,7 @@ public class MasLoaderService : IMasLoaderService
             
             foreach (var agent in masVacationAgents)
             {
-                await InsertAgentNameToAvailableAgents(agent.Name);
+                await CommonRecommendationLogic.InsertAgentNameToAvailableAgents(agent.Name);
             }
             
             MasEnvironmentSingleton.Instance.Start();
@@ -63,9 +61,57 @@ public class MasLoaderService : IMasLoaderService
         }
     }
 
-    private static Task InsertAgentNameToAvailableAgents(string agentName)
+    private void AddAgentsToMasEnvironment(List<MasVacationAgent> masVacationAgents)
     {
-        (MasEnvironmentSingleton.Instance.Memory["AvailableAgents"] as List<string>)!.Add(agentName);
-        return Task.CompletedTask;
+        foreach (var masAgent in masVacationAgents)
+        {
+            masAgent.Name = masAgent.TourismAgent.Name;
+            MasEnvironmentSingleton.Instance.Add(masAgent);
+        }    
     }
+    
+    private void InitializeAgentsLocalDatabase(List<MasVacationAgent> masVacationAgents)
+    {
+        foreach (var masAgent in masVacationAgents)
+        {
+            masAgent.TourismAgent.FlightsList = new HashSet<FlightBusinessModel>();
+            masAgent.TourismAgent.AttractionsList = new HashSet<AttractionBusinessModel>();
+            masAgent.TourismAgent.StaysList = new HashSet<PropertyBusinessModel>();
+        }    
+    }
+    
+    private void StoreInAgentsLocalDbFlights(HashSet<FlightBusinessModel> flights, List<MasVacationAgent> masVacationAgents)
+    {
+        foreach (var flight in flights)
+        {
+            foreach (var masAgent in masVacationAgents)
+            {
+                masAgent.TourismAgent.FlightsList.Add(flight);
+            }
+        }
+    }
+    
+    private void StoreInAgentsLocalDbProperties(HashSet<PropertyBusinessModel> properties, List<MasVacationAgent> masVacationAgents)
+    {
+        foreach (var property in properties)
+        {
+            foreach (var masAgent in masVacationAgents)
+            {
+                masAgent.TourismAgent.StaysList.Add(property);
+            }
+        }
+    }
+    
+    private void StoreInAgentsLocalDbAttractions(HashSet<AttractionBusinessModel> attractions, List<MasVacationAgent> masVacationAgents)
+    {
+        foreach (var attraction in attractions)
+        {
+            foreach (var masAgent in masVacationAgents)
+            {
+                masAgent.TourismAgent.AttractionsList.Add(attraction);
+            }
+        }
+    }
+    
+
 }

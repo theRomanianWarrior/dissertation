@@ -4,11 +4,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Flight.Mapper
 
 public static class FlightMapper
 {
-    public static FlightBusinessModel ToBusinessModel(this Flight flight, List<FlightPriceBusinessModel> flightPriceList, List<Guid> agentsIdList)
+    public static FlightBusinessModel ToBusinessModel(this Flight flight, List<FlightPriceBusinessModel> flightPriceList)
     {
-        var random = new Random();
-        var randomAgentId = random.Next(agentsIdList.Count);
-        
         return new FlightBusinessModel
         {
             Id = flight.Id,
@@ -19,7 +16,6 @@ public static class FlightMapper
             Duration = flight.Duration,
             WeekDaysOfFlight = flight.WeekDaysOfFlight.ToBusinessModel(),
             FlightPriceList = flightPriceList,
-            StoredInLocalDbOfAgentWithId = agentsIdList[randomAgentId]
         };
     }
 }

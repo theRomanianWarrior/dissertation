@@ -10,6 +10,7 @@ namespace DbMigrator.Migrations
         private const string FlightRecommendationTable = "FlightRecommendation";
         private const string PropertyRecommendationTable = "PropertyRecommendation";
         private const string AttractionRecommendationTable = "AttractionRecommendation";
+        private const string FlightDirectionRecommendationTable = "FlightDirectionRecommendation";
         private const string AgentTable = "Agent";
         private const string FlightTable = "Flight";
         private const string PropertyTable = "Property";
@@ -44,7 +45,12 @@ namespace DbMigrator.Migrations
             Create.Index($"ix_{PropertyRecommendationTable}_PropertyId")
                 .OnTable(PropertyRecommendationTable)
                 .OnColumn("PropertyId");
-            
+
+            Create.Table(FlightDirectionRecommendationTable)
+                .WithColumn("Id").AsGuid().PrimaryKey()
+                .WithColumn("Departure").AsGuid().ForeignKey(FlightRecommendationTable, "Id")
+                .WithColumn("Return").AsGuid().ForeignKey(FlightRecommendationTable, "Id");
+
             Create.Table(AllAttractionRecommendationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("SourceAgentId").AsGuid().ForeignKey(AgentTable, "Id")
@@ -61,7 +67,7 @@ namespace DbMigrator.Migrations
             
             Create.Table(RecommendationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("FlightRecommendationId").AsGuid().ForeignKey(FlightRecommendationTable, "Id")
+                .WithColumn("FlightRecommendationId").AsGuid().ForeignKey(FlightDirectionRecommendationTable, "Id")
                 .WithColumn("PropertyRecommendationId").AsGuid().ForeignKey(PropertyRecommendationTable, "Id")
                 .WithColumn("AttractionRecommendationId").AsGuid().ForeignKey(AllAttractionRecommendationTable, "Id");
         }

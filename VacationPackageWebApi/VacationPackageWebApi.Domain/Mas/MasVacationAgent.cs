@@ -136,15 +136,18 @@ public class MasVacationAgent : Agent
                     break;
                 case "departure_flight_recommendation_request":
                 {
+                    CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
                     var departureFlightRecommendationSuccess =
                         FlightRecommendationLogic.FindOptimalDepartureFlightAndStoreInMemory(TourismAgent.Id,
                             message.Sender, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
                     if (departureFlightRecommendationSuccess)
                         Send("Coordinator", "departure_flight_recommendation_done");
+                    
                 }
                     break;
                 case "return_flight_recommendation_request":
                 {
+                    CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
                     var returnFlightRecommendationSuccess =
                         FlightRecommendationLogic.FindOptimalReturnFlightAndStoreInMemory(TourismAgent.Id,
                             message.Sender, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
@@ -154,6 +157,7 @@ public class MasVacationAgent : Agent
                     break;
                 case "property_recommendation_request":
                 {
+                    CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
                     var optimalPropertySolutionStoredSuccess =
                         PropertyRecommendationLogic.FindOptimalPropertyAndStoreInMemory(TourismAgent.Id,
                             message.Sender, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
@@ -163,6 +167,7 @@ public class MasVacationAgent : Agent
                     break;
                 case "attractions_recommendation_request":
                 {
+                    CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
                     var optimalAttractionSolutionStoredSuccess =
                         PropertyRecommendationLogic.FindOptimalPropertyAndStoreInMemory(TourismAgent.Id,
                             message.Sender, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
@@ -171,6 +176,7 @@ public class MasVacationAgent : Agent
                 } 
                     break;
             }
+            await CommonRecommendationLogic.InsertAgentNameToAvailableAgents(TourismAgent.Name);
         }
         catch (Exception ex)
         {

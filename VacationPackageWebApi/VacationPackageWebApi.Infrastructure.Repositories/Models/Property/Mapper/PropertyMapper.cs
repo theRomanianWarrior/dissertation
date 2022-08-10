@@ -5,11 +5,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Property.Mapp
 
 public static class PropertyMapper
 {
-    public static PropertyBusinessModel ToBusinessModel(this Property property, List<Guid> agentsIdList)
+    public static PropertyBusinessModel ToBusinessModel(this Property property)
     {
-        var random = new Random();
-        var randomAgentId = random.Next(agentsIdList.Count);
-        
         return new PropertyBusinessModel()
         {
             Id = property.Id,
@@ -20,7 +17,6 @@ public static class PropertyMapper
             Pet = property.Pet,
             PlaceType = property.PlaceType.ToBusinessModel(),
             PropertyType = property.PropertyType.ToBusinessModel(),
-            StoredInLocalDbOfAgentWithId = agentsIdList[randomAgentId]
         };
     }
 }

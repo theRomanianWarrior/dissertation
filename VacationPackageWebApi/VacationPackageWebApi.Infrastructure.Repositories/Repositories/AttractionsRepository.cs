@@ -17,8 +17,6 @@ public class AttractionsRepository : IAttractionRepository
     
     public async Task<List<AttractionBusinessModel>> GetAllAttractionsAsync()
     {
-        var agentsIdList = _context.Agents.Select(a => a.Id).ToList();
-        
-        return await _context.OpenTripMapAttractions.Select(a => a.ToBusinessModel(agentsIdList)).ToListAsync();
+        return await _context.OpenTripMapAttractions.Select(a => a.ToBusinessModel()).ToListAsync();
     }
 }

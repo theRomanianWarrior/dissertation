@@ -2,7 +2,7 @@
 
 namespace VacationPackageWebApi.Domain.Property
 {
-    public record PropertyBusinessModel : BaseBusinessModel
+    public record PropertyBusinessModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

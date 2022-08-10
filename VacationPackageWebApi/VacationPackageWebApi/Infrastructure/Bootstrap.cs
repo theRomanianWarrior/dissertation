@@ -23,7 +23,7 @@ namespace VacationPackageWebApi.API.Infrastructure
         public static WebApplicationBuilder CreateAppBuilder(string[] args)
             => WebApplication.CreateBuilder(args);
 
-        public static WebApplication BuildApp(WebApplicationBuilder builder, EnvironmentMas masEnv)
+        public static WebApplication BuildApp(WebApplicationBuilder builder)
         {
             var configuration = GetConfiguration();
 

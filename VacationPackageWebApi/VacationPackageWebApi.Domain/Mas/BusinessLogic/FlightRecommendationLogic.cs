@@ -6,6 +6,7 @@ using VacationPackageWebApi.Domain.Mas.Singleton;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 using VacationPackageWebApi.Domain.PreferencesPackageResponse.FlightPreferencesResponse;
+using static VacationPackageWebApi.Domain.Mas.BusinessLogic.CommonRecommendationLogic;
 
 namespace VacationPackageWebApi.Domain.Mas.BusinessLogic;
 
@@ -46,14 +47,14 @@ public static class FlightRecommendationLogic
             {
                 var flightDayMatch= CheckFlightDayMatch(preferencesRequest.DepartureDate.GetDayOfWeekFromDate(), flight);
                 var flightCompaniesMatchDeparture = CheckFlightCompaniesMatch(
-                    preferencesRequest.CustomerFlightNavigation.DepartureNavigation.FlightCompaniesNavigationList,
+                    preferencesRequest.CustomerFlightNavigation!.DepartureNavigation!.FlightCompaniesNavigationList,
                     flight);
                 var preferenceDeparturePeriodMatch = CheckPreferenceDeparturePeriodMatch(
-                    preferencesRequest.CustomerFlightNavigation.DepartureNavigation, groupFlightTimeByDayPeriods);
-                return ((double) (flightCompaniesMatchDeparture ? CommonRecommendationLogic.Match : CommonRecommendationLogic.NoMatch) + 
-                                 (preferenceDeparturePeriodMatch ? CommonRecommendationLogic.Match : CommonRecommendationLogic.NoMatch) +
-                                 (flightDayMatch ? CommonRecommendationLogic.Match : CommonRecommendationLogic.NoMatch)) /
-                                    TotalFlightElementsToMatch;
+                    preferencesRequest.CustomerFlightNavigation.DepartureNavigation.DeparturePeriodPreference, groupFlightTimeByDayPeriods);
+                return ((double) (flightCompaniesMatchDeparture ? Match : NoMatch) + 
+                        (preferenceDeparturePeriodMatch ? Match : NoMatch) +
+                        (flightDayMatch ? Match : NoMatch)) /
+                       TotalFlightElementsToMatch;
             }
             case "Return":
             {
@@ -62,15 +63,15 @@ public static class FlightRecommendationLogic
 
                 var flightCompaniesMatchReturn =
                     CheckFlightCompaniesMatch(
-                        preferencesRequest.CustomerFlightNavigation.ReturnNavigation.FlightCompaniesNavigationList,
+                        preferencesRequest.CustomerFlightNavigation!.ReturnNavigation!.FlightCompaniesNavigationList,
                         flight);
                 var preferenceReturnPeriodMatch =
-                    CheckPreferenceDeparturePeriodMatch(preferencesRequest.CustomerFlightNavigation.ReturnNavigation,
+                    CheckPreferenceDeparturePeriodMatch(preferencesRequest.CustomerFlightNavigation.ReturnNavigation.DeparturePeriodPreference,
                         groupFlightTimeByDayPeriods);
-                return ((double) (flightCompaniesMatchReturn ? CommonRecommendationLogic.Match : CommonRecommendationLogic.NoMatch) + 
-                                 (preferenceReturnPeriodMatch ? CommonRecommendationLogic.Match : CommonRecommendationLogic.NoMatch) +
-                                 (flightDayMatch ? CommonRecommendationLogic.Match : CommonRecommendationLogic.NoMatch)) /
-                                    TotalFlightElementsToMatch;
+                return ((double) (flightCompaniesMatchReturn ? Match : NoMatch) + 
+                        (preferenceReturnPeriodMatch ? Match : NoMatch) +
+                        (flightDayMatch ? Match : NoMatch)) /
+                       TotalFlightElementsToMatch;
             }
         }
 
@@ -136,18 +137,99 @@ public static class FlightRecommendationLogic
             flight.Company.Name == flightCompany.Company.Name);
     }
 
-    private static TimeOnly GetEarliestFlightTimeBasedOnPeriodPreference(FlightBusinessModel flight)
+    private static TimeOnly? GetEarliestFlightThatMatchWithPreferences(DeparturePeriodsPreferenceDto? departurePeriodsPreference, Dictionary<DayPeriods, List<TimeOnly>> groupedFlightsByDayPeriod)
+    {
+        if (departurePeriodsPreference.IsFulfilledEarlyMorningPreference(groupedFlightsByDayPeriod))
+        {
+            return groupedFlightsByDayPeriod[DayPeriods.EarlyMorning].First();
+        }
+
+        if (departurePeriodsPreference.IsFulfilledMorningPreference(groupedFlightsByDayPeriod))
+        {
+            return groupedFlightsByDayPeriod[DayPeriods.Morning].First();
+        }
+        
+        if (departurePeriodsPreference.IsFulfilledAfternoonPreference(groupedFlightsByDayPeriod))
+        {
+            return groupedFlightsByDayPeriod[DayPeriods.Afternoon].First();
+        }
+        
+        if (departurePeriodsPreference.IsFulfilledNightPreference(groupedFlightsByDayPeriod))
+        {
+            return groupedFlightsByDayPeriod[DayPeriods.Night].First();
+        }
+
+        return null;
+    }
+    
+    private static TimeOnly GetEarliestFlightTimeBasedOnPeriodPreference(FlightBusinessModel flight, DeparturePeriodsPreferenceDto? departurePeriodsPreference) // aici lucrez acum
     {
         var groupedFlightsByDayPeriod = GroupFlightTimeByDayPeriods(flight.AvailableDepartureTime.DepartureHour);
-        foreach (var (_, value) in groupedFlightsByDayPeriod)
+        // check each true preference about part of the day with grouped flights by parts of the day
+        // if false, get closest one
+        TimeOnly? firstAvailableFlightTime = null;
+        
+        if (departurePeriodsPreference == null)
         {
-            if (value.Any())
-                return value.First();
+            foreach (var (_, value) in groupedFlightsByDayPeriod)
+            {
+                if (value.Any())
+                    return value.First();
+            }
+        }
+
+        firstAvailableFlightTime = GetEarliestFlightThatMatchWithPreferences(departurePeriodsPreference, groupedFlightsByDayPeriod);
+
+        if (firstAvailableFlightTime != null)
+            return (TimeOnly) firstAvailableFlightTime;
+        
+        // if no matches, get closest flight for user preferred period. First find the earliest preferred and search
+        // for latest flights. If not found, search early than earliest preferred.
+        
+        var earliestDayPeriodPreference = GetEarliestDayPeriodPreference(departurePeriodsPreference!);
+
+        if (earliestDayPeriodPreference != null)
+        {
+            for (var dayPeriod = (DayPeriods) earliestDayPeriodPreference; dayPeriod <= DayPeriods.Night; dayPeriod++)
+            {
+                if (dayPeriod == DayPeriods.Night)
+                {
+                    break;
+                }
+
+                var nexDayPeriod = dayPeriod + 1;
+                if (groupedFlightsByDayPeriod[nexDayPeriod].Any())
+                {
+                    return groupedFlightsByDayPeriod[nexDayPeriod].First();
+                }
+            }
+            
+            for (var dayPeriod = (DayPeriods) earliestDayPeriodPreference; dayPeriod >= DayPeriods.Morning; dayPeriod--)
+            {
+                if (dayPeriod == DayPeriods.Morning)
+                {
+                    return TimeOnly.MinValue;
+                }
+
+                var previousDayPeriod = dayPeriod - 1;
+                if (groupedFlightsByDayPeriod[previousDayPeriod].Any())
+                {
+                    return groupedFlightsByDayPeriod[previousDayPeriod].First();
+                }
+            }
         }
 
         return TimeOnly.MinValue;
     }
 
+    private static DayPeriods? GetEarliestDayPeriodPreference(DeparturePeriodsPreferenceDto departurePeriodsPreference)
+    {
+        return departurePeriodsPreference.EarlyMorning ? DayPeriods.EarlyMorning :
+            departurePeriodsPreference.Morning ? DayPeriods.Morning :
+            departurePeriodsPreference.Afternoon ? DayPeriods.Afternoon :
+            departurePeriodsPreference.Night ? DayPeriods.Night : null;
+    }
+    
     private static Dictionary<DayPeriods, List<TimeOnly>> GroupFlightTimeByDayPeriods(string flightDepartureTimeList)
     {
         var departureHours = flightDepartureTimeList.ConvertStringTimeListToTimeOnly();
@@ -184,7 +266,13 @@ public static class FlightRecommendationLogic
             }
         }
 
-        return flightGroup;
+        var sortedHours = new Dictionary<DayPeriods, List<TimeOnly>>(); 
+        foreach (var (key, value) in flightGroup)
+        {
+            sortedHours.Add(key,value.OrderBy(x => x.Hour).ToList());
+        }
+        
+        return sortedHours;
     }
 
     private static void StoreInMemoryDepartureFlightRecommendation(object recommendationPopulationLock, FlightRecommendationBModel flightRecommendation)
@@ -222,16 +310,22 @@ public static class FlightRecommendationLogic
         string initialAssignedAgentName, object recommendationPopulationLock, TourismAgent tourismAgent,
         PreferencesRequest preferencesRequest)
     {
-        var departureCityFlights = FindFlightsByDepartureByDestination(tourismAgent, preferencesRequest);
+        var departureCityFlights = FindFlightsByDepartureByDestination(tourismAgent, preferencesRequest.DepartureCityNavigation.Name, preferencesRequest.DestinationCityNavigation.Name);
 
         if (departureCityFlights.Any())
         {
             if (preferencesRequest.CustomerFlightNavigation?.DepartureNavigation == null)
             {
                 var randomOptimalDepartureFlight = departureCityFlights.ElementAt(Random.Next(departureCityFlights.Count));
+                
+                var departureWeekDaysOfRandomFlight = randomOptimalDepartureFlight.WeekDaysOfFlight.DaysList.ConvertStringDaysOfWeekListToEnumList().ToList();
+                var earliestDepartureDateOfRandomFlight = (DateTime) GetTheEarliestDepartureDateOfFlight(departureWeekDaysOfRandomFlight, preferencesRequest.DepartureDate)!;
+                preferencesRequest.DepartureDate = earliestDepartureDateOfRandomFlight;
+
+                var mostOptimalFlightTime = randomOptimalDepartureFlight.AvailableDepartureTime.DepartureHour.ConvertStringTimeListToTimeOnly().First();
                 var randomDepartureFlightRecommendation = CreateFlightRecommendationBModel(sourceAgentId, initialAssignedAgentName,
                     randomOptimalDepartureFlight, (short) ClassTypeId.Economy,
-                    preferencesRequest.DepartureDate);
+                    earliestDepartureDateOfRandomFlight,mostOptimalFlightTime);
                 
                 StoreInMemoryDepartureFlightRecommendation(recommendationPopulationLock, randomDepartureFlightRecommendation);
                 return true;
@@ -246,9 +340,15 @@ public static class FlightRecommendationLogic
                 Class = (short) ClassTypeId.Economy
             };
             
+            var departureWeekFlight = optimalDepartureFlight.WeekDaysOfFlight.DaysList.ConvertStringDaysOfWeekListToEnumList().ToList();
+            var earliestDepartureDateOfFlight = (DateTime) GetTheEarliestDepartureDateOfFlight(departureWeekFlight, preferencesRequest.DepartureDate)!;
+            preferencesRequest.DepartureDate = earliestDepartureDateOfFlight;
+            
+            var earliestFlightTime = GetEarliestFlightTimeBasedOnPeriodPreference(optimalDepartureFlight, preferencesRequest.CustomerFlightNavigation.DepartureNavigation.DeparturePeriodPreference);
+
             var departureFlightRecommendation = CreateFlightRecommendationBModel(sourceAgentId, initialAssignedAgentName,
                 optimalDepartureFlight, preferencesRequest.CustomerFlightNavigation.DepartureNavigation.Class.Class,
-                preferencesRequest.DepartureDate);
+                earliestDepartureDateOfFlight, earliestFlightTime);
             
             StoreInMemoryDepartureFlightRecommendation(recommendationPopulationLock, departureFlightRecommendation);
             return true;
@@ -261,16 +361,24 @@ public static class FlightRecommendationLogic
         string initialAssignedAgentName, object recommendationPopulationLock, TourismAgent tourismAgent,
         PreferencesRequest preferencesRequest)
     {
-        var returnCityFlights = FindFlightsByDepartureByDestination(tourismAgent, preferencesRequest);
+        var returnCityFlights = FindFlightsByDepartureByDestination(tourismAgent, preferencesRequest.DestinationCityNavigation.Name, preferencesRequest.DepartureCityNavigation.Name);
 
         if (returnCityFlights.Any())
         {
             if (preferencesRequest.CustomerFlightNavigation?.ReturnNavigation == null)
             {
                 var randomOptimalReturnFlight = returnCityFlights.ElementAt(Random.Next(returnCityFlights.Count));
+
+                var preferredReturnFlightDate =
+                    preferencesRequest.DepartureDate.AddDays(preferencesRequest.HolidaysPeriod);
+                
+                var returnWeekDaysOfRandomFlight = randomOptimalReturnFlight.WeekDaysOfFlight.DaysList.ConvertStringDaysOfWeekListToEnumList().ToList();
+                var earliestReturnDateOfRandomFlight = (DateTime) GetTheMostOptimalReturnDateOfFlight(returnWeekDaysOfRandomFlight, preferencesRequest.DepartureDate, preferredReturnFlightDate, preferencesRequest.HolidaysPeriod)!;
+                
+                var mostOptimalFlightTime = randomOptimalReturnFlight.AvailableDepartureTime.DepartureHour.ConvertStringTimeListToTimeOnly().First();
                 var randomReturnFlightRecommendation = CreateFlightRecommendationBModel(sourceAgentId, initialAssignedAgentName,
                     randomOptimalReturnFlight, (short) ClassTypeId.Economy,
-                    preferencesRequest.DepartureDate);
+                    earliestReturnDateOfRandomFlight,mostOptimalFlightTime);
                 
                 StoreInMemoryDepartureFlightRecommendation(recommendationPopulationLock, randomReturnFlightRecommendation);
                 return true;
@@ -285,9 +393,15 @@ public static class FlightRecommendationLogic
                 Class = (short) ClassTypeId.Economy
             };
             
+            var earliestFlightTime = GetEarliestFlightTimeBasedOnPeriodPreference(optimalArrivalFlight, preferencesRequest.CustomerFlightNavigation.ReturnNavigation.DeparturePeriodPreference);
+            var flightReturnDate = GetFlightReturnDate(preferencesRequest);
+            
+            var returnWeekDaysOfFlight = optimalArrivalFlight.WeekDaysOfFlight.DaysList.ConvertStringDaysOfWeekListToEnumList().ToList();
+            var earliestReturnDateOfFlight = (DateTime) GetTheMostOptimalReturnDateOfFlight(returnWeekDaysOfFlight, preferencesRequest.DepartureDate, flightReturnDate, preferencesRequest.HolidaysPeriod)!;
+            
             var returnFlightRecommendation = CreateFlightRecommendationBModel(sourceAgentId, initialAssignedAgentName,
                 optimalArrivalFlight, preferencesRequest.CustomerFlightNavigation.ReturnNavigation.Class.Class,
-                GetFlightReturnDate(preferencesRequest));
+                earliestReturnDateOfFlight, earliestFlightTime);
                 
             StoreInMemoryReturnFlightRecommendation(recommendationPopulationLock, returnFlightRecommendation);
             return true;
@@ -295,33 +409,173 @@ public static class FlightRecommendationLogic
 
         return false;
     }
-    
-    private static bool CheckPreferenceDeparturePeriodMatch(FlightPreferenceDto flightPreference,
+
+    private static DateTime? GetTheMostOptimalReturnDateOfFlight(List<DayOfWeek> availableReturnDaysOfWeekFlight, DateTime actualDepartureFlightDate, DateTime preferredReturnFlightDate, int vacationPeriod)
+    {
+        if (DateTime.Compare(actualDepartureFlightDate, preferredReturnFlightDate) >= 0)
+        {
+            preferredReturnFlightDate = actualDepartureFlightDate.AddDays(vacationPeriod);
+        }
+
+        var returnPreferredFlightDayOfWeek = preferredReturnFlightDate.DayOfWeek;
+
+        if (!availableReturnDaysOfWeekFlight.Contains(returnPreferredFlightDayOfWeek))
+        {
+            if (returnPreferredFlightDayOfWeek != DayOfWeek.Sunday)
+            {
+                for (var dayOfWeekDescInc = returnPreferredFlightDayOfWeek; dayOfWeekDescInc >= DayOfWeek.Sunday; --dayOfWeekDescInc)
+                {
+                    if (availableReturnDaysOfWeekFlight.Contains(dayOfWeekDescInc))
+                    {
+                        var daysEarlierPreferredReturnFlight = returnPreferredFlightDayOfWeek - dayOfWeekDescInc;
+                        var mostEarlyCloseToPreferredReturnFlight =
+                            preferredReturnFlightDate.AddDays(-daysEarlierPreferredReturnFlight);
+                    
+                        if(DateTime.Compare(actualDepartureFlightDate, mostEarlyCloseToPreferredReturnFlight) < 0)
+                            return mostEarlyCloseToPreferredReturnFlight;
+                    }
+                }
+
+                for (var weekEarlierInc = DayOfWeek.Saturday; weekEarlierInc > returnPreferredFlightDayOfWeek;  weekEarlierInc--)
+                {
+                    if (availableReturnDaysOfWeekFlight.Contains(weekEarlierInc))
+                    {
+                        var daysEarlierPreferredReturnFlight = (short)returnPreferredFlightDayOfWeek - (returnPreferredFlightDayOfWeek - DayOfWeek.Sunday) + (DayOfWeek.Saturday - weekEarlierInc);
+                        var mostEarlyCloseToPreferredReturnFlight =
+                            preferredReturnFlightDate.AddDays(-daysEarlierPreferredReturnFlight);
+
+                        if (DateTime.Compare(actualDepartureFlightDate, mostEarlyCloseToPreferredReturnFlight) < 0)
+                            return mostEarlyCloseToPreferredReturnFlight;
+                    }
+                }
+            
+                //Above is the search in early days than preferred one.
+                //Now it's time to search in later days. It's the same
+                //algorithm as for departure flight day search 
+                var earliestButLaterThanPreferredFlightDay = GetTheEarliestDepartureDateOfFlight(availableReturnDaysOfWeekFlight, preferredReturnFlightDate);
+                return earliestButLaterThanPreferredFlightDay;
+            }
+            else
+            {
+                returnPreferredFlightDayOfWeek = DayOfWeek.Saturday;
+                for (var dayOfWeekDescInc = returnPreferredFlightDayOfWeek; dayOfWeekDescInc > DayOfWeek.Sunday; --dayOfWeekDescInc)
+                {
+                    if (availableReturnDaysOfWeekFlight.Contains(dayOfWeekDescInc))
+                    {
+                        var daysEarlierPreferredReturnFlight = returnPreferredFlightDayOfWeek - dayOfWeekDescInc + 1; // +1 because we begun from Saturday, not Sunday
+                        var mostEarlyCloseToPreferredReturnFlight =
+                            preferredReturnFlightDate.AddDays(-daysEarlierPreferredReturnFlight);
+                    
+                        if(DateTime.Compare(actualDepartureFlightDate, mostEarlyCloseToPreferredReturnFlight) < 0)
+                            return mostEarlyCloseToPreferredReturnFlight;
+                    }
+                }
+            
+                var earliestButLaterThanPreferredFlightDay = GetTheEarliestDepartureDateOfFlight(availableReturnDaysOfWeekFlight, preferredReturnFlightDate);
+                return earliestButLaterThanPreferredFlightDay;
+            }
+        }
+        else
+        {
+            return preferredReturnFlightDate;
+        }
+        return null;
+    }
+
+
+    private static DateTime? GetTheEarliestDepartureDateOfFlight(List<DayOfWeek> daysOfWeekFlight, DateTime preferredDepartureFlightDate)
+    {
+        var preferredFlightDayOfWeek = preferredDepartureFlightDate.DayOfWeek;
+
+        if (!daysOfWeekFlight.Contains(preferredFlightDayOfWeek))
+        {
+            if (preferredFlightDayOfWeek != DayOfWeek.Saturday)
+            {
+                for (var dayOfWeekAscInc = preferredFlightDayOfWeek + 1; dayOfWeekAscInc <= DayOfWeek.Saturday; dayOfWeekAscInc++)
+                {
+                    if (daysOfWeekFlight.Contains(dayOfWeekAscInc))
+                    {
+                        //Select day of current week and exit
+                        var dayToTheEarliestFlight = dayOfWeekAscInc - preferredFlightDayOfWeek;
+                        return preferredDepartureFlightDate.AddDays(dayToTheEarliestFlight);
+                    }
+                }
+
+                for (var nextWeekInc = DayOfWeek.Sunday; nextWeekInc < preferredFlightDayOfWeek; nextWeekInc++)
+                {
+                    if (daysOfWeekFlight.Contains(nextWeekInc))
+                    {
+                        var dayToTheEarliestFlight =
+                            (short) (DayOfWeek.Saturday - preferredFlightDayOfWeek) + (short) nextWeekInc + 1; // +1 because the counter is from 0
+                        return preferredDepartureFlightDate.AddDays(dayToTheEarliestFlight);
+                    }
+                }
+            }
+        
+            for (var nextWeekInc = DayOfWeek.Sunday; nextWeekInc < preferredFlightDayOfWeek; nextWeekInc++)
+            {
+                if (daysOfWeekFlight.Contains(nextWeekInc))
+                {
+                    var dayToTheEarliestFlight =
+                        (short) (DayOfWeek.Saturday - preferredFlightDayOfWeek) + (short) nextWeekInc + 1;
+                    return preferredDepartureFlightDate.AddDays(dayToTheEarliestFlight);
+                }
+            }
+        }
+        else
+        {
+            return preferredDepartureFlightDate;
+        }
+
+        return null;
+    }
+    private static bool IsFulfilledEarlyMorningPreference(this DeparturePeriodsPreferenceDto? departurePeriodsPreference,
         IReadOnlyDictionary<DayPeriods, List<TimeOnly>> groupedFlightTimes)
     {
-        var departurePeriodPreference = flightPreference.DeparturePeriodPreference;
+        return departurePeriodsPreference!.EarlyMorning && groupedFlightTimes[DayPeriods.EarlyMorning].Any();
+    }
+    
+    private static bool IsFulfilledMorningPreference(this DeparturePeriodsPreferenceDto? departurePeriodsPreference,
+        IReadOnlyDictionary<DayPeriods, List<TimeOnly>> groupedFlightTimes)
+    {
+        return departurePeriodsPreference!.Morning && groupedFlightTimes[DayPeriods.Morning].Any();
+    }
+    
+    private static bool IsFulfilledAfternoonPreference(this DeparturePeriodsPreferenceDto? departurePeriodsPreference,
+        IReadOnlyDictionary<DayPeriods, List<TimeOnly>> groupedFlightTimes)
+    {
+        return departurePeriodsPreference!.Afternoon && groupedFlightTimes[DayPeriods.Afternoon].Any();
+    }
+    
+    private static bool IsFulfilledNightPreference(this DeparturePeriodsPreferenceDto? departurePeriodsPreference,
+        IReadOnlyDictionary<DayPeriods, List<TimeOnly>> groupedFlightTimes)
+    {
+        return departurePeriodsPreference!.Night && groupedFlightTimes[DayPeriods.Night].Any();
+    }
+    
+    private static bool CheckPreferenceDeparturePeriodMatch(DeparturePeriodsPreferenceDto? departurePeriodsPreference,
+        IReadOnlyDictionary<DayPeriods, List<TimeOnly>> groupedFlightTimes)
+    {
 
-        if (departurePeriodPreference == null)
+        if (departurePeriodsPreference == null)
             return false;
         
-        return departurePeriodPreference.EarlyMorning && groupedFlightTimes[DayPeriods.EarlyMorning].Any() ||
-               departurePeriodPreference.Morning && groupedFlightTimes[DayPeriods.Morning].Any() ||
-               departurePeriodPreference.Afternoon && groupedFlightTimes[DayPeriods.Afternoon].Any() ||
-               departurePeriodPreference.Night && groupedFlightTimes[DayPeriods.Night].Any();
+        return departurePeriodsPreference.IsFulfilledEarlyMorningPreference(groupedFlightTimes) ||
+               departurePeriodsPreference.IsFulfilledMorningPreference(groupedFlightTimes) ||
+               departurePeriodsPreference.IsFulfilledAfternoonPreference(groupedFlightTimes) ||
+               departurePeriodsPreference.IsFulfilledNightPreference(groupedFlightTimes);
     }
 
     private static FlightRecommendationBModel CreateFlightRecommendationBModel(Guid sourceAgentId,
         string initialAssignedAgentName, FlightBusinessModel optimalFlight, short flightClass,
-        DateTime departureDate)
+        DateTime departureDate, TimeOnly mostOptimalFlightTime)
     {
-        var earliestFlightTime = GetEarliestFlightTimeBasedOnPeriodPreference(optimalFlight);
-
         return new FlightRecommendationBModel
         {
             SourceAgentId = sourceAgentId,
             InitialAssignedAgentName = initialAssignedAgentName,
             DepartureTime =
-                DateTime.MinValue.AddHours(earliestFlightTime.Hour).AddMinutes(earliestFlightTime.Minute),
+                DateTime.MinValue.AddHours(mostOptimalFlightTime.Hour).AddMinutes(mostOptimalFlightTime.Minute),
             FlightClass = flightClass,
             FlightConnection = new List<FlightConnectionBModel>
             {
@@ -337,11 +591,11 @@ public static class FlightRecommendationLogic
     }
 
     private static HashSet<FlightBusinessModel> FindFlightsByDepartureByDestination(AgentLocalDb agentLocalDb,
-        PreferencesRequest preferencesRequest)
+        string startFlightCityName, string endFlightCityName)
     {
         return agentLocalDb.FlightsList.Where(f =>
-            f.DepartureAirport.City.Name == preferencesRequest.DepartureCityNavigation.Name && 
-            f.ArrivalAirport.City.Name == preferencesRequest.DestinationCityNavigation.Name).ToHashSet();
+            f.DepartureAirport.City.Name == startFlightCityName && 
+            f.ArrivalAirport.City.Name == endFlightCityName).ToHashSet();
     }
 
     private static DateTime GetFlightReturnDate(PreferencesRequest preferencesRequest)

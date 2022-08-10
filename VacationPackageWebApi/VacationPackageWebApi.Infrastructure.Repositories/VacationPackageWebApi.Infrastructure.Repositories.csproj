@@ -15,4 +15,8 @@
     <ProjectReference Include="..\VacationPackageWebApi.Domain\VacationPackageWebApi.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\RequestOfClient\Mapper\Evaluation" />
+  </ItemGroup>
+
 </Project>

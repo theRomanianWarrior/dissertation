@@ -25,11 +25,9 @@ public class FlightRepository : IFlightRepository
         
         var prices = await _context.FlightPrices.Include(c => c.Class).ToListAsync();
         
-        var agentsIdList = _context.Agents.Select(a => a.Id).ToList();
-
        return 
             (from flight in flights
                 join flightPrice in prices on flight.Id equals flightPrice.FlightId into pricesOfFlight
-                select flight.ToBusinessModel(pricesOfFlight.Select(fp => fp.ToBusinessModel()).ToList(), agentsIdList)).ToList();
+                select flight.ToBusinessModel(pricesOfFlight.Select(fp => fp.ToBusinessModel()).ToList())).ToList();
     }
 }

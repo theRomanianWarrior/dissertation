@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using VacationPackageWebApi.Application.Services;
+using Newtonsoft.Json;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
-using VacationPackageWebApi.Domain.Property.Contracts;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
 
 namespace VacationPackageWebApi.API.Controllers
 {
@@ -31,12 +30,18 @@ namespace VacationPackageWebApi.API.Controllers
         [HttpPost]
         public async Task<ActionResult> RequestVacationRecommendation([FromBody] PreferencesRequest preferencesPayload)
         {
-            var recommendationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload);
+            var clientRequest = new ClientRequest()
+            {
+                Id = Guid.NewGuid(),
+                RequestTimestamp = DateTime.Now
+            };
+            
+            var recommendationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload, clientRequest.Id, clientRequest.RequestTimestamp);
+            if (recommendationPackage != null)
+                Task.Factory.StartNew(_preferencesPackageService.SaveRecommendationResponse(recommendationPackage, clientRequest.Id));
+            
+            Console.WriteLine(JsonConvert.SerializeObject(recommendationPackage, Formatting.Indented));
 
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(recommendationPackage, options);
-
-           Console.WriteLine(jsonString);
             return Created(string.Empty, recommendationPackage);
         }
     }

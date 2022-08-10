@@ -1,6 +1,6 @@
 ﻿namespace VacationPackageWebApi.Domain.Flight
 {
-    public record FlightBusinessModel : BaseBusinessModel
+    public record FlightBusinessModel
     {
         public Guid Id { get; set; }
         public short Duration { get; set; }

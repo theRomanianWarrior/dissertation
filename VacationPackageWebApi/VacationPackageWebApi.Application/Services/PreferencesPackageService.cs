@@ -16,10 +16,17 @@ namespace VacationPackageWebApi.Application.Services
             _recommendationService = recommendationService;
         }
         
-        public async Task<PreferencesResponse?> RequestVacationPackage(PreferencesRequest preferencesPayload)
+        public async Task<PreferencesResponse?> RequestVacationPackage(PreferencesRequest preferencesPayload, Guid clientRequestId, DateTime requestTimestamp)
         {
-            await _preferencesPackageRepository.SavePreferences(preferencesPayload);
+            var preferencesPackageId = await _preferencesPackageRepository.SavePreferences(preferencesPayload);
+            await _preferencesPackageRepository.CreateClientRequest(preferencesPayload.CustomerId, preferencesPackageId,
+                clientRequestId, requestTimestamp);
             return await _recommendationService.GetFullRecommendationsPackage(preferencesPayload);
+        }
+        
+        public Action SaveRecommendationResponse(PreferencesResponse preferencesResponse, Guid clientRequestId)
+        {
+            return _preferencesPackageRepository.SaveRecommendation(preferencesResponse, clientRequestId);
         }
     }
 }

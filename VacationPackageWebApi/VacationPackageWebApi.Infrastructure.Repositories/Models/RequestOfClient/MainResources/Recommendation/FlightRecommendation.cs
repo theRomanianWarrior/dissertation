@@ -5,7 +5,8 @@
         public FlightRecommendation()
         {
             FlightConnections = new HashSet<FlightConnection>();
-            Recommendations = new HashSet<Recommendation>();
+            FlightDirectionRecommendationDepartureNavigations = new HashSet<FlightDirectionRecommendation>();
+            FlightDirectionRecommendationReturnNavigations = new HashSet<FlightDirectionRecommendation>();
         }
 
         public Guid Id { get; set; }
@@ -18,6 +19,7 @@
         public virtual Agent.Agent InitialAssignedAgent { get; set; }
         public virtual Agent.Agent SourceAgent { get; set; }
         public virtual ICollection<FlightConnection> FlightConnections { get; set; }
-        public virtual ICollection<Recommendation> Recommendations { get; set; }
+        public virtual ICollection<FlightDirectionRecommendation> FlightDirectionRecommendationDepartureNavigations { get; set; }
+        public virtual ICollection<FlightDirectionRecommendation> FlightDirectionRecommendationReturnNavigations { get; set; }
     }
 }

@@ -4,11 +4,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Attraction.Ma
 
 public static class AttractionMapper
 {
-    public static AttractionBusinessModel ToBusinessModel(this OpenTripMapAttraction attraction, List<Guid> agentsIdList)
+    public static AttractionBusinessModel ToBusinessModel(this OpenTripMapAttraction attraction)
     {
-        var random = new Random();
-        var randomAgentId = random.Next(agentsIdList.Count);
-
         return new AttractionBusinessModel()
         {
             Xid = attraction.Xid,
@@ -42,7 +39,6 @@ public static class AttractionMapper
             Width = attraction.Width,
             Wikidata = attraction.Wikidata,
             Wikipedia = attraction.Wikipedia,
-            StoredInLocalDbOfAgentWithId = agentsIdList[randomAgentId]
         };
     }
 }

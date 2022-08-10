@@ -1,6 +1,6 @@
 ﻿namespace VacationPackageWebApi.Domain.PreferencesPackageResponse.AttractionsPreferencesResponse;
 
-public record AttractionsRecommendationResponse
+public record AttractionsRecommendationResponse : BaseRecommendationBModel
 {
     public List<AttractionRecommendationBModel> AttractionRecommendationList { get; set; }
 }

@@ -22,18 +22,20 @@ public static class AttractionsRecommendationLogic
             var topAttractions =
                 FindOptimalTopAttractionsBasedOnUserPreferences(preferencesRequest, cityAttractions);
                 
-            var attractionsRecommendationList = ConvertToAttractionRecommendationBModelList(sourceAgentId, initialAssignedAgentName, topAttractions);
+            var attractionsRecommendationList = ConvertToAttractionRecommendationBModelList(topAttractions);
                 
-            StoreInMemoryAttractionsRecommendations(recommendationPopulationLock, attractionsRecommendationList);
+            StoreInMemoryAttractionsRecommendations(recommendationPopulationLock, sourceAgentId, initialAssignedAgentName, attractionsRecommendationList);
             return true;
         }
 
         return false;
     }
 
-    private static void StoreInMemoryAttractionsRecommendations(object recommendationPopulationLock, List<AttractionRecommendationBModel> attractionsRecommendationList)
+    private static void StoreInMemoryAttractionsRecommendations(object recommendationPopulationLock, Guid sourceAgentId, string initialAssignedAgentName,  List<AttractionRecommendationBModel> attractionsRecommendationList)
     {
         var attractionsRecommendationResponse = PopulateAttractionsRecommendationResponse(attractionsRecommendationList);
+        attractionsRecommendationResponse.SourceAgentId = sourceAgentId;
+        attractionsRecommendationResponse.InitialAssignedAgentName = initialAssignedAgentName;
         
         lock (recommendationPopulationLock)
         {
@@ -50,10 +52,9 @@ public static class AttractionsRecommendationLogic
         };
     }
     
-    private static List<AttractionRecommendationBModel> ConvertToAttractionRecommendationBModelList(Guid sourceAgentId, string initialAssignedAgentName, List<AttractionBusinessModel> topAttractions)
+    private static List<AttractionRecommendationBModel> ConvertToAttractionRecommendationBModelList(List<AttractionBusinessModel> topAttractions)
     {
-        return topAttractions.Select(attraction => new AttractionRecommendationBModel {Attraction = attraction, InitialAssignedAgentName = initialAssignedAgentName, 
-                                                                                                SourceAgentId = sourceAgentId, Status = "Up-to-date"}).ToList();
+        return topAttractions.Select(attraction => new AttractionRecommendationBModel {Attraction = attraction}).ToList();
     }
 
     private static List<AttractionBusinessModel> FindOptimalTopAttractionsBasedOnUserPreferences(PreferencesRequest preferencesRequest, HashSet<AttractionBusinessModel> cityAttractions)

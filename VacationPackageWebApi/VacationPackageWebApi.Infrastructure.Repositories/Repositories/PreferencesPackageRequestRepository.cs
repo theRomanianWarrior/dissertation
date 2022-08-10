@@ -1,9 +1,12 @@
-﻿using VacationPackageWebApi.Domain.PreferencesPackageRequest;
+﻿using Microsoft.EntityFrameworkCore;
+using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts;
+using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference;
-using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper;
-using PreferencesPackage = VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference.PreferencesPackage;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Preference;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Recommendation;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 {
@@ -16,13 +19,112 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
             _context = context;
         }
 
-        public async Task<Task> SavePreferences(PreferencesRequest preferencesPayload)
+        public async Task<Guid> SavePreferences(PreferencesRequest preferencesPayload)
         {
-            await ComposePreferencesPackageAsync(preferencesPayload);
+            var preferencesPackageId = await ComposePreferencesPackageAsync(preferencesPayload);
+            return preferencesPackageId;
+        }
+
+        public Action SaveRecommendation(PreferencesResponse preferencesResponse, Guid clientRequestId)
+        {
+            var flightDepartureRecommendationInitialAssignedAgentId = _context.Agents.SingleOrDefault(a =>
+                a.Name == preferencesResponse.FlightRecommendationResponse!.FlightDirectionRecommendation!
+                    .DepartureFlightRecommendation!.InitialAssignedAgentName)!.Id;
+            
+            var flightDepartureRecommendation = preferencesResponse.FlightRecommendationResponse!
+                .FlightDirectionRecommendation!.DepartureFlightRecommendation!.ToEntity(flightDepartureRecommendationInitialAssignedAgentId);
+            _context.FlightRecommendations.Add(flightDepartureRecommendation);
+            
+            var flightReturnRecommendationInitialAssignedAgentId = _context.Agents.SingleOrDefault(a =>
+                a.Name == preferencesResponse.FlightRecommendationResponse!.FlightDirectionRecommendation!
+                    .ReturnFlightRecommendation!.InitialAssignedAgentName)!.Id;
+            
+            var flightReturnRecommendation = preferencesResponse.FlightRecommendationResponse!
+                .FlightDirectionRecommendation!.ReturnFlightRecommendation!.ToEntity(flightReturnRecommendationInitialAssignedAgentId);
+            _context.FlightRecommendations.Add(flightReturnRecommendation);
+            
+            var propertyRecommendationInitialAssignedAgentId = _context.Agents.SingleOrDefault(a =>
+                a.Name == preferencesResponse.PropertyPreferencesResponse!.PropertyRecommendationBModel.InitialAssignedAgentName)!.Id;
+            var propertyRecommendation =
+                preferencesResponse.PropertyPreferencesResponse!.PropertyRecommendationBModel.ToEntity(propertyRecommendationInitialAssignedAgentId);
+            _context.PropertyRecommendations.Add(propertyRecommendation);
+
+            var attractionsRecommendationInitialAssignedAgentId = _context.Agents.SingleOrDefault(a =>
+                a.Name == preferencesResponse.AttractionsRecommendationResponse!.InitialAssignedAgentName)!.Id;
+            var allAttractionsPackage = AllAttractionRecommendationMapper.ToEntity(
+                preferencesResponse.AttractionsRecommendationResponse!.SourceAgentId,
+                attractionsRecommendationInitialAssignedAgentId);
+            _context.AllAttractionRecommendations.Add(allAttractionsPackage);
+            _context.SaveChanges();
+
+            
+            var departureFlightConnections = preferencesResponse.FlightRecommendationResponse!.FlightDirectionRecommendation!
+                                                                                    .DepartureFlightRecommendation!.FlightConnection.Select(departureFlightConnection => departureFlightConnection
+                                                                                        .Flight.ToEntity(flightDepartureRecommendation.Id)).ToList();
+            foreach (var departureFlightConnection in departureFlightConnections)
+            {
+                _context.FlightConnections.Add(departureFlightConnection);
+            }
+            
+            var returnFlightConnections = preferencesResponse.FlightRecommendationResponse!.FlightDirectionRecommendation!
+                .ReturnFlightRecommendation!.FlightConnection.Select(returnFlightConnection => returnFlightConnection
+                    .Flight.ToEntity(flightReturnRecommendation.Id)).ToList();
+
+            foreach (var returnFlightConnection in returnFlightConnections)
+            {
+                _context.FlightConnections.Add(returnFlightConnection);
+            }
+            
+            var flightDirectionRecommendation =
+                preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ToEntity(flightDepartureRecommendation.Id, flightReturnRecommendation.Id);
+            _context.FlightDirectionRecommendations.Add(flightDirectionRecommendation);
+            
+            foreach (var attraction in preferencesResponse.AttractionsRecommendationResponse.AttractionRecommendationList)
+            {
+                var attractionRecommendation = attraction.Attraction.ToEntity(allAttractionsPackage.Id);
+                _context.AttractionRecommendations.Add(attractionRecommendation);
+            }
+
+            _context.SaveChanges();
+
+            var recommendation = RecommendationMapper.ToEntity(flightDirectionRecommendation.Id, propertyRecommendation.Id, allAttractionsPackage.Id);
+            _context.Recommendations.Add(recommendation);
+            _context.SaveChanges();
+
+            AddRecommendationToExistingClientRequest(clientRequestId, recommendation.Id);
+            _context.SaveChanges();
+            Console.WriteLine("Recommendation saved in database.");
+            return delegate {  };
+        }
+
+        public async Task<Task> CreateClientRequest(Guid customerId, Guid preferencesPackageId, Guid clientRequestId, DateTime requestTimestamp)
+        {
+            var clientRequest = new ClientRequest
+            {
+                Id = clientRequestId,
+                PreferencesPackageId = preferencesPackageId,
+                CustomerId = customerId,
+                RequestTimestamp = requestTimestamp
+            };
+
+            await _context.ClientRequests.AddAsync(clientRequest); 
+            await _context.SaveChangesAsync();
+            
             return Task.CompletedTask;
         }
 
-        private async Task<PreferencesPackage> ComposePreferencesPackageAsync(PreferencesRequest preferencesPayload)
+        public void AddRecommendationToExistingClientRequest(Guid clientRequestId, Guid recommendationId)
+        {
+            var clientRequest = _context.ClientRequests.SingleOrDefault(c => c.Id == clientRequestId);
+            if (clientRequest != null)
+            {
+                clientRequest.RecommendationId = recommendationId;
+                _context.Entry(clientRequest).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+        }
+        
+        private async Task<Guid> ComposePreferencesPackageAsync(PreferencesRequest preferencesPayload)
         {
             var ageCategoryPreference = preferencesPayload.PersonsByAgeNavigation.ToEntity();
             await _context.AgeCategoryPreferences.AddAsync(ageCategoryPreference);
@@ -174,7 +276,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 
                 await _context.SaveChangesAsync();
 
-            return preferencesPackage;
+                return preferencesPackage.Id;
         }
     }
 }

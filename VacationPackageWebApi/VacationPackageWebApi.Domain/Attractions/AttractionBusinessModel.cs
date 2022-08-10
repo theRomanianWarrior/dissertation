@@ -1,6 +1,6 @@
 ﻿namespace VacationPackageWebApi.Domain.Attractions
 {
-    public record AttractionBusinessModel : BaseBusinessModel
+    public record AttractionBusinessModel
     {
         public string Xid { get; set; }
         public string Name { get; set; }

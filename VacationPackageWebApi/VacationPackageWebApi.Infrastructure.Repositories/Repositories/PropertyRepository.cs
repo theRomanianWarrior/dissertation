@@ -17,13 +17,11 @@ public class PropertyRepository : IPropertyRepository
     
     public async Task<List<PropertyBusinessModel>> GetAllPropertiesAsync()
     {
-        var agentsIdList = await _context.Agents.Select(a => a.Id).ToListAsync();
-
         return await _context.Properties.Include(c => c.City).ThenInclude(ctr => ctr.Country)
             .Include(a => a.AmenitiesPackage)
             .Include(p => p.PlaceType)
             .Include(pt => pt.PropertyType)
             .Include(rb => rb.RoomAndBed)
-            .Select(s => s.ToBusinessModel(agentsIdList)).ToListAsync();
+            .Select(s => s.ToBusinessModel()).ToListAsync();
     }
 }

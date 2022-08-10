@@ -13,7 +13,7 @@
         public Guid AttractionRecommendationId { get; set; }
 
         public virtual AllAttractionRecommendation AttractionRecommendation { get; set; }
-        public virtual FlightRecommendation FlightRecommendation { get; set; }
+        public virtual FlightDirectionRecommendation FlightRecommendation { get; set; }
         public virtual PropertyRecommendation PropertyRecommendation { get; set; }
         public virtual ICollection<ClientRequest> ClientRequests { get; set; }
     }

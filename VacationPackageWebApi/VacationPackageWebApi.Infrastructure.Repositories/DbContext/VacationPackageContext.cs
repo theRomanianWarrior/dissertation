@@ -43,6 +43,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
         public virtual DbSet<FlightConnection> FlightConnections { get; set; }
         public virtual DbSet<FlightDirectionEvaluation> FlightDirectionEvaluations { get; set; }
         public virtual DbSet<FlightDirectionPreference> FlightDirectionPreferences { get; set; }
+        public virtual DbSet<FlightDirectionRecommendation> FlightDirectionRecommendations { get; set; }
         public virtual DbSet<FlightEvaluation> FlightEvaluations { get; set; }
         public virtual DbSet<FlightPreference> FlightPreferences { get; set; }
         public virtual DbSet<FlightPrice> FlightPrices { get; set; }
@@ -69,7 +70,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AgeCategoryPreference>(entity =>
+              modelBuilder.Entity<AgeCategoryPreference>(entity =>
             {
                 entity.ToTable("AgeCategoryPreference");
 
@@ -239,7 +240,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
 
                 entity.HasOne(d => d.EvaluationNavigation)
                     .WithMany(p => p.ClientRequests)
-                    .HasForeignKey(d => d.Evaluation)
+                    .HasForeignKey(d => d.Evaluation).IsRequired(false)
                     .HasConstraintName("FK_ClientRequest_Evaluation_ServiceEvaluation_Id");
 
                 entity.HasOne(d => d.PreferencesPackage)
@@ -250,8 +251,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
 
                 entity.HasOne(d => d.Recommendation)
                     .WithMany(p => p.ClientRequests)
-                    .HasForeignKey(d => d.RecommendationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasForeignKey(d => d.RecommendationId).IsRequired(false)
                     .HasConstraintName("FK_ClientRequest_RecommendationId_Recommendation_Id");
             });
 
@@ -454,6 +454,25 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .HasConstraintName("FK_FlightDirectionPreference_Return_FlightPreference_Id");
             });
 
+            modelBuilder.Entity<FlightDirectionRecommendation>(entity =>
+            {
+                entity.ToTable("FlightDirectionRecommendation");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.DepartureNavigation)
+                    .WithMany(p => p.FlightDirectionRecommendationDepartureNavigations)
+                    .HasForeignKey(d => d.Departure)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FlightDirectionRecommendation_Departure_FlightRecommendation");
+
+                entity.HasOne(d => d.ReturnNavigation)
+                    .WithMany(p => p.FlightDirectionRecommendationReturnNavigations)
+                    .HasForeignKey(d => d.Return)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FlightDirectionRecommendation_Return_FlightRecommendation_Id");
+            });
+
             modelBuilder.Entity<FlightEvaluation>(entity =>
             {
                 entity.ToTable("FlightEvaluation");
@@ -486,6 +505,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
             modelBuilder.Entity<FlightPrice>(entity =>
             {
                 entity.ToTable("FlightPrice");
+
+                entity.HasIndex(e => e.FlightId, "ix_FlightPrice_FlightId");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
@@ -812,7 +833,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .WithMany(p => p.Recommendations)
                     .HasForeignKey(d => d.FlightRecommendationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Recommendation_FlightRecommendationId_FlightRecommendation_I");
+                    .HasConstraintName("FK_Recommendation_FlightRecommendationId_FlightDirectionRecomme");
 
                 entity.HasOne(d => d.PropertyRecommendation)
                     .WithMany(p => p.Recommendations)
@@ -942,6 +963,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .IsRequired()
                     .HasMaxLength(100);
             });
+            
             base.OnModelCreating(modelBuilder);
         }
     }

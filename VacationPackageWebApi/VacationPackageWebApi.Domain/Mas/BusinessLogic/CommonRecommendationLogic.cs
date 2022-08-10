@@ -26,7 +26,7 @@ public static class CommonRecommendationLogic
                 if (!availableTasks.Contains(key)) continue;
                 taskTypeToWorkOn = key;
                 availableTasks.Remove(key);
-                RemoveAgentFromAvailableAgentsList(agent);
+                RemoveAgentFromAvailableAgentsList(agent.Name);
                 agent.Status = false;
                 break;
             }
@@ -43,6 +43,12 @@ public static class CommonRecommendationLogic
     private static List<TaskType>? GetListOfAvailableTasks()
     {
         return MasEnvironmentSingleton.Instance.Memory["AvailableTasks"];
+    }
+    
+    public static Task InsertAgentNameToAvailableAgents(string agentName)
+    {
+        (MasEnvironmentSingleton.Instance.Memory["AvailableAgents"] as List<string>)!.Add(agentName);
+        return Task.CompletedTask;
     }
     
     public static Task SetPreferencesResponseStatusDone()
@@ -62,9 +68,9 @@ public static class CommonRecommendationLogic
         return Task.CompletedTask;
     }
     
-    private static void RemoveAgentFromAvailableAgentsList(TourismAgent agent)
+    public static void RemoveAgentFromAvailableAgentsList(string name)
     {
-        (MasEnvironmentSingleton.Instance.Memory["AvailableAgents"] as List<string>)!.Remove(agent.Name);
+        (MasEnvironmentSingleton.Instance.Memory["AvailableAgents"] as List<string>)!.Remove(name);
     }
     
     public static Task<List<string>> GetListOfAvailableAgentsAsync()

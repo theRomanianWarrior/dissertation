@@ -39,15 +39,6 @@ namespace DbPopulator.Migrations
                     Id = Guid.NewGuid(),
                     AttractionsSelfExpertRate = OptimalExpertRate,
                     FlightSelfExpertRate = OptimalExpertRate,
-                    Name = "Agent Alice",
-                    PropertySelfExpertRate = OptimalExpertRate
-                },
-
-                new Agent()
-                {
-                    Id = Guid.NewGuid(),
-                    AttractionsSelfExpertRate = OptimalExpertRate,
-                    FlightSelfExpertRate = OptimalExpertRate,
                     Name = "Agent Homer",
                     PropertySelfExpertRate = OptimalExpertRate
                 }
