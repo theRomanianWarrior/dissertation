@@ -50,6 +50,7 @@ namespace VacationPackageWebApi.API.Infrastructure
             services.AddScoped<IAttractionService, AttractionService>();
             services.AddScoped<IMasLoaderService, MasLoaderService>();
             services.AddScoped<IRecommendationService, RecommendationService>();
+            services.AddScoped<IEvaluationService, EvaluationService>();
 
             services.AddScoped<IPreferencesPackageRequestRepository, PreferencesPackageRequestRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();

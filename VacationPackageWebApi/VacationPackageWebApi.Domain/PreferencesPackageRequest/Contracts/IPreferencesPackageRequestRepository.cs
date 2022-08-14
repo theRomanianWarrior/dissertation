@@ -1,4 +1,5 @@
-﻿using VacationPackageWebApi.Domain.PreferencesPackageResponse;
+﻿using VacationPackageWebApi.Domain.CustomerServicesEvaluation;
+using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 
 namespace VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts
 {
@@ -10,6 +11,6 @@ namespace VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts
         public Task<Task> CreateClientRequest(Guid customerId, Guid preferencesPackageId, Guid clientRequestId,
             DateTime requestTimestamp);
 
-        public void AddRecommendationToExistingClientRequest(Guid clientRequestId, Guid recommendationId);
+        public Task<Task> SaveEvaluation(ServiceEvaluationDto evaluationOfServices);
     }
 }

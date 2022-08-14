@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
+using VacationPackageWebApi.Domain.CustomerServicesEvaluation;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
 
@@ -43,6 +44,14 @@ namespace VacationPackageWebApi.API.Controllers
             Console.WriteLine(JsonConvert.SerializeObject(recommendationPackage, Formatting.Indented));
 
             return Created(string.Empty, recommendationPackage);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SaveEvaluations([FromBody] ServiceEvaluationDto serviceEvaluation)
+        {
+
+            await _preferencesPackageService.SaveEvaluation(serviceEvaluation);
+            return Created(string.Empty, string.Empty);
         }
     }
 }

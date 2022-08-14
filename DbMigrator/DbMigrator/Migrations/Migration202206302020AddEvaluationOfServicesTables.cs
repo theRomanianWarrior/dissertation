@@ -6,7 +6,7 @@ namespace DbMigrator.Migrations
     public class Migration202206302020AddEvaluationOfServicesTables : AutoReversingMigration
     {
         private const string FlightEvaluationTable = "FlightEvaluation";
-        private const string PropertyEvaluationTable = "ProperyEvaluation";
+        private const string PropertyEvaluationTable = "PropertyEvaluation";
         private const string OpenTripMapAttractionTable = "OpenTripMapAttraction";
         private const string AllAttractionEvaluationPointTable = "AllAttractionEvaluationPoint";
         private const string AttractionEvaluationTable = "AttractionEvaluation";
@@ -17,33 +17,36 @@ namespace DbMigrator.Migrations
         {
             Create.Table(FlightEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("Class").AsInt16()
-                .WithColumn("Price").AsInt16()
-                .WithColumn("Company").AsInt16()
-                .WithColumn("FinalFlightRating").AsInt16();
+                .WithColumn("Class").AsBoolean()
+                .WithColumn("Price").AsBoolean()
+                .WithColumn("Company").AsBoolean()
+                .WithColumn("FlightDate").AsBoolean()
+                .WithColumn("FlightTime").AsBoolean()
+                .WithColumn("FlightRating").AsFloat();
 
             Create.Table(FlightDirectionEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("Departure").AsGuid().ForeignKey(FlightEvaluationTable, "Id")
-                .WithColumn("Return").AsGuid().ForeignKey(FlightEvaluationTable, "Id");
-            
+                .WithColumn("Return").AsGuid().ForeignKey(FlightEvaluationTable, "Id")
+                .WithColumn("TotalFlightRating").AsFloat();
+
             Create.Table(PropertyEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
-                .WithColumn("PropertyType").AsInt16()
-                .WithColumn("PlaceType").AsInt16()
-                .WithColumn("RoomsAndBeds").AsInt16()
-                .WithColumn("Amenities").AsInt16()
-                .WithColumn("FinalFlightRating").AsInt16();
+                .WithColumn("PropertyType").AsBoolean()
+                .WithColumn("PlaceType").AsBoolean()
+                .WithColumn("RoomsAndBeds").AsBoolean()
+                .WithColumn("Amenities").AsBoolean()
+                .WithColumn("FinalPropertyRating").AsFloat();
 
             Create.Table(AllAttractionEvaluationPointTable)
                  .WithColumn("Id").AsGuid().PrimaryKey()
-                 .WithColumn("FinalPropertyEvaluation").AsInt16();
+                 .WithColumn("FinalPropertyEvaluation").AsFloat();
 
             Create.Table(AttractionEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()
                 .WithColumn("AttractionPointId").AsGuid().ForeignKey(AllAttractionEvaluationPointTable, "Id")
                 .WithColumn("EvaluatedAttractionId").AsString().ForeignKey(OpenTripMapAttractionTable, "Xid")
-                .WithColumn("Rate").AsInt16();
+                .WithColumn("Rate").AsBoolean();
 
             Create.Table(ServiceEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()

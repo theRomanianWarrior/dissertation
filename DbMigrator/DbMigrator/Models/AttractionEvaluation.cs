@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace DbMigrator.Models
 {
@@ -8,6 +7,6 @@ namespace DbMigrator.Models
         public Guid Id { get; set; }
         public Guid AttractionPointId { get; set; }
         public string EvaluatedAttractionId { get; set; }
-        public short Rate { get; set; }
+        public bool Rate { get; set; }
     }
 }

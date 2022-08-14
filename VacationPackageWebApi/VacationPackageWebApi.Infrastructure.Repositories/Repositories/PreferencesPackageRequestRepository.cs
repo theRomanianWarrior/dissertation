@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using VacationPackageWebApi.Domain.CustomerServicesEvaluation;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts;
 using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 using VacationPackageWebApi.Infrastructure.Repositories.DbContext;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference;
+using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Evaluation;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Preference;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Recommendation;
 
@@ -25,6 +28,46 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
             return preferencesPackageId;
         }
 
+        public async Task<Task> SaveEvaluation(ServiceEvaluationDto evaluationOfServices)
+        {
+            var departureFlightEvaluation = evaluationOfServices.FlightEvaluation.DepartureNavigation.ToEntity();
+            var returnFlightEvaluation = evaluationOfServices.FlightEvaluation.ReturnNavigation.ToEntity();
+            await _context.FlightEvaluations.AddAsync(departureFlightEvaluation);
+            await _context.FlightEvaluations.AddAsync(returnFlightEvaluation);
+
+            var propertyEvaluation = evaluationOfServices.PropertyEvaluation.ToEntity();
+            await _context.PropertyEvaluations.AddAsync(propertyEvaluation);
+
+            var allAttractionPoint = evaluationOfServices.AttractionEvaluation.ToEntity();
+            await _context.AllAttractionEvaluationPoints.AddAsync(allAttractionPoint);
+
+            await _context.SaveChangesAsync();
+            
+            var directionEvaluation = evaluationOfServices.FlightEvaluation.ToEntity(departureFlightEvaluation.Id, returnFlightEvaluation.Id);
+            await _context.FlightDirectionEvaluations.AddAsync(directionEvaluation);
+
+            foreach (var attractionsEvaluationEntity in evaluationOfServices.AttractionEvaluation.AttractionEvaluations.Select(attractionEvaluations => attractionEvaluations.ToEntity(allAttractionPoint.Id)))
+            {
+                await _context.AttractionEvaluations.AddAsync(attractionsEvaluationEntity);
+            }
+            
+            await _context.SaveChangesAsync();
+
+            var serviceEvaluation =
+                evaluationOfServices.ToEntity(directionEvaluation.Id, propertyEvaluation.Id, allAttractionPoint.Id);
+            await _context.ServiceEvaluations.AddAsync(serviceEvaluation);
+            
+            await _context.SaveChangesAsync();
+
+            var clientRequest = _context.ClientRequests.SingleOrDefault(r => r.Id == evaluationOfServices.ClientRequestId);
+            clientRequest!.Evaluation = serviceEvaluation.Id;
+            _context.Entry(clientRequest).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return Task.CompletedTask;
+        }
+        
         public Action SaveRecommendation(PreferencesResponse preferencesResponse, Guid clientRequestId)
         {
             var flightDepartureRecommendationInitialAssignedAgentId = _context.Agents.SingleOrDefault(a =>
@@ -113,7 +156,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
             return Task.CompletedTask;
         }
 
-        public void AddRecommendationToExistingClientRequest(Guid clientRequestId, Guid recommendationId)
+        private void AddRecommendationToExistingClientRequest(Guid clientRequestId, Guid recommendationId)
         {
             var clientRequest = _context.ClientRequests.SingleOrDefault(c => c.Id == clientRequestId);
             if (clientRequest != null)

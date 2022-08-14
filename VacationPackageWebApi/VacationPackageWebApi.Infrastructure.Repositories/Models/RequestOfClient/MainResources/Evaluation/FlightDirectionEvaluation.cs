@@ -10,6 +10,7 @@
         public Guid Id { get; set; }
         public Guid Departure { get; set; }
         public Guid Return { get; set; }
+        public float TotalFlightRating { get; set; }
 
         public virtual FlightEvaluation DepartureNavigation { get; set; }
         public virtual FlightEvaluation ReturnNavigation { get; set; }

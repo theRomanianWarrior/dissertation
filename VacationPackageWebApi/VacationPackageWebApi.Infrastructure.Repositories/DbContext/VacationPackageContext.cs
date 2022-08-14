@@ -6,7 +6,6 @@ using VacationPackageWebApi.Infrastructure.Repositories.Models.Customer;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.Flight;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.Property;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
-using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Evaluation;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
@@ -19,7 +18,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
         {
         }
 
-        public virtual DbSet<AgeCategoryPreference> AgeCategoryPreferences { get; set; }
+       public virtual DbSet<AgeCategoryPreference> AgeCategoryPreferences { get; set; }
         public virtual DbSet<Agent> Agents { get; set; }
         public virtual DbSet<Airport> Airports { get; set; }
         public virtual DbSet<AllAttractionEvaluationPoint> AllAttractionEvaluationPoints { get; set; }
@@ -53,11 +52,11 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
         public virtual DbSet<PlaceTypePreference> PlaceTypePreferences { get; set; }
         public virtual DbSet<PreferencesPackage> PreferencesPackages { get; set; }
         public virtual DbSet<Property> Properties { get; set; }
+        public virtual DbSet<PropertyEvaluation> PropertyEvaluations { get; set; }
         public virtual DbSet<PropertyPreference> PropertyPreferences { get; set; }
         public virtual DbSet<PropertyRecommendation> PropertyRecommendations { get; set; }
         public virtual DbSet<PropertyType> PropertyTypes { get; set; }
         public virtual DbSet<PropertyTypePreference> PropertyTypePreferences { get; set; }
-        public virtual DbSet<ProperyEvaluation> ProperyEvaluations { get; set; }
         public virtual DbSet<Recommendation> Recommendations { get; set; }
         public virtual DbSet<RoomAndBed> RoomAndBeds { get; set; }
         public virtual DbSet<RoomsAndBedsPreference> RoomsAndBedsPreferences { get; set; }
@@ -70,7 +69,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-              modelBuilder.Entity<AgeCategoryPreference>(entity =>
+           modelBuilder.Entity<AgeCategoryPreference>(entity =>
             {
                 entity.ToTable("AgeCategoryPreference");
 
@@ -738,6 +737,13 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .HasConstraintName("FK_Property_RoomAndBedId_RoomAndBed_Id");
             });
 
+            modelBuilder.Entity<PropertyEvaluation>(entity =>
+            {
+                entity.ToTable("PropertyEvaluation");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
             modelBuilder.Entity<PropertyPreference>(entity =>
             {
                 entity.ToTable("PropertyPreference");
@@ -810,13 +816,6 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                 entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
-            modelBuilder.Entity<ProperyEvaluation>(entity =>
-            {
-                entity.ToTable("ProperyEvaluation");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-            });
-
             modelBuilder.Entity<Recommendation>(entity =>
             {
                 entity.ToTable("Recommendation");
@@ -878,7 +877,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.DbContext
                     .WithMany(p => p.ServiceEvaluations)
                     .HasForeignKey(d => d.PropertyEvaluationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ServiceEvaluation_PropertyEvaluationId_ProperyEvaluation_Id");
+                    .HasConstraintName("FK_ServiceEvaluation_PropertyEvaluationId_PropertyEvaluation_Id");
             });
 
             modelBuilder.Entity<StopsTypePreference>(entity =>

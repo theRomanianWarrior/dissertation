@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
+
 
 namespace DbMigrator.Models
 {
     public class FlightEvaluation
     {
         public Guid Id { get; set; }
-        public short Class { get; set; }
-        public short Price { get; set; }
-        public short Company { get; set; }
-        public short FinalFlightRating { get; set; }
+        public bool Class { get; set; }
+        public bool Price { get; set; }
+        public bool Company { get; set; }
+        public bool FlightDate { get; set; }
+        public bool FlightTime { get; set; }
+        public float FlightRating { get; set; }
     }
 }

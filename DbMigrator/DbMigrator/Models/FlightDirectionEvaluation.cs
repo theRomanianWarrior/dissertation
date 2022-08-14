@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+
 
 namespace DbMigrator.Models
 {
@@ -8,5 +8,6 @@ namespace DbMigrator.Models
         public Guid Id { get; set; }
         public Guid Departure { get; set; }
         public Guid Return { get; set; }
+        public float TotalFlightRating { get; set; }
     }
 }

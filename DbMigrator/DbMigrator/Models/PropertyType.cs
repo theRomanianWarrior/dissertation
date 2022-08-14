@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DbMigrator.Models
+﻿namespace DbMigrator.Models
 {
     public class PropertyType
     {
