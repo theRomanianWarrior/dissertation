@@ -10,7 +10,7 @@ public static class AllAttractionEvaluationPointMapper
         return new AllAttractionEvaluationPoint
         {
             Id = Guid.NewGuid(),
-            FinalPropertyEvaluation = (float) allAttractionEvaluationPoint.FinalPropertyEvaluation!
+            FinalAttractionEvaluation = (float) allAttractionEvaluationPoint.FinalAttractionEvaluation!
         };
     }
 }

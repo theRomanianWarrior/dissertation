@@ -9,7 +9,7 @@
         }
 
         public Guid Id { get; set; }
-        public float FinalPropertyEvaluation { get; set; }
+        public float FinalAttractionEvaluation { get; set; }
 
         public virtual ICollection<AttractionEvaluation> AttractionEvaluations { get; set; }
         public virtual ICollection<ServiceEvaluation> ServiceEvaluations { get; set; }

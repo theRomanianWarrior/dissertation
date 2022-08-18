@@ -14,6 +14,11 @@ public class Migration202208020933AddCustomerPersonalAgentRate : AutoReversingMi
         Create.Table(CustomerPersonalAgentRateTable)
             .WithColumn("Id").AsGuid().PrimaryKey()
             .WithColumn("CustomerId").AsGuid().ForeignKey(CustomerTable, "Id")
-            .WithColumn("AgentId").AsGuid().ForeignKey(AgentTable, "Id");
+            .WithColumn("AgentId").AsGuid().ForeignKey(AgentTable, "Id")
+            .WithColumn("FlightExpertRate").AsFloat()
+            .WithColumn("PropertyExpertRate").AsFloat()
+            .WithColumn("AttractionsExpertRate").AsFloat();
+
+
     }
 }

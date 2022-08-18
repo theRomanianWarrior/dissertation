@@ -40,7 +40,7 @@ namespace DbMigrator.Migrations
 
             Create.Table(AllAttractionEvaluationPointTable)
                  .WithColumn("Id").AsGuid().PrimaryKey()
-                 .WithColumn("FinalPropertyEvaluation").AsFloat();
+                 .WithColumn("FinalAttractionEvaluation").AsFloat();
 
             Create.Table(AttractionEvaluationTable)
                 .WithColumn("Id").AsGuid().PrimaryKey()

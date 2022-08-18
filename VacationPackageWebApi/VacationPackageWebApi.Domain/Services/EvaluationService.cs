@@ -13,11 +13,11 @@ public class EvaluationService : IEvaluationService
             CalculateFlightEvaluationRating(evaluationOfServices.FlightEvaluation.ReturnNavigation);
         evaluationOfServices.FlightEvaluation.FinalFlightRating =
             (evaluationOfServices.FlightEvaluation.DepartureNavigation.FlightRating +
-             evaluationOfServices.FlightEvaluation.ReturnNavigation.FlightRating) / 2;
+             evaluationOfServices.FlightEvaluation.ReturnNavigation.FlightRating) / 2f;
         
         evaluationOfServices.PropertyEvaluation.FinalPropertyRating = CalculatePropertyEvaluationRating(evaluationOfServices.PropertyEvaluation);
 
-        evaluationOfServices.AttractionEvaluation.FinalPropertyEvaluation = CalculateAttractionEvaluationRating(evaluationOfServices.AttractionEvaluation.AttractionEvaluations);
+        evaluationOfServices.AttractionEvaluation.FinalAttractionEvaluation = CalculateAttractionEvaluationRating(evaluationOfServices.AttractionEvaluation.AttractionEvaluations);
     }
 
     private float CalculateFlightEvaluationRating(FlightEvaluationDto flightEvaluation)
@@ -29,7 +29,7 @@ public class EvaluationService : IEvaluationService
     private float CalculatePropertyEvaluationRating(PropertyEvaluationDto propertyEvaluation)
     {
         return ((float)Convert.ToInt16(propertyEvaluation.Amenities) + Convert.ToInt16(propertyEvaluation.PlaceType) + Convert.ToInt16(propertyEvaluation.PropertyType) +
-                Convert.ToInt16(propertyEvaluation.RoomsAndBeds)) / 4;
+                Convert.ToInt16(propertyEvaluation.RoomsAndBeds)) / 4f;
     }
     
     private float CalculateAttractionEvaluationRating(List<AttractionEvaluationDto> attractionEvaluations)

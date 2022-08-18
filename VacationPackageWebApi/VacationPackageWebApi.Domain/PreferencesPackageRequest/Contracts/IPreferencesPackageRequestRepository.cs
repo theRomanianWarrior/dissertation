@@ -11,6 +11,9 @@ namespace VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts
         public Task<Task> CreateClientRequest(Guid customerId, Guid preferencesPackageId, Guid clientRequestId,
             DateTime requestTimestamp);
 
-        public Task<Task> SaveEvaluation(ServiceEvaluationDto evaluationOfServices);
+        public void SaveEvaluation(ServiceEvaluationDto evaluationOfServices);
+        public Task<Task> UpdateAgentsSelfExpertRate();
+        public Task<Task> UpdateAgentTrustServiceEvaluation(ServiceEvaluationDto serviceEvaluation);
+        public Task UpdateCustomerPersonalAgentRate(ServiceEvaluationDto evaluationOfServices);
     }
 }

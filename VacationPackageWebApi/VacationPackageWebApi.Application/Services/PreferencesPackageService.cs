@@ -28,13 +28,17 @@ namespace VacationPackageWebApi.Application.Services
         
         public Action SaveRecommendationResponse(PreferencesResponse preferencesResponse, Guid clientRequestId)
         {
+            _preferencesPackageRepository.SaveRecommendation(preferencesResponse, clientRequestId);
             return _preferencesPackageRepository.SaveRecommendation(preferencesResponse, clientRequestId);
         }
 
         public async Task<Task> SaveEvaluation(ServiceEvaluationDto evaluationOfServices)
         {
             _evaluationService.CalculateEvaluationRatings(ref evaluationOfServices);
-           await _preferencesPackageRepository.SaveEvaluation(evaluationOfServices);
+            _preferencesPackageRepository.SaveEvaluation(evaluationOfServices);
+            await _preferencesPackageRepository.UpdateAgentsSelfExpertRate();
+            await _preferencesPackageRepository.UpdateAgentTrustServiceEvaluation(evaluationOfServices);
+            await _preferencesPackageRepository.UpdateCustomerPersonalAgentRate(evaluationOfServices);
 
            return Task.CompletedTask;
         }
