@@ -1,6 +1,7 @@
 ﻿using ActressMas;
 using VacationPackageWebApi.Domain.Enums;
 using VacationPackageWebApi.Domain.Mas.BusinessLogic;
+using VacationPackageWebApi.Domain.Mas.Initializer;
 
 namespace VacationPackageWebApi.Domain.Mas;
 
@@ -36,8 +37,12 @@ public class MasCoordinatorAgent : Agent
                     _tasksDone.Add(CoordinatorTasksDone.Attraction);
                     break;
             }
-            if(_tasksDone.Count == TotalNumberOfServices)
+
+            if (_tasksDone.Count == TotalNumberOfServices)
+            {
                 CommonRecommendationLogic.SetPreferencesResponseStatusDone();
+                MasEnvVarsInitializer.ResetAll();
+            }
         }
         catch (Exception ex)
         {

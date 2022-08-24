@@ -9,4 +9,5 @@ public record TourismAgent : AgentLocalDb
     public bool Status { get; set; } // available
     public TaskType CurrentTask { get; set; } // the current chosen task
     public Dictionary<TaskType, double> ConfInd { get; set; } // confidence indexes of the agent to each type of task
+    public Dictionary<Guid, List<TrustAgentRateBusinessModel>> TrustGradeInOtherAgent { get; set; }
 }

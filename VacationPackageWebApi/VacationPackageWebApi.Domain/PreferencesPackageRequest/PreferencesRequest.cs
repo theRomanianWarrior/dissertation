@@ -5,7 +5,7 @@ namespace VacationPackageWebApi.Domain.PreferencesPackageRequest
     public record PreferencesRequest
     {
         public Guid CustomerId { get; set; }
-        public Dictionary<Guid, Dictionary<TaskType, double>> CustomizedExpertAgentRates { get; set; }
+        public Dictionary<Guid, Dictionary<TaskType, float>>? CustomizedExpertAgentRates { get; set; }
         public DateTime DepartureDate { get; set; }
         public short HolidaysPeriod { get; set; }
 

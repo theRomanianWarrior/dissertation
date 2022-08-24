@@ -1,0 +1,10 @@
+using System.Dynamic;
+
+var dayCount = 30;
+var constant = 0.16;
+
+for (int i = 1; i <= dayCount; i++)
+{
+    var res = Math.Pow(Math.E, (-constant) * i) / Math.Pow(Math.E, -constant);
+    Console.WriteLine(Math.Round(res, 2, MidpointRounding.ToZero));
+}

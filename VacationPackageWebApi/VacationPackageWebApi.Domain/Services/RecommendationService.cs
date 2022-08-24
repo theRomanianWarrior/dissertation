@@ -11,7 +11,7 @@ public class RecommendationService : IRecommendationService
 {
     public async Task<PreferencesResponse?> GetFullRecommendationsPackage(PreferencesRequest preferencesPayload)
     {
-        List<string> listOfAvailableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+        var listOfAvailableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
         var cancellationTokenSource = new CancellationTokenSource();
 
         await CommonRecommendationLogic.SetPreferencesPayload(preferencesPayload);
@@ -20,7 +20,7 @@ public class RecommendationService : IRecommendationService
 
         cancellationTokenSource.CancelAfter(30000);
 
-        await TimeoutFunctionHandler.CheckRecommendationReadyUntilSuccessOrTimeout(cancellationTokenSource.Token); //////!!!!!!!!!!!!!
+        await TimeoutFunctionHandler.CheckRecommendationReadyUntilSuccessOrTimeout(cancellationTokenSource.Token);
 
         if (MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] != "done") return null!; // was canceled
         var readRecommendation = MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] as PreferencesResponse;

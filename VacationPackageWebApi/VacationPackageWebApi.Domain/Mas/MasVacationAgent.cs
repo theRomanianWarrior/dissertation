@@ -36,7 +36,6 @@ public class MasVacationAgent : Agent
                     Console.WriteLine("Agent " + this.Name + " got request");
                     _preferencesRequest = CommonRecommendationLogic.GetPreferencesPayload();
 
-                    //can be null
                     var customizedExpertRate = CommonRecommendationLogic.GetCurrentAgentCustomizedExpertRate(TourismAgent.Id, _preferencesRequest.CustomizedExpertAgentRates);
                     
                     var taskType = CommonRecommendationLogic.AccessPreferencesAndChoseTask(TaskDistributionLock, TourismAgent, customizedExpertRate);
@@ -52,18 +51,28 @@ public class MasVacationAgent : Agent
                             FlightRecommendationLogic.FulfillFlightDefaultPreferencesWithCheapestOffer(
                                 ref _preferencesRequest);
 
-                            var optimalDepartureFlightSolutionStoredSuccess =
+                            var optimalDepartureFlightSolutionStoredSuccess = 
                                 FlightRecommendationLogic.FindOptimalDepartureFlightAndStoreInMemory(TourismAgent.Id,
                                     TourismAgent.Name, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
 
                             if (optimalDepartureFlightSolutionStoredSuccess == false)
                             {
-                                availableAgents =
-                                    await CommonRecommendationLogic.GetListOfAllAgentsExceptCurrentAndCoordinator(
-                                        TourismAgent);
+                                var trustRateInOtherAgents = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation);
+
+                                availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+
+                                if (availableAgents.Contains(TourismAgent.Name))
+                                    availableAgents.Remove(TourismAgent.Name);
+                                
                                 if (!availableAgents.Any()) return; //// ??????????????????????????/
 
-                                SendToMany(availableAgents, "departure_flight_recommendation_request");
+                                foreach (var trustRateInAgent in trustRateInOtherAgents)
+                                {
+                                    if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
+                                    {
+                                        Send(trustRateInAgent.TrustedAgentName, "departure_flight_recommendation_request");
+                                    }
+                                }
                             }
                             else
                             {
@@ -78,13 +87,23 @@ public class MasVacationAgent : Agent
                             {
                                 if (optimalDepartureFlightSolutionStoredSuccess)
                                 {
-                                    availableAgents =
-                                        await CommonRecommendationLogic.GetListOfAllAgentsExceptCurrentAndCoordinator(
-                                            TourismAgent);
+                                    availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+
+                                    if (availableAgents.Contains(TourismAgent.Name))
+                                        availableAgents.Remove(TourismAgent.Name);
+                                    
                                     if (!availableAgents.Any()) return; //// ??????????????????????????/
                                 }
+                                
+                                var trustRateInOtherAgents = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation);
 
-                                SendToMany(availableAgents, "return_flight_recommendation_request");
+                                foreach (var trustRateInAgent in trustRateInOtherAgents)
+                                {
+                                    if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
+                                    {
+                                        Send(trustRateInAgent.TrustedAgentName, "return_flight_recommendation_request");
+                                    }
+                                }
                             }
                             else
                             {
@@ -94,17 +113,27 @@ public class MasVacationAgent : Agent
                             break;
                         case TaskType.Property:
                         {
-                            var optimalPropertySolutionStoredSuccess =
-                                PropertyRecommendationLogic.FindOptimalPropertyAndStoreInMemory(TourismAgent.Id,
+                            var optimalPropertySolutionStoredSuccess = PropertyRecommendationLogic.FindOptimalPropertyAndStoreInMemory(TourismAgent.Id,
                                     TourismAgent.Name, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
+                            
                             if (optimalPropertySolutionStoredSuccess == false)
                             {
-                                var availableAgents =
-                                    await CommonRecommendationLogic.GetListOfAllAgentsExceptCurrentAndCoordinator(
-                                        TourismAgent);
+                                var trustRateInOtherAgents = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation);
+
+                                var availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+
+                                if (availableAgents.Contains(TourismAgent.Name))
+                                    availableAgents.Remove(TourismAgent.Name);
+                                
                                 if (!availableAgents.Any()) return; //// ??????????????????????????/
 
-                                SendToMany(availableAgents, "property_recommendation_request");
+                                foreach (var trustRateInAgent in trustRateInOtherAgents)
+                                {
+                                    if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
+                                    {
+                                        Send(trustRateInAgent.TrustedAgentName, "property_recommendation_request");
+                                    }
+                                }
                             }
                             else
                             {
@@ -114,17 +143,27 @@ public class MasVacationAgent : Agent
                             break;
                         case TaskType.Attractions:
                         {
-                            var optimalAttractionSolutionStoredSuccess =
-                            AttractionsRecommendationLogic.FindOptimalAttractionAndStoreInMemory(TourismAgent.Id,
+                            var optimalAttractionSolutionStoredSuccess = AttractionsRecommendationLogic.FindOptimalAttractionAndStoreInMemory(TourismAgent.Id,
                                 TourismAgent.Name, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
+                            
                             if (optimalAttractionSolutionStoredSuccess == false)
                             {
-                                var availableAgents =
-                                    await CommonRecommendationLogic.GetListOfAllAgentsExceptCurrentAndCoordinator(
-                                        TourismAgent);
+                                var trustRateInOtherAgents = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation);
+
+                                var availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+
+                                if (availableAgents.Contains(TourismAgent.Name))
+                                    availableAgents.Remove(TourismAgent.Name);
+                                
                                 if (!availableAgents.Any()) return; //// ??????????????????????????/
 
-                                SendToMany(availableAgents, "attractions_recommendation_request");
+                                foreach (var trustRateInAgent in trustRateInOtherAgents)
+                                {
+                                    if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
+                                    {
+                                        Send(trustRateInAgent.TrustedAgentName, "attractions_recommendation_request");
+                                    }
+                                }
                             }
                             else
                             {
@@ -136,6 +175,8 @@ public class MasVacationAgent : Agent
                     break;
                 case "departure_flight_recommendation_request":
                 {
+                    if (CommonRecommendationLogic.IsDepartureFlightRecommendationDone()) return;
+                    
                     CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
                     var departureFlightRecommendationSuccess =
                         FlightRecommendationLogic.FindOptimalDepartureFlightAndStoreInMemory(TourismAgent.Id,
@@ -147,6 +188,8 @@ public class MasVacationAgent : Agent
                     break;
                 case "return_flight_recommendation_request":
                 {
+                    if (CommonRecommendationLogic.IsReturnFlightRecommendationDone()) return;
+
                     CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
                     var returnFlightRecommendationSuccess =
                         FlightRecommendationLogic.FindOptimalReturnFlightAndStoreInMemory(TourismAgent.Id,
@@ -157,6 +200,8 @@ public class MasVacationAgent : Agent
                     break;
                 case "property_recommendation_request":
                 {
+                    if (CommonRecommendationLogic.IsPropertyRecommendationDone()) return;
+
                     CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
                     var optimalPropertySolutionStoredSuccess =
                         PropertyRecommendationLogic.FindOptimalPropertyAndStoreInMemory(TourismAgent.Id,
@@ -167,9 +212,11 @@ public class MasVacationAgent : Agent
                     break;
                 case "attractions_recommendation_request":
                 {
+                    if (CommonRecommendationLogic.IsAttractionsRecommendationDone()) return;
+
                     CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
                     var optimalAttractionSolutionStoredSuccess =
-                        PropertyRecommendationLogic.FindOptimalPropertyAndStoreInMemory(TourismAgent.Id,
+                        AttractionsRecommendationLogic.FindOptimalAttractionAndStoreInMemory(TourismAgent.Id,
                             message.Sender, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
                     if (optimalAttractionSolutionStoredSuccess)
                         Send("Coordinator", "attraction_recommendation_done");

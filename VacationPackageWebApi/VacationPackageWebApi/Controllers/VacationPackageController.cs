@@ -2,7 +2,10 @@
 using Newtonsoft.Json;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.CustomerServicesEvaluation;
+using VacationPackageWebApi.Domain.Enums;
+using VacationPackageWebApi.Domain.Helpers;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
+using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
 
 namespace VacationPackageWebApi.API.Controllers
@@ -12,45 +15,43 @@ namespace VacationPackageWebApi.API.Controllers
     public class VacationPackageController : Controller
     {
         private readonly IPreferencesPackageService _preferencesPackageService;
-        private readonly IAgentService _agentService;
-        private readonly IFlightService _flightService;
-        private readonly IPropertyService _propertyService;
-        private readonly IAttractionService _attractionService;
-        private readonly IMasLoaderService _masLoaderService;
-
-        public VacationPackageController(IPreferencesPackageService preferencesPackageService, IAgentService agentService, IFlightService flightService, IPropertyService propertyService, IAttractionService attractionService, IMasLoaderService masLoaderService)
+        private readonly IPreferencesPayloadInitializerServices _preferencesPayloadInitializerServices;
+        
+        public VacationPackageController(IPreferencesPackageService preferencesPackageService, IPreferencesPayloadInitializerServices preferencesPayloadInitializerServices)
         {
             _preferencesPackageService = preferencesPackageService;
-            _agentService = agentService;
-            _flightService = flightService;
-            _propertyService = propertyService;
-            _attractionService = attractionService;
-            _masLoaderService = masLoaderService;
+            _preferencesPayloadInitializerServices = preferencesPayloadInitializerServices;
         }
 
         [HttpPost]
-        public async Task<ActionResult> RequestVacationRecommendation([FromBody] PreferencesRequest preferencesPayload)
+        public async Task<PreferencesResponse?> RequestVacationRecommendation([FromBody] PreferencesRequest preferencesPayload)
         {
-            var clientRequest = new ClientRequest()
+            var clientRequest = new ClientRequest
             {
                 Id = Guid.NewGuid(),
                 RequestTimestamp = DateTime.Now
             };
+
+            _preferencesPayloadInitializerServices.FulfillCustomizedExpertAgentsRates(ref preferencesPayload);
             
             var recommendationPackage = await _preferencesPackageService.RequestVacationPackage(preferencesPayload, clientRequest.Id, clientRequest.RequestTimestamp);
-            if (recommendationPackage != null)
-                Task.Factory.StartNew(_preferencesPackageService.SaveRecommendationResponse(recommendationPackage, clientRequest.Id));
+            UserReportHelper.WriteUserPreferencesRequest(preferencesPayload, clientRequest.RequestTimestamp);
             
-            Console.WriteLine(JsonConvert.SerializeObject(recommendationPackage, Formatting.Indented));
+            if (recommendationPackage is {AttractionsRecommendationResponse: { }, FlightRecommendationResponse: { }, PropertyPreferencesResponse: { }})
+                Task.Factory.StartNew(_preferencesPackageService.SaveRecommendationResponse(recommendationPackage, clientRequest.Id));
 
-            return Created(string.Empty, recommendationPackage);
+            recommendationPackage!.ClientRequestId = clientRequest.Id;
+
+            //Console.WriteLine(JsonConvert.SerializeObject(recommendationPackage, Formatting.Indented));
+
+            return recommendationPackage;
         }
-
+        
         [HttpPost]
         public async Task<ActionResult> SaveEvaluations([FromBody] ServiceEvaluationDto serviceEvaluation)
         {
-
             await _preferencesPackageService.SaveEvaluation(serviceEvaluation);
+            UserReportHelper.ClearCurrentProcessingAgentSelfExpertLogData();
             return Created(string.Empty, string.Empty);
         }
     }

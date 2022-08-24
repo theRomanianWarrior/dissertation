@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VacationPackageWebApi.Domain.CustomerServicesEvaluation;
+using VacationPackageWebApi.Domain.Helpers;
+using VacationPackageWebApi.Domain.Helpers.Models;
 using VacationPackageWebApi.Domain.Mas.AgentsExpertBusinessModel;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts;
@@ -71,7 +73,7 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
         {
             // 29 and not 30 because count begin from 0( if current day is the same as day of evaluation we got 0, but we will begin count with 1)
             var some30DaysAgo = DateTime.Now.AddDays(-29);
-            
+
             var agents = await _context.Agents.ToListAsync();
             foreach (var agent in agents)
             {
@@ -81,19 +83,19 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 
                 if (flightRatings != null && flightRatings.Any())
                 {
-                    var agentFlightSelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(flightRatings);
+                    var agentFlightSelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(flightRatings, "Flight", agent.Name, false);
                     agent.FlightSelfExpertRate = agentFlightSelfExpertRate;
                 }
 
                 if (propertiesRatings != null && propertiesRatings.Any())
                 {
-                    var agentPropertySelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(propertiesRatings);
+                    var agentPropertySelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(propertiesRatings, "Property", agent.Name, false);
                     agent.PropertySelfExpertRate = agentPropertySelfExpertRate;
                 }
 
                 if (attractionsRatings != null && attractionsRatings.Any())
                 {
-                    var agentAttractionSelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(attractionsRatings);
+                    var agentAttractionSelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(attractionsRatings, "Attractions", agent.Name, false);
                     agent.AttractionsSelfExpertRate = agentAttractionSelfExpertRate;
                 }
                 
@@ -122,12 +124,13 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
                     .SourceAgentId == agentId &&
                 (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
                  DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0))
-                ? await _context.ClientRequests.Where(c =>
-                    c.CustomerId == customerId &&
-                    c.Recommendation.FlightRecommendation.DepartureNavigation
-                        .SourceAgentId == agentId &&
-                    (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
-                     DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0)).Select(c => new AgentServiceRating()
+                ? await _context.ClientRequests.Include(ce => ce.EvaluationNavigation).ThenInclude(ef => ef.FlightEvaluation).ThenInclude(efd => efd.DepartureNavigation)
+                    .Where(c => c.Evaluation != null &&
+                                c.CustomerId == customerId &&
+                                c.Recommendation.FlightRecommendation.DepartureNavigation
+                                    .SourceAgentId == agentId &&
+                                (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
+                                 DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0)).Select(c => new AgentServiceRating()
                 {
                     AgentId = agentId,
                     ServiceEvaluationDate = c.RequestTimestamp,
@@ -141,12 +144,13 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
                     .SourceAgentId == agentId &&
                 (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
                  DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0))
-                ? await _context.ClientRequests.Where(c =>
-                    c.CustomerId == customerId &&
-                    c.Recommendation.FlightRecommendation.ReturnNavigation
-                        .SourceAgentId == agentId &&
-                    (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
-                     DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0)).Select(c => new AgentServiceRating()
+                ? await _context.ClientRequests.Include(ce => ce.EvaluationNavigation).ThenInclude(ef => ef.FlightEvaluation).ThenInclude(efd => efd.ReturnNavigation)
+                    .Where(c => c.Evaluation != null &&
+                                c.CustomerId == customerId &&
+                                c.Recommendation.FlightRecommendation.ReturnNavigation
+                                    .SourceAgentId == agentId &&
+                                (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
+                                 DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0)).Select(c => new AgentServiceRating()
                 {
                     AgentId = agentId,
                     ServiceEvaluationDate = c.RequestTimestamp,
@@ -172,12 +176,13 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
                     .SourceAgentId == agentId &&
                 (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
                  DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0))
-                ? await _context.ClientRequests.Where(c =>
-                    c.CustomerId == customerId &&
-                    c.Recommendation.PropertyRecommendation
-                        .SourceAgentId == agentId &&
-                    (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
-                     DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0)).Select(c => new AgentServiceRating
+                ? await _context.ClientRequests.Include(ce => ce.EvaluationNavigation).ThenInclude(ep => ep.PropertyEvaluation)
+                    .Where(c => c.Evaluation != null &&
+                                c.CustomerId == customerId &&
+                                c.Recommendation.PropertyRecommendation
+                                    .SourceAgentId == agentId &&
+                                (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
+                                 DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0)).Select(c => new AgentServiceRating
                 {
                     AgentId = agentId,
                     ServiceEvaluationDate = c.RequestTimestamp,
@@ -191,13 +196,14 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
         private async Task<List<AgentServiceRating>?> GetAgentAttractionsRatingsMatchCustomer(Guid agentId, Guid customerId,
             DateTime searchDataTillDate)
         {
-            var agentAttractionPackagesRecommendationsForCurrentCustomer = _context.ClientRequests.Any(c =>
+           var agentAttractionPackagesRecommendationsForCurrentCustomer = _context.ClientRequests.Any(c =>
                 c.CustomerId == customerId &&
                 c.Recommendation.AttractionRecommendation
                     .SourceAgentId == agentId &&
                 (DateTime.Compare(c.RequestTimestamp, searchDataTillDate) > 0 ||
                  DateTime.Compare(c.RequestTimestamp, searchDataTillDate) == 0))
-                ? await _context.ClientRequests.Where(c =>
+                ? await _context.ClientRequests.Include(ce => ce.EvaluationNavigation).ThenInclude(ea => ea.AttractionEvaluation)
+                    .Where(c => c.Evaluation != null &&
                     c.CustomerId == customerId &&
                     c.Recommendation.AttractionRecommendation
                         .SourceAgentId == agentId &&
@@ -220,8 +226,10 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 
             // 29 and not 30 because count begin from 0( if current day is the same as day of evaluation we got 0, but we will begin count with 1)
             var some30DaysAgo = DateTime.Now.AddDays(-29);
-            
+            var personalAgentRateLogList = new List<PersonalAgentRateLogModel>();
             var agents = await _context.Agents.ToListAsync();
+            var personalAgentServiceScores = new List<PersonalAgentServiceScoreLogModel>();
+            
             foreach (var agent in agents)
             {
                 var customerPersonalAgentRateRecordCreated = false;
@@ -248,19 +256,19 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
 
                 if (flightRatingsMatchCustomer != null && flightRatingsMatchCustomer.Any())
                 {
-                    var customerPersonalAgentFlightExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(flightRatingsMatchCustomer);
+                    var customerPersonalAgentFlightExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(flightRatingsMatchCustomer, "Flight", agent.Name);
                     customerPersonalAgentRate.FlightExpertRate = customerPersonalAgentFlightExpertRate;
                 }
 
                 if (propertiesRatingsMatchCustomer != null && propertiesRatingsMatchCustomer.Any())
                 {
-                    var agentPropertySelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(propertiesRatingsMatchCustomer);
+                    var agentPropertySelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(propertiesRatingsMatchCustomer, "Property", agent.Name);
                     customerPersonalAgentRate.PropertyExpertRate = agentPropertySelfExpertRate;
                 }
 
                 if (attractionsRatingsMatchCustomer != null && attractionsRatingsMatchCustomer.Any())
                 {
-                    var agentAttractionSelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(attractionsRatingsMatchCustomer);
+                    var agentAttractionSelfExpertRate = CalculateAgentExpertRateBasedOnTimeRelevance(attractionsRatingsMatchCustomer, "Attractions", agent.Name);
                     customerPersonalAgentRate.AttractionsExpertRate = agentAttractionSelfExpertRate;
                 }
 
@@ -273,8 +281,31 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
                     await _context.CustomerPersonalAgentRates.AddAsync(customerPersonalAgentRate);
                 }
                 
-                await _context.SaveChangesAsync();
+                personalAgentRateLogList.Add( new PersonalAgentRateLogModel()
+                {
+                    AgentName = agent.Name,
+                    AttractionsExpertRate = customerPersonalAgentRate.AttractionsExpertRate,
+                    FlightExpertRate = customerPersonalAgentRate.FlightExpertRate,
+                    PropertyExpertRate = customerPersonalAgentRate.PropertyExpertRate
+                });
+                
+                var personalAgentServiceScoreLogModel = new PersonalAgentServiceScoreLogModel()
+                {
+                    AgentName = agent.Name,
+                    FlightRecommendationsDoneForCurrentUser = flightRatingsMatchCustomer?.Count ?? 0,
+                    PropertyRecommendationsDoneForCurrentUser = propertiesRatingsMatchCustomer?.Count ?? 0,
+                    AttractionsRecommendationsDoneForCurrentUser = attractionsRatingsMatchCustomer?.Count ?? 0
+                };
+                personalAgentServiceScores.Add(personalAgentServiceScoreLogModel);
             }
+
+            foreach (var personalAgentServiceScore in personalAgentServiceScores)
+            {
+                UserReportHelper.WriteCustomerPersonalAgentServiceRecommendationsCounter(personalAgentServiceScore);
+            }
+
+            UserReportHelper.WriteCustomerPersonalAgentRate(personalAgentRateLogList);
+            await _context.SaveChangesAsync();
         }
         
         public Action SaveRecommendation(PreferencesResponse preferencesResponse, Guid clientRequestId)
@@ -346,7 +377,29 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
             AddRecommendationToExistingClientRequest(clientRequestId, recommendation.Id);
             _context.SaveChanges();
             Console.WriteLine("Recommendation saved in database.");
+            
             return delegate {  };
+        }
+
+        public Task WritePreferencesResponse(PreferencesResponse preferencesResponse)
+        {
+            var departureFlightSourceAgentName = _context.Agents.Single(a =>
+                a.Id == preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation
+                    .DepartureFlightRecommendation.SourceAgentId).Name;
+            
+            var returnFlightSourceAgentName = _context.Agents.Single(a =>
+                a.Id == preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation
+                    .ReturnFlightRecommendation.SourceAgentId).Name;
+            
+            var attractionsSourceAgentName = _context.Agents.Single(a =>
+                a.Id == preferencesResponse.AttractionsRecommendationResponse.SourceAgentId).Name;
+            
+            var propertySourceAgentName = _context.Agents.Single(a =>
+                a.Id == preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.SourceAgentId).Name;
+            
+            UserReportHelper.WritePreferencesResponse(preferencesResponse, departureFlightSourceAgentName, returnFlightSourceAgentName, propertySourceAgentName, attractionsSourceAgentName);
+
+            return Task.CompletedTask;
         }
 
         public async Task<Task> CreateClientRequest(Guid customerId, Guid preferencesPackageId, Guid clientRequestId, DateTime requestTimestamp)
@@ -387,7 +440,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
             return (float) Math.Round(evaluationRate * relevanceRate, 2, MidpointRounding.ToZero);
         }
         
-        private float CalculateAgentExpertRateBasedOnTimeRelevance(List<AgentServiceRating> agentServiceRatings)
+        private float CalculateAgentExpertRateBasedOnTimeRelevance(List<AgentServiceRating> agentServiceRatings,
+                                                string serviceType, string agentName, bool isForSelfExpertRate = true) // added only for log
         {
             var evaluationsTotal = 0.0f;
             foreach (var agentServiceRating in agentServiceRatings)
@@ -395,7 +449,28 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
                 //this gives a number from 1 to 30
                 var daysPassedTillTodaySinceEvaluation = (int)(DateTime.Today.Date - agentServiceRating.ServiceEvaluationDate.Date).TotalDays + 1;
                 var evaluationBasedOnDate = CalculateEvaluationBasedOnDate(agentServiceRating.ServiceRating, daysPassedTillTodaySinceEvaluation);
+                /* This code is only for log */
+                if (isForSelfExpertRate)
+                {
+                    var personalAgentSelfExpertRates = new PersonalAgentSelfExpertRateLogModel
+                    {
+                        AgentName = agentName,
+                        DateOfRequest = agentServiceRating.ServiceEvaluationDate.Date.ToString("yyyy-MM-dd"),
+                        DaysDifferenceFromToday = daysPassedTillTodaySinceEvaluation,
+                        ServiceType = serviceType,
+                        ExpertServiceRatings = new SelfExpertRatePropertiesLogModel
+                        {
+                            OriginalValue = agentServiceRating.ServiceRating,
+                            ActualValue = evaluationBasedOnDate
+                        }
+                    };
+
+                    UserReportHelper.WriteAgentsUpdatedSelfExpertRate(personalAgentSelfExpertRates);
+                }
+
+                /* Only for log */
                 evaluationsTotal += evaluationBasedOnDate;
+                
             }
 
             return evaluationsTotal / agentServiceRatings.Count;
@@ -562,30 +637,34 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
                 cr.Recommendation.FlightRecommendation.ReturnNavigation.SourceAgentId.Equals(agentId) &&
                 (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
                  DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0))
-                ? await _context.ClientRequests.Where(cr =>
+                ? _context.ClientRequests.Include(e => e.EvaluationNavigation).ThenInclude(fe => fe.FlightEvaluation).
+                    ThenInclude(fer => fer.ReturnNavigation)
+                    .Where(cr => cr.Evaluation != null &&
                     cr.Recommendation.FlightRecommendation.ReturnNavigation.SourceAgentId.Equals(agentId) &&
                     (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
-                     DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0)).Select(c => new AgentServiceRating()
+                     DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0)).ToList().Select(c => new AgentServiceRating()
                 {
                     AgentId = agentId,
                     ServiceRating = c.EvaluationNavigation.FlightEvaluation.ReturnNavigation.FlightRating,
                     ServiceEvaluationDate = c.RequestTimestamp
-                }).ToListAsync()
+                }).ToList()
                 : null;
 
             var flightDepartureEvaluations = _context.ClientRequests.Any(cr =>
                 cr.Recommendation.FlightRecommendation.DepartureNavigation.SourceAgentId.Equals(agentId) &&
                 (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
                  DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0))
-                ? await _context.ClientRequests.Where(cr =>
-                    cr.Recommendation.FlightRecommendation.DepartureNavigation.SourceAgentId.Equals(agentId) &&
-                    (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
-                     DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0)).Select(c => new AgentServiceRating
-                {
-                    AgentId = agentId,
-                    ServiceRating = c.EvaluationNavigation.FlightEvaluation.DepartureNavigation.FlightRating,
-                    ServiceEvaluationDate = c.RequestTimestamp
-                }).ToListAsync()
+                ? _context.ClientRequests.Include(e => e.EvaluationNavigation).ThenInclude(fe => fe.FlightEvaluation).
+                    ThenInclude(fer => fer.DepartureNavigation)
+                    .Where(cr => cr.Evaluation != null &&
+                                 cr.Recommendation.FlightRecommendation.DepartureNavigation.SourceAgentId.Equals(agentId) &&
+                                 (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
+                                  DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0)).ToList().Select(c => new AgentServiceRating()
+                    {
+                        AgentId = agentId,
+                        ServiceRating = c.EvaluationNavigation.FlightEvaluation.DepartureNavigation.FlightRating,
+                        ServiceEvaluationDate = c.RequestTimestamp
+                    }).ToList()
                 : null;
 
             if (flightReturnEvaluations == null)
@@ -603,7 +682,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
                 cr.Recommendation.PropertyRecommendation.SourceAgentId.Equals(agentId) &&
                 (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
                  DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0))
-                ? await _context.ClientRequests.Where(cr =>
+                ? await _context.ClientRequests.Include(e => e.EvaluationNavigation).ThenInclude(pe => pe.PropertyEvaluation)
+                    .Where(cr => cr.Evaluation != null &&
                         cr.Recommendation.PropertyRecommendation.SourceAgentId.Equals(agentId) &&
                         (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
                          DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0))
@@ -622,10 +702,11 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Repositories
                 cr.Recommendation.AttractionRecommendation.SourceAgentId.Equals(agentId) &&
                 (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
                  DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0))
-                ? await _context.ClientRequests.Where(cr =>
-                        cr.Recommendation.AttractionRecommendation.SourceAgentId.Equals(agentId) &&
-                        (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
-                         DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0))
+                ? await _context.ClientRequests.Include(e => e.EvaluationNavigation).ThenInclude(ae => ae.AttractionEvaluation)
+                    .Where(cr => cr.Evaluation != null &&
+                                 cr.Recommendation.AttractionRecommendation.SourceAgentId.Equals(agentId) &&
+                                 (DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) > 0 ||
+                                  DateTime.Compare(cr.RequestTimestamp, daysAgoFromToday) == 0))
                     .Select(c => new AgentServiceRating()
                     {
                         AgentId = agentId,

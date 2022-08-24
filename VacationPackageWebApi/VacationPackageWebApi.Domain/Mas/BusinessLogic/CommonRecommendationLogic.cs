@@ -2,6 +2,7 @@
 using VacationPackageWebApi.Domain.Enums;
 using VacationPackageWebApi.Domain.Mas.Singleton;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
+using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 
 namespace VacationPackageWebApi.Domain.Mas.BusinessLogic;
 
@@ -10,7 +11,7 @@ public static class CommonRecommendationLogic
     public const int Match = 1;
     public const int NoMatch = 0;
     
-    public static TaskType AccessPreferencesAndChoseTask(object taskDistributionLock, TourismAgent agent, Dictionary<TaskType, double> customizedExpertAgentRates)
+    public static TaskType AccessPreferencesAndChoseTask(object taskDistributionLock, TourismAgent agent, Dictionary<TaskType, float> customizedExpertAgentRates)
     {
         var taskTypeToWorkOn = TaskType.Default;
 
@@ -35,9 +36,29 @@ public static class CommonRecommendationLogic
         return taskTypeToWorkOn;
     }
 
-    public static Dictionary<TaskType, double> GetCurrentAgentCustomizedExpertRate(Guid currentAgentId, Dictionary<Guid, Dictionary<TaskType, double>> customizedExpertAgentRates)
+    public static void StoreAgentsTrustRate(Dictionary<Guid, List<TrustAgentRateBusinessModel>> agentsTrustRates)
     {
-        return customizedExpertAgentRates.SingleOrDefault(r => r.Key == currentAgentId).Value;
+        MasEnvironmentSingleton.Instance.Memory["AgentsTrustRates"] = agentsTrustRates;
+    }
+
+    public static List<TrustAgentRateBusinessModel>? GetAgentTrustRateOfAgentWithId(Guid id)
+    {
+        return (MasEnvironmentSingleton.Instance.Memory["AgentsTrustRates"] as
+            Dictionary<Guid, List<TrustAgentRateBusinessModel>?>)?[id];
+    }
+    
+    public static Dictionary<TaskType, float> GetCurrentAgentCustomizedExpertRate(Guid currentAgentId, Dictionary<Guid, Dictionary<TaskType, float>> customizedExpertAgentRates)
+    {
+         if(customizedExpertAgentRates.Count != 0)
+            return customizedExpertAgentRates.SingleOrDefault(r => r.Key == currentAgentId).Value;
+
+         var defaultCustomizedExpertRate = new Dictionary<TaskType, float>();
+         for (var taskType = TaskType.Flight; taskType < TaskType.Default; taskType++)
+         {
+             defaultCustomizedExpertRate.Add(taskType, 0.5f);
+         }
+
+         return defaultCustomizedExpertRate;
     }
 
     private static List<TaskType>? GetListOfAvailableTasks()
@@ -55,6 +76,30 @@ public static class CommonRecommendationLogic
     {
         MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] = "done";
         return Task.CompletedTask;
+    }
+
+    public static bool IsDepartureFlightRecommendationDone()
+    {
+        var preferencesResponse = MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] as PreferencesResponse;
+        return preferencesResponse?.FlightRecommendationResponse?.FlightDirectionRecommendation?.DepartureFlightRecommendation != null;
+    }
+
+    public static bool IsReturnFlightRecommendationDone()
+    {
+        var preferencesResponse = MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] as PreferencesResponse;
+        return preferencesResponse?.FlightRecommendationResponse?.FlightDirectionRecommendation?.ReturnFlightRecommendation != null;
+    }
+    
+    public static bool IsPropertyRecommendationDone()
+    {
+        var preferencesResponse = MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] as PreferencesResponse;
+        return preferencesResponse?.PropertyPreferencesResponse?.PropertyRecommendationBModel != null;
+    }
+    
+    public static bool IsAttractionsRecommendationDone()
+    {
+        var preferencesResponse = MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] as PreferencesResponse;
+        return preferencesResponse?.AttractionsRecommendationResponse != null;
     }
     
     public static PreferencesRequest GetPreferencesPayload()
@@ -78,7 +123,7 @@ public static class CommonRecommendationLogic
         return Task.FromResult((MasEnvironmentSingleton.Instance.Memory["AvailableAgents"] as List<string>)!);
     }
     
-    public static Task<List<string>> GetListOfAllAgentsExceptCurrentAndCoordinator(TourismAgent tourismAgent)
+    /*public static Task<List<string>> GetListOfAllAgentsExceptCurrentAndCoordinator(TourismAgent tourismAgent)
     {
         var availableAgents = MasEnvironmentSingleton.Instance.AllAgents();
         if (availableAgents.Count > 2)
@@ -88,5 +133,5 @@ public static class CommonRecommendationLogic
         }
 
         return Task.FromResult(availableAgents.ToList());
-    }
+    }*/
 }

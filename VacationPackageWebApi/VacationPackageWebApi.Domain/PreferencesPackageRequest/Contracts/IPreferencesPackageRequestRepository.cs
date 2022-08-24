@@ -15,5 +15,6 @@ namespace VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts
         public Task<Task> UpdateAgentsSelfExpertRate();
         public Task<Task> UpdateAgentTrustServiceEvaluation(ServiceEvaluationDto serviceEvaluation);
         public Task UpdateCustomerPersonalAgentRate(ServiceEvaluationDto evaluationOfServices);
+        public Task WritePreferencesResponse(PreferencesResponse preferencesResponse);
     }
 }

@@ -17,4 +17,24 @@ public class AgentService : IAgentService
     {
         return await _agentRepository.GetAllAgentsAsync();
     }
+
+    public Task InitializeCustomerPersonalAgentsRate(Guid customerId)
+    {
+        return _agentRepository.InitializeCustomerPersonalAgentsRate(customerId);
+    }
+
+    public List<CustomerPersonalAgentRateBusinessModel> GetCustomerPersonalAgentsServicesRates(Guid customerId)
+    {
+        return _agentRepository.GetCustomerPersonalAgentsServicesRates(customerId);
+    }
+
+    public Dictionary<Guid, List<TrustAgentRateBusinessModel>> GetAllAgentsTrustInOtherAgent()
+    {
+        return _agentRepository.GetAllAgentsTrustInOtherAgent();
+    }
+    
+    public List<TrustAgentRateBusinessModel> GetTrustInOtherAgentsOfAgentWithId(Guid agentId)
+    {
+        return _agentRepository.GetTrustInOtherAgentsOfAgentWithId(agentId);
+    }
 }

@@ -6,6 +6,7 @@ namespace VacationPackageWebApi.Domain.PreferencesPackageResponse;
 
 public record PreferencesResponse
 {
+    public Guid? ClientRequestId { get; set; }
     public FlightRecommendationResponse? FlightRecommendationResponse { get; set; }
     public PropertyRecommendationResponse? PropertyPreferencesResponse { get; set; }
     public AttractionsRecommendationResponse? AttractionsRecommendationResponse { get; set; }
