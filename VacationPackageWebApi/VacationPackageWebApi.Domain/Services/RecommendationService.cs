@@ -18,7 +18,7 @@ public class RecommendationService : IRecommendationService
         
         MasCoordinatorSingleton.Instance.SendToMany(listOfAvailableAgents, "new_recommendation_request");
 
-        cancellationTokenSource.CancelAfter(30000);
+        cancellationTokenSource.CancelAfter(30000*100);
 
         await TimeoutFunctionHandler.CheckRecommendationReadyUntilSuccessOrTimeout(cancellationTokenSource.Token);
 

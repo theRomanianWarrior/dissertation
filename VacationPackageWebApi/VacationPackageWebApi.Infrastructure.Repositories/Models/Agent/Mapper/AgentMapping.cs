@@ -14,7 +14,7 @@ public static class AgentMapping
             Status = true,
             Name = agent.Name,
             CurrentTask = TaskType.Default,
-            ConfInd = new Dictionary<TaskType, double>
+            ConfInd = new Dictionary<TaskType, float>
             {
                 {
                     TaskType.Flight,

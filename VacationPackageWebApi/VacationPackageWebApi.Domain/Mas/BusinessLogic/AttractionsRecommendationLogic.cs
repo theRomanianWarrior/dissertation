@@ -70,31 +70,44 @@ public static class AttractionsRecommendationLogic
             
             return topAttractions;
         }
+
+        var reserveAttractions = new List<AttractionBusinessModel>();
+        
         
         foreach (var attraction in cityAttractions)
         {
             if(preferencesRequest.CustomerAttractionNavigation.Architecture && attraction.Kinds.Contains("architecture"))
                 topAttractions.Add(attraction);
 
-            if(preferencesRequest.CustomerAttractionNavigation.Cultural && attraction.Kinds.Contains("cultural"))
+            else if(preferencesRequest.CustomerAttractionNavigation.Cultural && attraction.Kinds.Contains("cultural"))
                 topAttractions.Add(attraction);
             
-            if(preferencesRequest.CustomerAttractionNavigation.Historical && attraction.Kinds.Contains("historic"))
+            else if(preferencesRequest.CustomerAttractionNavigation.Historical && attraction.Kinds.Contains("historic"))
                 topAttractions.Add(attraction);
             
-            if(preferencesRequest.CustomerAttractionNavigation.Natural && attraction.Kinds.Contains("natural"))
+            else if(preferencesRequest.CustomerAttractionNavigation.Natural && attraction.Kinds.Contains("natural"))
                 topAttractions.Add(attraction);
             
-            if(preferencesRequest.CustomerAttractionNavigation.Other && attraction.Kinds.Contains("other"))
+            else if(preferencesRequest.CustomerAttractionNavigation.Other && attraction.Kinds.Contains("other"))
                 topAttractions.Add(attraction);
             
-            if(preferencesRequest.CustomerAttractionNavigation.Religion && attraction.Kinds.Contains("religion"))
+            else if(preferencesRequest.CustomerAttractionNavigation.Religion && attraction.Kinds.Contains("religion"))
                 topAttractions.Add(attraction);
             
-            if(preferencesRequest.CustomerAttractionNavigation.IndustrialFacilities && attraction.Kinds.Contains("industrial"))
+            else if(preferencesRequest.CustomerAttractionNavigation.IndustrialFacilities && attraction.Kinds.Contains("industrial"))
                 topAttractions.Add(attraction);
-            
+            else
+                reserveAttractions.Add(attraction);
+
             if (topAttractions.Count >= 5) return topAttractions;
+            if (cityAttractions.Last().Xid == attraction.Xid)
+                if (reserveAttractions.Count != 0)
+                {
+                    var topAttractionsNeedMore = 5 - topAttractions.Count;
+                    topAttractions.AddRange(reserveAttractions.Count >= topAttractionsNeedMore
+                        ? reserveAttractions.Take(topAttractionsNeedMore)
+                        : reserveAttractions);
+                }
 
         }
 

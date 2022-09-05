@@ -17,4 +17,18 @@ public class FlightService : IFlightService
     {
         return await _flightRepository.GetAllFlights();
     }
+
+    public List<string> GetFlightDepartureCities()
+    {
+        var flightsDepartureDestinationCities = _flightRepository.GetFlightsByUniqueDepartureArrivalAirport();
+
+        return flightsDepartureDestinationCities.Select(flightDepartureDestination => flightDepartureDestination.DepartureCityName + ", " + flightDepartureDestination.DepartureCountryName).Distinct().ToList();
+    }
+
+    public List<string> GetFlightArrivalCities(string flightDepartureCity)
+    {
+        var flightArrivalCities =  _flightRepository.GetFlightArrivalCities(flightDepartureCity);
+        
+        return flightArrivalCities.Select(flightArrivalDestination => flightArrivalDestination.DestinationCityName + ", " + flightArrivalDestination.DestinationCountryName).Distinct().ToList();
+    }
 }

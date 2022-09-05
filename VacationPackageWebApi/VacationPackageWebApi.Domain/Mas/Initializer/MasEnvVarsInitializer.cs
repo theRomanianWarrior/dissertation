@@ -44,4 +44,10 @@ public static class MasEnvVarsInitializer
         MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] = "undone";
         MasEnvironmentSingleton.Instance.Memory["AgentsTrustRates"].Clear();
     }
+
+    public static void ResetTourismAgent(ref TourismAgent tourismAgent)
+    {
+        tourismAgent.Status = true;
+        tourismAgent.CurrentTask = TaskType.Default;
+    }
 }

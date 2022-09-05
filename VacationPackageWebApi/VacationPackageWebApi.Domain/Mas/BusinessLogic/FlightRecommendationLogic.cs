@@ -141,22 +141,26 @@ public static class FlightRecommendationLogic
     {
         if (departurePeriodsPreference.IsFulfilledEarlyMorningPreference(groupedFlightsByDayPeriod))
         {
-            return groupedFlightsByDayPeriod[DayPeriods.EarlyMorning].First();
+            if(groupedFlightsByDayPeriod.ContainsKey(DayPeriods.EarlyMorning))
+                return groupedFlightsByDayPeriod[DayPeriods.EarlyMorning].First();
         }
 
         if (departurePeriodsPreference.IsFulfilledMorningPreference(groupedFlightsByDayPeriod))
         {
-            return groupedFlightsByDayPeriod[DayPeriods.Morning].First();
+            if(groupedFlightsByDayPeriod.ContainsKey(DayPeriods.Morning))
+                return groupedFlightsByDayPeriod[DayPeriods.Morning].First();
         }
         
         if (departurePeriodsPreference.IsFulfilledAfternoonPreference(groupedFlightsByDayPeriod))
         {
-            return groupedFlightsByDayPeriod[DayPeriods.Afternoon].First();
+            if(groupedFlightsByDayPeriod.ContainsKey(DayPeriods.Afternoon))
+                return groupedFlightsByDayPeriod[DayPeriods.Afternoon].First();
         }
         
         if (departurePeriodsPreference.IsFulfilledNightPreference(groupedFlightsByDayPeriod))
         {
-            return groupedFlightsByDayPeriod[DayPeriods.Night].First();
+            if(groupedFlightsByDayPeriod.ContainsKey(DayPeriods.Night))
+                return groupedFlightsByDayPeriod[DayPeriods.Night].First();
         }
 
         return null;
@@ -269,7 +273,8 @@ public static class FlightRecommendationLogic
         var sortedHours = new Dictionary<DayPeriods, List<TimeOnly>>(); 
         foreach (var (key, value) in flightGroup)
         {
-            sortedHours.Add(key,value.OrderBy(x => x.Hour).ToList());
+            var orderedTime = value.OrderBy(x => x).ToList();
+            sortedHours.Add(key, orderedTime);
         }
         
         return sortedHours;
@@ -570,12 +575,15 @@ public static class FlightRecommendationLogic
         string initialAssignedAgentName, FlightBusinessModel optimalFlight, short flightClass,
         DateTime departureDate, TimeOnly mostOptimalFlightTime)
     {
+        var optimalTime = mostOptimalFlightTime.ToTimeSpan();
+        var sas =
+            DateTime.MinValue.AddHours(optimalTime.Hours).AddMinutes(optimalTime.Minutes);
         return new FlightRecommendationBModel
         {
             SourceAgentId = sourceAgentId,
             InitialAssignedAgentName = initialAssignedAgentName,
             DepartureTime =
-                DateTime.MinValue.AddHours(mostOptimalFlightTime.Hour).AddMinutes(mostOptimalFlightTime.Minute),
+                DateTime.MinValue.AddHours(optimalTime.Hours).AddMinutes(optimalTime.Minutes),
             FlightClass = flightClass,
             FlightConnection = new List<FlightConnectionBModel>
             {

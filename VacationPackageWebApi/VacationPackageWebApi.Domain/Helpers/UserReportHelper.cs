@@ -14,7 +14,7 @@ public static class UserReportHelper
     private static string _currentProcessingAgentSelfExpertRate = string.Empty;
     private static string _currentProcessingAgentSelfExpertService = string.Empty;
     private static bool _personalAgentServiceScoreHeaderInitialized = false;
-    
+
     public static void WriteUserPreferencesRequest(PreferencesRequest preferencesPayload, DateTime requestTimestamp)
     {
         _fileName = $"log{requestTimestamp.Date:yy-MM-dd}-{requestTimestamp.ToString("HH-mm-ss")}.txt";
@@ -35,92 +35,108 @@ public static class UserReportHelper
         fileStreamWriter.WriteLine($"\tInfant: {preferencesPayload.PersonsByAgeNavigation.Infant}");
 
         fileStreamWriter.WriteLine("\nFlight Preferences");
-        fileStreamWriter.WriteLine("\tDeparture Flight Preferences");
-        fileStreamWriter.WriteLine("\tFlight Companies:");
-        if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.FlightCompaniesNavigationList != null)
-            foreach (var departureFlightCompanyPreference in preferencesPayload.CustomerFlightNavigation
-                         .DepartureNavigation.FlightCompaniesNavigationList)
-                fileStreamWriter.WriteLine($"\t \t{departureFlightCompanyPreference.Company.Name}");
-        fileStreamWriter.WriteLine("\t Departure Day Periods:");
-        if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference != null)
+        if (preferencesPayload.CustomerFlightNavigation != null)
         {
-            if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference
-                .EarlyMorning)
-                fileStreamWriter.WriteLine("\t \t Early Morning");
-
-            if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference.Morning)
-                fileStreamWriter.WriteLine("\t \t Morning");
-
-            if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference
-                .Afternoon)
-                fileStreamWriter.WriteLine("\t \tAfternoon");
-
-            if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference.Night)
-                fileStreamWriter.WriteLine("\t \tNight");
-        }
-
-        fileStreamWriter.WriteLine($"\tClass: {((ClassTypeId)preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.Class.Class).ToString()}");
-
-        fileStreamWriter.WriteLine("\t \t Stops:");
-        if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.StopsNavigation != null)
-        {
-            switch (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.StopsNavigation.Type)
+            fileStreamWriter.WriteLine("\tDeparture Flight Preferences");
+            if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation != null)
             {
-                case (short) StopsTypePreferenceId.Direct:
-                    fileStreamWriter.WriteLine("\t \t Direct");
-                    break;
-                case (short) StopsTypePreferenceId.OneStop:
-                    fileStreamWriter.WriteLine("\t \t One Stop");
-                    break;
-                case (short) StopsTypePreferenceId.TwoOrMoreStops:
-                    fileStreamWriter.WriteLine("\t \tTwo or More Stops");
-                    break;
+                fileStreamWriter.WriteLine("\tFlight Companies:");
+                if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.FlightCompaniesNavigationList !=
+                    null)
+                    foreach (var departureFlightCompanyPreference in preferencesPayload.CustomerFlightNavigation
+                                 .DepartureNavigation.FlightCompaniesNavigationList)
+                        fileStreamWriter.WriteLine($"\t \t{departureFlightCompanyPreference.Company.Name}");
+                fileStreamWriter.WriteLine("\t Departure Day Periods:");
+                if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference != null)
+                {
+                    if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference
+                        .EarlyMorning)
+                        fileStreamWriter.WriteLine("\t \t Early Morning");
+
+                    if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference
+                        .Morning)
+                        fileStreamWriter.WriteLine("\t \t Morning");
+
+                    if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference
+                        .Afternoon)
+                        fileStreamWriter.WriteLine("\t \tAfternoon");
+
+                    if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.DeparturePeriodPreference
+                        .Night)
+                        fileStreamWriter.WriteLine("\t \tNight");
+                }
+
+                fileStreamWriter.WriteLine(
+                    $"\tClass: {((ClassTypeId) preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.Class.Class).ToString()}");
+
+                fileStreamWriter.WriteLine("\t \t Stops:");
+                if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.StopsNavigation != null)
+                {
+                    switch (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.StopsNavigation.Type)
+                    {
+                        case (short) StopsTypePreferenceId.Direct:
+                            fileStreamWriter.WriteLine("\t \t Direct");
+                            break;
+                        case (short) StopsTypePreferenceId.OneStop:
+                            fileStreamWriter.WriteLine("\t \t One Stop");
+                            break;
+                        case (short) StopsTypePreferenceId.TwoOrMoreStops:
+                            fileStreamWriter.WriteLine("\t \tTwo or More Stops");
+                            break;
+                    }
+                }
+            }
+
+            fileStreamWriter.WriteLine("\n \tReturn Flight Preferences");
+            if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation != null)
+            {
+                fileStreamWriter.WriteLine("\t \tFlight Companies:");
+                if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.FlightCompaniesNavigationList !=
+                    null)
+                    foreach (var returnFlightCompanyPreference in preferencesPayload.CustomerFlightNavigation
+                                 .ReturnNavigation
+                                 .FlightCompaniesNavigationList)
+                        fileStreamWriter.WriteLine($"\t \t{returnFlightCompanyPreference.Company.Name}");
+                fileStreamWriter.WriteLine("\tDeparture Day Periods:");
+                if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference != null)
+                {
+                    if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference
+                        .EarlyMorning)
+                        fileStreamWriter.WriteLine("\t \tEarly Morning");
+
+                    if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference
+                        .Morning)
+                        fileStreamWriter.WriteLine("\t \tMorning");
+
+                    if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference
+                        .Afternoon)
+                        fileStreamWriter.WriteLine("\t \tAfternoon");
+
+                    if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference.Night)
+                        fileStreamWriter.WriteLine("\t \tNight");
+                }
+
+                fileStreamWriter.WriteLine(
+                    $"\tClass: {((ClassTypeId) preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.Class.Class).ToString()}");
+
+                fileStreamWriter.WriteLine("\tStops:");
+                if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.StopsNavigation != null)
+                {
+                    switch (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.StopsNavigation.Type)
+                    {
+                        case (short) StopsTypePreferenceId.Direct:
+                            fileStreamWriter.WriteLine("\t \tDirect");
+                            break;
+                        case (short) StopsTypePreferenceId.OneStop:
+                            fileStreamWriter.WriteLine("\t \tOne Stop");
+                            break;
+                        case (short) StopsTypePreferenceId.TwoOrMoreStops:
+                            fileStreamWriter.WriteLine("\t \tTwo or More Stops");
+                            break;
+                    }
+                }
             }
         }
-
-        fileStreamWriter.WriteLine("\n \tReturn Flight Preferences");
-        fileStreamWriter.WriteLine("\t \tFlight Companies:");
-        if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.FlightCompaniesNavigationList != null)
-            foreach (var returnFlightCompanyPreference in preferencesPayload.CustomerFlightNavigation
-                         .ReturnNavigation
-                         .FlightCompaniesNavigationList)
-                fileStreamWriter.WriteLine($"\t \t{returnFlightCompanyPreference.Company.Name}");
-        fileStreamWriter.WriteLine("\tDeparture Day Periods:");
-        if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference != null)
-        {
-            if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference
-                .EarlyMorning)
-                fileStreamWriter.WriteLine("\t \tEarly Morning");
-
-            if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference.Morning)
-                fileStreamWriter.WriteLine("\t \tMorning");
-
-            if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference.Afternoon)
-                fileStreamWriter.WriteLine("\t \tAfternoon");
-
-            if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.DeparturePeriodPreference.Night)
-                fileStreamWriter.WriteLine("\t \tNight");
-        }
-
-        fileStreamWriter.WriteLine($"\tClass: {((ClassTypeId)preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.Class.Class).ToString()}");
-
-        fileStreamWriter.WriteLine("\tStops:");
-        if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.StopsNavigation != null)
-        {
-            switch (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.StopsNavigation.Type)
-            {
-                case (short) StopsTypePreferenceId.Direct:
-                    fileStreamWriter.WriteLine("\t \tDirect");
-                    break;
-                case (short) StopsTypePreferenceId.OneStop:
-                    fileStreamWriter.WriteLine("\t \tOne Stop");
-                    break;
-                case (short) StopsTypePreferenceId.TwoOrMoreStops:
-                    fileStreamWriter.WriteLine("\t \tTwo or More Stops");
-                    break;
-            }
-        }
-
 
         fileStreamWriter.WriteLine("\nProperty Preferences");
         if (preferencesPayload.CustomerPropertyNavigation is {Pets: true})
@@ -230,7 +246,7 @@ public static class UserReportHelper
         fileStreamWriter.WriteLine("Flight recommendations ");
         fileStreamWriter.WriteLine("\n \tDeparture flight: ");
         fileStreamWriter.WriteLine($"\tFlight Date: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightDate:dd-MM-yyyy}");
-        fileStreamWriter.WriteLine($"\tDeparture Time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.DepartureTime:hh:mm}");
+        fileStreamWriter.WriteLine($"\tDeparture Time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.DepartureTime:HH:mm}");
 
         fileStreamWriter.WriteLine("\tClass:");
         switch (preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightClass)
@@ -260,7 +276,7 @@ public static class UserReportHelper
         
         fileStreamWriter.WriteLine("\n \tReturn flight: ");
         fileStreamWriter.WriteLine($"\tFlight Date: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightDate:dd-MM-yyyy}");
-        fileStreamWriter.WriteLine($"\tDeparture Time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.DepartureTime:hh:mm}");
+        fileStreamWriter.WriteLine($"\tDeparture Time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.DepartureTime:HH:mm}");
 
         fileStreamWriter.WriteLine("\tClass ");
         switch (preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightClass)

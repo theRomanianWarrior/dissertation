@@ -21,7 +21,7 @@ public class MasCoordinatorAgent : Agent
         {
             Console.WriteLine($"\t{message.Format()}");
             message.Parse(out var action, out string parameters);
-
+            
             switch (action)
             {
                 case "departure_flight_recommendation_done":

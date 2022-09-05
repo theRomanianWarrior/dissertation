@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using VacationPackageWebApi.Domain.AgentsEnvironment.AgentModels;
+﻿using VacationPackageWebApi.Domain.AgentsEnvironment.AgentModels;
 using VacationPackageWebApi.Domain.Enums;
 using VacationPackageWebApi.Domain.Mas.Singleton;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;

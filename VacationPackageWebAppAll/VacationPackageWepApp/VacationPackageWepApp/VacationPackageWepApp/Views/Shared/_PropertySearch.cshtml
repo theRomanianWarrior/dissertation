@@ -1,0 +1,171 @@
+﻿<!-- Property Search Panel -->
+<div class="search_panel">
+  <form action="#" id="search_form_2" class="search_panel_content d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
+    <div class="grid">
+      <div class="row">
+        <div class="col-sm-3 order-sm-1 order-2  ">
+          <div class="search_item">
+            <div>property type
+            </div>
+            <div id="propertyTypeUIList" class="search_input dropdown-check-list">
+              <span class="search_input anchor">Property type
+              </span>
+              <ul class="items">
+                <li>
+                  <input name = "propertyTypeValue" value = "House" type="checkbox"/>House
+                </li>
+                <li>
+                  <input name = "propertyTypeValue" value = "Apartment" type="checkbox"/>Apartment
+                </li>
+                <li>
+                  <input name = "propertyTypeValue" value = "Guest House" type="checkbox"/>Guest House
+                </li>
+                <li>
+                  <input name = "propertyTypeValue" value = "Hotel" type="checkbox"/>Hotel
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 order-sm-1 order-2  ">
+          <div class="search_item">
+            <div>place type
+            </div>
+            <div id="placeTypeUIList" class="search_input dropdown-check-list">
+              <span class="search_input anchor">Place type
+              </span>
+              <ul class="items">
+                <li>
+                  <input name = "placeTypeValue" value = "Entire Place" type="checkbox"/>Entire Place
+                </li>
+                <li>
+                  <input name = "placeTypeValue" value = "Private Room" type="checkbox"/>Private Room
+                </li>
+                <li>
+                  <input name = "placeTypeValue" value = "Shared Room" type="checkbox"/>Shared Room
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 order-sm-1 order-2  ">
+          <div class="search_item">
+            <div>Bedrooms
+            </div>
+            <input id = "bedrooms" type="number" min="0" class="destination search_input">
+          </div>
+        </div>
+        <div class="col-sm-3 order-sm-1 order-2  ">
+          <div class="search_item">
+            <div>Beds
+            </div>
+            <input id = "beds" type="number" min="0" class="destination search_input">
+          </div>
+        </div>
+        <div class="col-sm-3 order-sm-1 order-2  ">
+          <div class="search_item">
+            <div>Bathrooms
+            </div>
+            <input id = "bathrooms" type="number" min="0" class="destination search_input">
+          </div>
+        </div>
+        <div class="col-sm-3 order-sm-1 order-2  ">
+          <div class="search_item">
+            <div>amenities
+            </div>
+            <div id="amenitiesUIList" class="search_input dropdown-check-list">
+              <span class="search_input anchor">Amenities
+              </span>
+              <ul class="items">
+                <li>
+                  <input name = "amenitiesValue" value = "WiFi" type="checkbox"/>Wi-Fi
+                </li>
+                <li>
+                  <input name = "amenitiesValue" value = "Kitchen" type="checkbox"/>Kitchen
+                </li>
+                <li>
+                  <input name = "amenitiesValue" value = "Washer" type="checkbox"/>Washer
+                </li>
+                <li>
+                  <input name = "amenitiesValue" value = "Dryer" type="checkbox"/>Dryer
+                </li>
+                <li>
+                  <input name = "amenitiesValue" value = "AirConditioning" type="checkbox"/>Air conditioning
+                </li>
+                <li>
+                  <input name = "amenitiesValue" value = "Heating" type="checkbox"/>Heating
+                </li>
+                <li>
+                  <input name = "amenitiesValue" value = "Tv" type="checkbox"/>TV
+                </li>
+                <li>
+                  <input name = "amenitiesValue" value = "Iron" type="checkbox"/>Iron
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 order-sm-1 order-2  ">
+          <div class="search_item">
+            <div>Pets
+            </div>
+            <input id = "pets" type="checkbox" name="Pets">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+$('input[name="amenitiesValue"]').on('change', function() {
+        var placeType = [];
+        $("input:checkbox[name='amenitiesValue']:checked").each(function(){    
+          placeType.push($(this).attr("value"));    		
+        });
+        var selectedAmenity = placeType.join(", ");
+          $.ajax({
+                  type: 'POST',
+                  url: '/Property/StoreAmenities/' + selectedAmenity,
+                  success: function (response) {
+                           },
+                  error: function (response) {
+                             // code on failure
+                         }
+        });
+});
+
+$('input[name="propertyTypeValue"]').on('change', function() {
+        var propertyType = [];
+        $("input:checkbox[name='propertyTypeValue']:checked").each(function(){    
+          propertyType.push($(this).attr("value"));    		
+        });
+        var selectedPropertyType = propertyType.join(", ");
+          $.ajax({
+                  type: 'POST',
+                  url: '/Property/StorePropertyType/' + selectedPropertyType,
+                  success: function (response) {
+                           },
+                  error: function (response) {
+                             // code on failure
+                         }
+        });
+});
+
+$('input[name="placeTypeValue"]').on('change', function() {
+        var placeType = [];
+        $("input:checkbox[name='placeTypeValue']:checked").each(function(){    
+          placeType.push($(this).attr("value"));    		
+        });
+        var selectedPlaceType = placeType.join(", ");
+          $.ajax({
+                  type: 'POST',
+                  url: '/Property/StorePlaceType/' + selectedPlaceType,
+                  success: function (response) {
+                           },
+                  error: function (response) {
+                             // code on failure
+                         }
+        });
+});
+</script>

@@ -11,7 +11,7 @@ public static class CommonRecommendationLogic
     public const int Match = 1;
     public const int NoMatch = 0;
     
-    public static TaskType AccessPreferencesAndChoseTask(object taskDistributionLock, TourismAgent agent, Dictionary<TaskType, float> customizedExpertAgentRates)
+    public static TaskType AccessPreferencesAndChoseTask(object taskDistributionLock, TourismAgent agent)
     {
         var taskTypeToWorkOn = TaskType.Default;
 
@@ -22,7 +22,7 @@ public static class CommonRecommendationLogic
             if (availableTasks == null) return TaskType.Default;
             if (!availableTasks.Any()) return TaskType.Default;
 
-            foreach (var (key, _) in customizedExpertAgentRates.OrderByDescending(t => t.Value))
+            foreach (var (key, _) in agent.ConfInd.OrderByDescending(t => t.Value))
             {
                 if (!availableTasks.Contains(key)) continue;
                 taskTypeToWorkOn = key;

@@ -2,6 +2,7 @@
 using VacationPackageWebApi.Domain.AgentsEnvironment.AgentModels;
 using VacationPackageWebApi.Domain.Enums;
 using VacationPackageWebApi.Domain.Mas.BusinessLogic;
+using VacationPackageWebApi.Domain.Mas.Initializer;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 
 namespace VacationPackageWebApi.Domain.Mas;
@@ -11,7 +12,7 @@ public class MasVacationAgent : Agent
     private static readonly object TaskDistributionLock = new();
     private static readonly object RecommendationPopulationLock = new();
 
-    public readonly TourismAgent TourismAgent;
+    public TourismAgent TourismAgent;
     private PreferencesRequest _preferencesRequest;
 
     public MasVacationAgent(TourismAgent tourismAgent)
@@ -36,9 +37,9 @@ public class MasVacationAgent : Agent
                     Console.WriteLine("Agent " + this.Name + " got request");
                     _preferencesRequest = CommonRecommendationLogic.GetPreferencesPayload();
 
-                    var customizedExpertRate = CommonRecommendationLogic.GetCurrentAgentCustomizedExpertRate(TourismAgent.Id, _preferencesRequest.CustomizedExpertAgentRates);
+                    TourismAgent.ConfInd = CommonRecommendationLogic.GetCurrentAgentCustomizedExpertRate(TourismAgent.Id, _preferencesRequest.CustomizedExpertAgentRates);
                     
-                    var taskType = CommonRecommendationLogic.AccessPreferencesAndChoseTask(TaskDistributionLock, TourismAgent, customizedExpertRate);
+                    var taskType = CommonRecommendationLogic.AccessPreferencesAndChoseTask(TaskDistributionLock, TourismAgent);
                     Console.WriteLine("Agent " + this.Name + " got task type " + taskType.ToString());
                     switch (taskType)
                     {
@@ -46,6 +47,8 @@ public class MasVacationAgent : Agent
                             return;
                         case TaskType.Flight:
                         {
+                            TourismAgent.Status = false;
+                            TourismAgent.CurrentTask = TaskType.Flight;
                             List<string>? availableAgents = null;
 
                             FlightRecommendationLogic.FulfillFlightDefaultPreferencesWithCheapestOffer(
@@ -57,7 +60,7 @@ public class MasVacationAgent : Agent
 
                             if (optimalDepartureFlightSolutionStoredSuccess == false)
                             {
-                                var trustRateInOtherAgents = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation);
+                                TourismAgent.TrustGradeInOtherAgent = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation).ToList();
 
                                 availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
 
@@ -66,7 +69,7 @@ public class MasVacationAgent : Agent
                                 
                                 if (!availableAgents.Any()) return; //// ??????????????????????????/
 
-                                foreach (var trustRateInAgent in trustRateInOtherAgents)
+                                foreach (var trustRateInAgent in TourismAgent.TrustGradeInOtherAgent)
                                 {
                                     if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
                                     {
@@ -95,9 +98,9 @@ public class MasVacationAgent : Agent
                                     if (!availableAgents.Any()) return; //// ??????????????????????????/
                                 }
                                 
-                                var trustRateInOtherAgents = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation);
+                                TourismAgent.TrustGradeInOtherAgent = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation).ToList();
 
-                                foreach (var trustRateInAgent in trustRateInOtherAgents)
+                                foreach (var trustRateInAgent in TourismAgent.TrustGradeInOtherAgent)
                                 {
                                     if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
                                     {
@@ -113,12 +116,15 @@ public class MasVacationAgent : Agent
                             break;
                         case TaskType.Property:
                         {
+                            TourismAgent.CurrentTask = TaskType.Property;
+                            TourismAgent.Status = false;
+                            
                             var optimalPropertySolutionStoredSuccess = PropertyRecommendationLogic.FindOptimalPropertyAndStoreInMemory(TourismAgent.Id,
                                     TourismAgent.Name, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
                             
                             if (optimalPropertySolutionStoredSuccess == false)
                             {
-                                var trustRateInOtherAgents = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation);
+                                TourismAgent.TrustGradeInOtherAgent = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation).ToList();
 
                                 var availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
 
@@ -127,7 +133,7 @@ public class MasVacationAgent : Agent
                                 
                                 if (!availableAgents.Any()) return; //// ??????????????????????????/
 
-                                foreach (var trustRateInAgent in trustRateInOtherAgents)
+                                foreach (var trustRateInAgent in TourismAgent.TrustGradeInOtherAgent)
                                 {
                                     if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
                                     {
@@ -143,12 +149,15 @@ public class MasVacationAgent : Agent
                             break;
                         case TaskType.Attractions:
                         {
+                            TourismAgent.CurrentTask = TaskType.Attractions;
+                            TourismAgent.Status = false;
+
                             var optimalAttractionSolutionStoredSuccess = AttractionsRecommendationLogic.FindOptimalAttractionAndStoreInMemory(TourismAgent.Id,
                                 TourismAgent.Name, RecommendationPopulationLock, TourismAgent, _preferencesRequest);
                             
                             if (optimalAttractionSolutionStoredSuccess == false)
                             {
-                                var trustRateInOtherAgents = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation);
+                                TourismAgent.TrustGradeInOtherAgent = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation).ToList();
 
                                 var availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
 
@@ -157,7 +166,7 @@ public class MasVacationAgent : Agent
                                 
                                 if (!availableAgents.Any()) return; //// ??????????????????????????/
 
-                                foreach (var trustRateInAgent in trustRateInOtherAgents)
+                                foreach (var trustRateInAgent in TourismAgent.TrustGradeInOtherAgent)
                                 {
                                     if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
                                     {
@@ -175,6 +184,9 @@ public class MasVacationAgent : Agent
                     break;
                 case "departure_flight_recommendation_request":
                 {
+                    TourismAgent.CurrentTask = TaskType.Flight;
+                    TourismAgent.Status = false;
+
                     if (CommonRecommendationLogic.IsDepartureFlightRecommendationDone()) return;
                     
                     CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
@@ -188,6 +200,9 @@ public class MasVacationAgent : Agent
                     break;
                 case "return_flight_recommendation_request":
                 {
+                    TourismAgent.CurrentTask = TaskType.Flight;
+                    TourismAgent.Status = false;
+
                     if (CommonRecommendationLogic.IsReturnFlightRecommendationDone()) return;
 
                     CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
@@ -200,6 +215,9 @@ public class MasVacationAgent : Agent
                     break;
                 case "property_recommendation_request":
                 {
+                    TourismAgent.CurrentTask = TaskType.Property;
+                    TourismAgent.Status = false;
+
                     if (CommonRecommendationLogic.IsPropertyRecommendationDone()) return;
 
                     CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
@@ -212,6 +230,9 @@ public class MasVacationAgent : Agent
                     break;
                 case "attractions_recommendation_request":
                 {
+                    TourismAgent.CurrentTask = TaskType.Attractions;
+                    TourismAgent.Status = false;
+
                     if (CommonRecommendationLogic.IsAttractionsRecommendationDone()) return;
 
                     CommonRecommendationLogic.RemoveAgentFromAvailableAgentsList(TourismAgent.Name);
@@ -223,6 +244,8 @@ public class MasVacationAgent : Agent
                 } 
                     break;
             }
+            
+            MasEnvVarsInitializer.ResetTourismAgent(ref TourismAgent);
             await CommonRecommendationLogic.InsertAgentNameToAvailableAgents(TourismAgent.Name);
         }
         catch (Exception ex)

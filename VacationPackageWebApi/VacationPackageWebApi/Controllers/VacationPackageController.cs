@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.CustomerServicesEvaluation;
-using VacationPackageWebApi.Domain.Enums;
 using VacationPackageWebApi.Domain.Helpers;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace VacationPackageWebApi.API.Controllers
 {
@@ -24,7 +25,7 @@ namespace VacationPackageWebApi.API.Controllers
         }
 
         [HttpPost]
-        public async Task<PreferencesResponse?> RequestVacationRecommendation([FromBody] PreferencesRequest preferencesPayload)
+        public async Task<IActionResult> RequestVacationRecommendation([FromBody] PreferencesRequest preferencesPayload)
         {
             var clientRequest = new ClientRequest
             {
@@ -42,9 +43,9 @@ namespace VacationPackageWebApi.API.Controllers
 
             recommendationPackage!.ClientRequestId = clientRequest.Id;
 
-            //Console.WriteLine(JsonConvert.SerializeObject(recommendationPackage, Formatting.Indented));
-
-            return recommendationPackage;
+            return new JsonResult(recommendationPackage);
+            //var returnedRecommendationPackage = JsonConvert.SerializeObject(recommendationPackage);
+            //return returnedRecommendationPackage;
         }
         
         [HttpPost]
