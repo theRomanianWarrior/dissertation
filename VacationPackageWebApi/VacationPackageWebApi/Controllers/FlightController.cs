@@ -27,4 +27,10 @@ public class FlightController : Controller
     {
         return _flightService.GetFlightArrivalCities(flightDepartureCity);
     }
+    
+    [HttpGet("{departureAndDestinationCity}")]
+    public List<string> GetFlightCompaniesForDepartureDestinationCity(string departureAndDestinationCity)
+    {
+        return _flightService.GetFlightCompaniesForDepartureDestinationCity(departureAndDestinationCity);
+    }
 }

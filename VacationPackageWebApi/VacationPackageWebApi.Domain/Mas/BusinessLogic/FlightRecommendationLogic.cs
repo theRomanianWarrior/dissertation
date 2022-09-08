@@ -80,46 +80,33 @@ public static class FlightRecommendationLogic
 
     public static void FulfillFlightDefaultPreferencesWithCheapestOffer(ref PreferencesRequest preferencesRequest)
     {
-        if (preferencesRequest.CustomerFlightNavigation is {DepartureNavigation: { }})
+        preferencesRequest.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
+        preferencesRequest.CustomerFlightNavigation.DepartureNavigation ??= new FlightPreferenceDto();
+        preferencesRequest.CustomerFlightNavigation.DepartureNavigation.Class ??= new FlightClassDto()
         {
-            preferencesRequest.CustomerFlightNavigation.DepartureNavigation.Class ??= new FlightClassDto()
+            Class = (short) ClassTypeId.Economy
+        };       
+        preferencesRequest.CustomerFlightNavigation.DepartureNavigation.StopsNavigation ??=
+            new StopsTypePreferenceDto
             {
-                Class = (short) ClassTypeId.Economy
-            };                
-        }
+                Type = (short) StopsTypePreferenceId.Direct
+            };
 
         
+        preferencesRequest.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto(); 
+        preferencesRequest.CustomerFlightNavigation.ReturnNavigation.Class ??= new FlightClassDto()
+        {
+            Class = (short) ClassTypeId.Economy
+        };       
+        preferencesRequest.CustomerFlightNavigation.ReturnNavigation.StopsNavigation ??=
+            new StopsTypePreferenceDto
+            {
+                Type = (short) StopsTypePreferenceId.Direct
+            };
         // if (preferencesRequest.CustomerFlightNavigation.DepartureNavigation.Class.Class == (short) ClassTypeId.Default)
         //     preferencesRequest.CustomerFlightNavigation.DepartureNavigation.Class.Class = (short) ClassTypeId.Economy;
 
-        if (preferencesRequest.CustomerFlightNavigation is {DepartureNavigation: { }})
-        {
-            preferencesRequest.CustomerFlightNavigation.DepartureNavigation.StopsNavigation ??=
-                new StopsTypePreferenceDto
-                {
-                    Type = (short) StopsTypePreferenceId.Direct
-                };
-        }
-
-        if (preferencesRequest.CustomerFlightNavigation is {ReturnNavigation: { }})
-        {
-            preferencesRequest.CustomerFlightNavigation.ReturnNavigation.Class ??= new FlightClassDto()
-            {
-                Class = (short) ClassTypeId.Economy
-            };                
-        }
-
-        //if (preferencesRequest.CustomerFlightNavigation.ReturnNavigation.Class.Class == (short) ClassTypeId.Default)
-        //    preferencesRequest.CustomerFlightNavigation.ReturnNavigation.Class.Class = (short) ClassTypeId.Economy;
-
-        if (preferencesRequest.CustomerFlightNavigation is {ReturnNavigation: { }})
-        {
-            preferencesRequest.CustomerFlightNavigation.ReturnNavigation.StopsNavigation ??=
-                new StopsTypePreferenceDto
-                {
-                    Type = (short) StopsTypePreferenceId.Direct
-                };
-        }
+        
     }
 
     private static bool CheckFlightDayMatch(string dayOfFlightPreferred, FlightBusinessModel flight)

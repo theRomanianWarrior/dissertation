@@ -1,6 +1,6 @@
 ﻿<!-- Flight Search Panel -->
-<div class="search_panel active">
-  <form  class="search_panel_content d-flex flex-wrap align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
+<div id = "flight_search_panel" class="search_panel active">
+  <form  id = "flightForm" class="search_panel_content d-flex flex-wrap align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
     <div class="grid">
       <div class="row">
         <div class="col-sm-3 order-sm-1 order-2  ">
@@ -118,7 +118,7 @@
             <div id="flightCompaniesUIList" class="search_input dropdown-check-list">
               <span class="search_input anchor">Select company
               </span>
-              <ul class="items">
+              <ul class="items" id = "departureItemFlightCompanies">
                 <li>
                   <input type="checkbox" name = "departureFlightCompanies" value = "First flight company"/>First flight company
                 </li>
@@ -207,7 +207,7 @@
             <div id="flightCompaniesReturnUIList" class="search_input dropdown-check-list">
               <span class="search_input anchor">Select company
               </span>
-              <ul class="items">
+              <ul class="items" id = "returnItemFlightCompanies">
                 <li>
                   <input type="checkbox" name = "returnFlightCompanies" value = "First flight company"/>First flight company
                 </li>
@@ -241,14 +241,62 @@
 
 
 <script>
+$(document).ready(function(){ 
+  $('#destination').change(function() 
+{ ///////////////////////////////////// emil
+      let selectedDepartureCityAndCountry = $("#departure").val();
+      let selectedDestinationCityAndCountry = jQuery(this).val();
+
+      let selectedDepartureCity = getCharsBefore(selectedDepartureCityAndCountry, ",");
+      let selectedDestinationCity = getCharsBefore(selectedDestinationCityAndCountry, ",");
+      let selectedDepartureDestinationCities = selectedDepartureCity + ", " + selectedDestinationCity;
+      let url = '/Flight/GetFlightCompaniesForDepartureDestinationCity/' + selectedDepartureDestinationCities;
+      let constructFlight = "";
+      $.ajax({
+              type: 'POST',
+              url: url,
+              success: function (response) {
+                let constructCities = "";
+                for (let i = 0; i < response.length; i++)
+                  {
+                    constructCities += "<li><input type=\"checkbox\" name = \"departureFlightCompanies\" value = \"" + response[i] + "\"/>" + response[i] + "</li>";
+                  }
+                $('#departureItemFlightCompanies').html(constructCities);
+                       },
+              error: function (response) {
+                         // code on failure
+                     }
+    });
+      
+      selectedDepartureDestinationCities = selectedDestinationCity + ", " + selectedDepartureCity;
+      url = '/Flight/GetFlightCompaniesForDepartureDestinationCity/' + selectedDepartureDestinationCities;
+            constructFlight = "";
+            $.ajax({
+                    type: 'POST',
+                    url: url,
+                    success: function (response) {
+                      let constructCities = "";
+                      for (let i = 0; i < response.length; i++)
+                        {
+                          constructCities += "<li><input type=\"checkbox\" name = \"returnFlightCompanies\" value = \"" + response[i] + "\"/>" + response[i] + "</li>";
+                        }
+                      $('#returnItemFlightCompanies').html(constructCities);
+                             },
+                    error: function (response) {
+                               // code on failure
+                           }
+          });
+});
+});
+</script>
+<script>
 /* Store Selected Departure Date */
 /* Store Selected Departure Day Periods Departure Flight */
 /* Store Selected Departure Day Periods Return Flight */
 /* Store Selected Departure Flight Companies */
 /* Store Selected Return Flight Companies */
 $(document).ready(function(){ 
-  
-$('input[name="returnFlightCompanies"]').on('change', function() {
+ $(document).on("change", "input[name='returnFlightCompanies']", function () {
         var flightCompanies = [];
         $("input:checkbox[name='returnFlightCompanies']:checked").each(function(){    
           flightCompanies.push($(this).attr("value"));    		
@@ -263,9 +311,9 @@ $('input[name="returnFlightCompanies"]').on('change', function() {
                              // code on failure
                          }
         });
-    });
+ }); 
 
-$('input[name="departureFlightCompanies"]').on('change', function() {
+ $(document).on("change", "input[name='departureFlightCompanies']", function () {
         var flightCompanies = [];
         $("input:checkbox[name='departureFlightCompanies']:checked").each(function(){    
           flightCompanies.push($(this).attr("value"));    		

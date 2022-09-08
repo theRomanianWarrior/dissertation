@@ -62,7 +62,7 @@ public class MasVacationAgent : Agent
                             {
                                 TourismAgent.TrustGradeInOtherAgent = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation).ToList();
 
-                                availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+                                availableAgents = await CommonRecommendationLogic.GetListOfAllAgentsExceptCurrentAndCoordinator(TourismAgent);
 
                                 if (availableAgents.Contains(TourismAgent.Name))
                                     availableAgents.Remove(TourismAgent.Name);
@@ -90,7 +90,7 @@ public class MasVacationAgent : Agent
                             {
                                 if (optimalDepartureFlightSolutionStoredSuccess)
                                 {
-                                    availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+                                    availableAgents = await CommonRecommendationLogic.GetListOfAllAgentsExceptCurrentAndCoordinator(TourismAgent);
 
                                     if (availableAgents.Contains(TourismAgent.Name))
                                         availableAgents.Remove(TourismAgent.Name);
@@ -126,7 +126,7 @@ public class MasVacationAgent : Agent
                             {
                                 TourismAgent.TrustGradeInOtherAgent = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation).ToList();
 
-                                var availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+                                var availableAgents = await CommonRecommendationLogic.GetListOfAllAgentsExceptCurrentAndCoordinator(TourismAgent);
 
                                 if (availableAgents.Contains(TourismAgent.Name))
                                     availableAgents.Remove(TourismAgent.Name);
@@ -159,7 +159,7 @@ public class MasVacationAgent : Agent
                             {
                                 TourismAgent.TrustGradeInOtherAgent = CommonRecommendationLogic.GetAgentTrustRateOfAgentWithId(TourismAgent.Id)!.OrderByDescending(ta => ta.FlightTrust.PositiveEvaluation).ToList();
 
-                                var availableAgents = await CommonRecommendationLogic.GetListOfAvailableAgentsAsync();
+                                var availableAgents = await CommonRecommendationLogic.GetListOfAllAgentsExceptCurrentAndCoordinator(TourismAgent);
 
                                 if (availableAgents.Contains(TourismAgent.Name))
                                     availableAgents.Remove(TourismAgent.Name);

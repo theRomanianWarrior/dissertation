@@ -38,11 +38,12 @@ public static class MasEnvVarsInitializer
             TaskType.Flight,
             TaskType.Property
         };
-
-        MasEnvironmentSingleton.Instance.Memory["PreferencesPayload"].Clear();
-        MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"].Clear();
-        MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] = "undone";
-        MasEnvironmentSingleton.Instance.Memory["AgentsTrustRates"].Clear();
+        
+        //MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] = "undone";
+        MasEnvironmentSingleton.Instance.Memory["PreferencesPayload"] = new PreferencesRequest();
+        MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] = new PreferencesResponse();
+        MasEnvironmentSingleton.Instance.Memory["AgentsTrustRates"] =
+            new Dictionary<Guid, List<TrustAgentRateBusinessModel>>();
     }
 
     public static void ResetTourismAgent(ref TourismAgent tourismAgent)

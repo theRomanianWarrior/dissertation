@@ -1,6 +1,7 @@
 ﻿using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.Attractions;
 using VacationPackageWebApi.Domain.Flight;
+using VacationPackageWebApi.Domain.Helpers;
 using VacationPackageWebApi.Domain.Mas;
 using VacationPackageWebApi.Domain.Mas.BusinessLogic;
 using VacationPackageWebApi.Domain.Mas.Initializer;
@@ -82,34 +83,37 @@ public class MasLoaderService : IMasLoaderService
     
     private void StoreInAgentsLocalDbFlights(HashSet<FlightBusinessModel> flights, List<MasVacationAgent> masVacationAgents)
     {
-        foreach (var flight in flights)
+        var splitProperties = ListsHelper.SplitIntoChunks(flights.ToList(), flights.Count / masVacationAgents.Count);
+        foreach (var masAgent in masVacationAgents)
         {
-            foreach (var masAgent in masVacationAgents)
-            {
-                masAgent.TourismAgent.FlightsList.Add(flight);
-            }
+            masAgent.TourismAgent.FlightsList = splitProperties[0].ToHashSet();
+            splitProperties.Remove(splitProperties[0]);
         }
     }
     
     private void StoreInAgentsLocalDbProperties(HashSet<PropertyBusinessModel> properties, List<MasVacationAgent> masVacationAgents)
     {
-        foreach (var property in properties)
+        var splitProperties = ListsHelper.SplitIntoChunks(properties.ToList(), properties.Count / masVacationAgents.Count);
+        foreach (var masAgent in masVacationAgents)
         {
-            foreach (var masAgent in masVacationAgents)
-            {
-                masAgent.TourismAgent.StaysList.Add(property);
-            }
+            masAgent.TourismAgent.StaysList = splitProperties[0].ToHashSet();
+            splitProperties.Remove(splitProperties[0]);
         }
     }
     
     private void StoreInAgentsLocalDbAttractions(HashSet<AttractionBusinessModel> attractions, List<MasVacationAgent> masVacationAgents)
     {
-        foreach (var attraction in attractions)
+        /* Destinations black list
+         * Athens
+         * Kazan
+         * Nikolayev
+         * Sabetta
+         */
+        var splitProperties = ListsHelper.SplitIntoChunks(attractions.ToList(), attractions.Count / masVacationAgents.Count);
+        foreach (var masAgent in masVacationAgents)
         {
-            foreach (var masAgent in masVacationAgents)
-            {
-                masAgent.TourismAgent.AttractionsList.Add(attraction);
-            }
+            masAgent.TourismAgent.AttractionsList = splitProperties[0].ToHashSet();
+            splitProperties.Remove(splitProperties[0]);
         }
     }
     

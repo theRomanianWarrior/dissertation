@@ -40,8 +40,8 @@ public class MasCoordinatorAgent : Agent
 
             if (_tasksDone.Count == TotalNumberOfServices)
             {
+                _tasksDone.Clear();
                 CommonRecommendationLogic.SetPreferencesResponseStatusDone();
-                MasEnvVarsInitializer.ResetAll();
             }
         }
         catch (Exception ex)

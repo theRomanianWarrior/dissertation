@@ -17,6 +17,7 @@ public static class TimeoutFunctionHandler
                     await Task.Delay(50, cancellationToken);
                     if (MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] == "done")
                     {
+                        MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] = "undone";
                         return;
                     }
                 }

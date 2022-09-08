@@ -1,6 +1,7 @@
 ﻿using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.Helpers;
 using VacationPackageWebApi.Domain.Mas.BusinessLogic;
+using VacationPackageWebApi.Domain.Mas.Initializer;
 using VacationPackageWebApi.Domain.Mas.Singleton;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Domain.PreferencesPackageResponse;
@@ -22,8 +23,21 @@ public class RecommendationService : IRecommendationService
 
         await TimeoutFunctionHandler.CheckRecommendationReadyUntilSuccessOrTimeout(cancellationTokenSource.Token);
 
-        if (MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] != "done") return null!; // was canceled
+        if (cancellationTokenSource.IsCancellationRequested)
+        {
+            MasEnvVarsInitializer.ResetAll();
+            cancellationTokenSource.TryReset();
+            return null;
+        }
         var readRecommendation = MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] as PreferencesResponse;
+
+        MasEnvVarsInitializer.ResetAll();
+
+        //if (MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] != "done")
+       // {
+        //    return null!; // was canceled
+        //}
+
         return readRecommendation!;
     }
 }

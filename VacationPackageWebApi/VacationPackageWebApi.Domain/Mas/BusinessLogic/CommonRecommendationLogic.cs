@@ -72,10 +72,9 @@ public static class CommonRecommendationLogic
         return Task.CompletedTask;
     }
     
-    public static Task SetPreferencesResponseStatusDone()
+    public static void SetPreferencesResponseStatusDone()
     {
         MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] = "done";
-        return Task.CompletedTask;
     }
 
     public static bool IsDepartureFlightRecommendationDone()
@@ -123,7 +122,7 @@ public static class CommonRecommendationLogic
         return Task.FromResult((MasEnvironmentSingleton.Instance.Memory["AvailableAgents"] as List<string>)!);
     }
     
-    /*public static Task<List<string>> GetListOfAllAgentsExceptCurrentAndCoordinator(TourismAgent tourismAgent)
+    public static Task<List<string>> GetListOfAllAgentsExceptCurrentAndCoordinator(TourismAgent tourismAgent)
     {
         var availableAgents = MasEnvironmentSingleton.Instance.AllAgents();
         if (availableAgents.Count > 2)
@@ -133,5 +132,5 @@ public static class CommonRecommendationLogic
         }
 
         return Task.FromResult(availableAgents.ToList());
-    }*/
+    }
 }

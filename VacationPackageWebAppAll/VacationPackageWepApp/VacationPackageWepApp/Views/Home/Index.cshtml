@@ -270,34 +270,36 @@
     </div>
   </div>
   <!-- Search -->
-  <div class="search">
-    <!-- Search Contents -->
-    <div class="container fill_height">
-      <div class="row fill_height">
-        <div class="col fill_height">
-          <!-- Search Tabs -->
-          <div class="search_tabs_container">
-            <div class="search_tabs d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
-              <div class="search_tab active d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
-                <img src="images/departure.png" alt="">
-                <span>flights
-                </span>
-              </div>
-              <div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
-                <img src="images/suitcase.png" alt="">hotels
-              </div>
-              <div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
-                <img src="images/island.png" alt="">attractions
-              </div>
+<div id = "search_services" class="search">
+  <!-- Search Contents -->
+  <div class="container fill_height">
+    <div class="row fill_height">
+      <div class="col fill_height">
+        <!-- Search Tabs -->
+        <div id = "vacationServiceTab" class="search_tabs_container">
+          <div class="search_tabs d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
+            <div class="search_tab active d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
+              <img src="images/departure.png" alt="">
+              <span>flights
+              </span>
+            </div>
+            <div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
+              <img src="images/suitcase.png" alt="">hotels
+            </div>
+            <div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
+              <img src="images/island.png" alt="">attractions
             </div>
           </div>
-          @await Html.PartialAsync("_FlightSearch")
-          @await Html.PartialAsync("_PropertySearch")
-          @await Html.PartialAsync("_AttractionsSearch")
         </div>
+        @await Html.PartialAsync("_FlightSearch")
+        @await Html.PartialAsync("_PropertySearch")
+        @await Html.PartialAsync("_AttractionsSearch")
       </div>
     </div>
   </div>
+</div>
+@await Html.PartialAsync("_PreferencesResponse")
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -679,6 +681,37 @@ $(document).ready(function(){
                             type: 'GET',
                             url: '/Flight/SendVacationPackagePreferencesToTheServer',
                             success: function (response) {
+                              
+                              console.log(response);
+                            var flightData = response.flightRecommendation;
+                            console.log(flightData);
+                            var departureFlight = "<li class=\"u-text u-text-3\">Flight date: "+ flightData.departureFlightUiModel.flightDate +" </li><li class=\"u-text u-text-3\">Departure time: "+ flightData.departureFlightUiModel.departureTime +"</li><li class=\"u-text u-text-3\">Stops: "+ flightData.departureFlightUiModel.stops +"</li><li class=\"u-text u-text-3\">Class: "+ flightData.departureFlightUiModel.class +"</li><li class=\"u-text u-text-3\">Company: "+ flightData.departureFlightUiModel.company+"</li><li class=\"u-text u-text-3\">Airport: "+ flightData.departureFlightUiModel.airport +"</li><li class=\"u-text u-text-3\">City: "+ flightData.departureFlightUiModel.city+"</li><li class=\"u-text u-text-3\">Country: "+ flightData.departureFlightUiModel.country +"</li>";
+                            let returnFlight = "<li class=\"u-text u-text-3\">Flight date: "+ flightData.returnFlightUiModel.flightDate +" </li><li class=\"u-text u-text-3\">Departure time: "+ flightData.returnFlightUiModel.departureTime +"</li><li class=\"u-text u-text-3\">Stops: "+ flightData.returnFlightUiModel.stops +"</li><li class=\"u-text u-text-3\">Class: "+ flightData.returnFlightUiModel.class +"</li><li class=\"u-text u-text-3\">Company: "+ flightData.returnFlightUiModel.company+"</li><li class=\"u-text u-text-3\">Airport: "+ flightData.returnFlightUiModel.airport +"</li><li class=\"u-text u-text-3\">City: "+ flightData.returnFlightUiModel.city+"</li><li class=\"u-text u-text-3\">Country: "+ flightData.returnFlightUiModel.country +"</li>";
+                            $('#departureFlightRecommendation').html(departureFlight);
+                            $('#returnFlightRecommendation').html(returnFlight);
+                            var propertyData = response.propertyRecommendation;
+                            console.log(propertyData);
+
+                            var constructProperty = "<li class=\"u-text u-text-3\">Property name: " + propertyData.propertyName +"</li><li class=\"u-text u-text-3\">Pets: " + propertyData.pets +"</li><li class=\"u-text u-text-3\">Amenities:</li><ol><li class=\"u-text u-text-3\">Wi-Fi: " + propertyData.amenities.wiFi +"</li><li class=\"u-text u-text-3\">Kitchen: " + propertyData.amenities.kitchen +"</li><li class=\"u-text u-text-3\">Washer: " + propertyData.amenities.washer +"</li><li class=\"u-text u-text-3\">Dryer: " + propertyData.amenities.dryer +"</li><li class=\"u-text u-text-3\">AC: " + propertyData.amenities.airConditioning +"</li><li class=\"u-text u-text-3\">Heating: " + propertyData.amenities.heating +"</li><li class=\"u-text u-text-3\">Tv: " + propertyData.amenities.tv +"</li><li class=\"u-text u-text-3\">Iron: " + propertyData.amenities.iron +"</li></ol><li class=\"u-text u-text-3\">City: "+ propertyData.city +"</li><li class=\"u-text u-text-3\">Place Type: " + propertyData.placeType +"</li><li class=\"u-text u-text-3\">Property Type: " + propertyData.propertyType +"</li><li class=\"u-text u-text-3\">Bedroom: " + propertyData.bedroom +"</li><li class=\"u-text u-text-3\">Bed: " + propertyData.bed +"</li><li class=\"u-text u-text-3\">Bathroom: " + propertyData.bathroom +"</li>";
+                            $('#propertyRecommendation').html(constructProperty);
+                            
+                            var attractionsData = response.attractionsRecommendation
+                            var constructAttractions = ""
+                            $.each(attractionsData, function( index, value ) {
+                              constructAttractions += "<tr><td><p class=\"u-text u-text-7\">Name: "+ value.name +"</p><p class=\"u-text u-text-7\">Address: "+ value.address +"</p><p class=\"u-text u-text-7\">Rate: " + value.rate +"</p><p class=\"u-text u-text-7\">"+ value.kindsTags +" </p></td></tr>";
+                            });
+                            
+                            $('#attractionsRecommendation').html(constructAttractions);
+                                                                                        
+                              $('#flightForm')[0].reset();
+                              $('#search_form_2')[0].reset();
+                              $('#search_form_3')[0].reset();
+                              
+                              $('#flight_search_panel').fadeOut(); //hide
+                              $('#vacationServiceTab').fadeOut(); //hide
+                              $('#search_services').fadeOut();
+                              $('#carousel_4ffd').fadeIn(1000);
+                              
                                      },
                             error: function (response) {
                                        // code on failure

@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <Folder Include="ServerModels" />
-      <Folder Include="wwwroot" />
     </ItemGroup>
 
     <ItemGroup>

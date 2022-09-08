@@ -1,6 +1,7 @@
-﻿using System.Text.Json;
-using HttpClients;
+﻿using HttpClients;
 using Microsoft.AspNetCore.Mvc;
+using VacationPackageWepApp.Models;
+using VacationPackageWepApp.Models.Mappers;
 using VacationPackageWepApp.UiDataStoring.Enums;
 using VacationPackageWepApp.UiDataStoring.Preference;
 using VacationPackageWepApp.UiDataStoring.PreferencesPackageResponse;
@@ -14,9 +15,16 @@ public class FlightController : Controller
     private bool disposed = false;
     private GenericRestfulCrudHttpClient<string, string> flightClient =
             new("http://localhost:7071/", "Flight/");
-    
-    private GenericRestfulCrudHttpClient<PreferencesRequest, PreferencesResponse> preferencesPackageClient =
-        new("http://localhost:7071/", "VacationPackage/RequestVacationRecommendation/");
+
+    [HttpPost("[action]/{departureAndDestinationCity}")]
+    public IActionResult GetFlightCompaniesForDepartureDestinationCity(string departureAndDestinationCity)
+    {
+        flightClient.addressSuffix = "Flight/GetFlightCompaniesForDepartureDestinationCity/" + departureAndDestinationCity;
+        var cities = flightClient.GetManyAsync();
+        cities.Wait();
+        var response = cities.Result;
+        return new JsonResult(response.ToList());
+    }  
     
     [HttpGet("[action]")]
     public IActionResult GetFlightDepartureCities()
@@ -39,13 +47,17 @@ public class FlightController : Controller
     }
 
     [HttpGet("[action]")]
-    public async Task SendVacationPackagePreferencesToTheServer()
+    public async Task<IActionResult> SendVacationPackagePreferencesToTheServer()
     {
+        using var preferencesPackageClient =
+            new GenericRestfulCrudHttpClient<PreferencesRequest, PreferencesResponse>("http://localhost:7071/", "VacationPackage/RequestVacationRecommendation/");
         PreferencesPayloadSingleton.Instance.CustomerId = new Guid("141fcf23-a053-1d6e-b5df-c0cacbb84b21");
 
         var preferencesResponse = await preferencesPackageClient.PostAsync<PreferencesResponse>(PreferencesPayloadSingleton.Instance);
         
         ResetPreferencesPayload();
+        var recommendation = preferencesResponse.ToRecommendationUiModel(); 
+        return new JsonResult(recommendation);
     }
 
     [HttpPost("[action]/{departureCity}")]

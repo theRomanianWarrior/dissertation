@@ -29,6 +29,34 @@ public class FlightService : IFlightService
     {
         var flightArrivalCities =  _flightRepository.GetFlightArrivalCities(flightDepartureCity);
         
+        /* Destinations black list
+         * Athens
+         * Kazan
+         * Nikolayev
+         * Sabetta
+         This is a temporary implementation. */
+        foreach (var city in flightArrivalCities.ToList())
+        {
+            switch (city.DestinationCityName)
+            {
+                case "Athens":
+                case "Kazan":
+                case "Nikolayev":
+                case "Sabetta":
+                    flightArrivalCities.Remove(city);
+                    break;
+            }
+        }
+        
         return flightArrivalCities.Select(flightArrivalDestination => flightArrivalDestination.DestinationCityName + ", " + flightArrivalDestination.DestinationCountryName).Distinct().ToList();
+    }
+
+    public List<string> GetFlightCompaniesForDepartureDestinationCity(string departureAndDestinationCity)
+    {
+        var departureDestination = departureAndDestinationCity.Split(", ");
+        var departureCity = departureDestination[0];
+        var destinationCity = departureDestination[1];
+
+        return _flightRepository.GetFlightCompaniesForCities(departureCity, destinationCity);
     }
 }
