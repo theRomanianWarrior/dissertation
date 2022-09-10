@@ -37658,6 +37658,8 @@ a.u-link.u-text-hover-grey-90:hover {
         line-height: 1.2;
         margin-top: 20px;
         margin-bottom: 20px;
+            color: white;
+            text-align: center;
         }
         h4
         {

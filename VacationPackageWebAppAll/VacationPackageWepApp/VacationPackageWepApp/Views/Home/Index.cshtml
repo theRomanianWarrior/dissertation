@@ -270,7 +270,7 @@
     </div>
   </div>
   <!-- Search -->
-<div id = "search_services" class="search">
+<div id = "servicesSearchForm" class="search">
   <!-- Search Contents -->
   <div class="container fill_height">
     <div class="row fill_height">
@@ -299,7 +299,6 @@
   </div>
 </div>
 @await Html.PartialAsync("_PreferencesResponse")
-
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -535,7 +534,12 @@
     </div>
   </div>
 </div>
+@await Html.PartialAsync("_ServicesEvaluation")
 
+
+<script>
+var attractionsList = [];
+</script>
 <script>
 $(document).ready(function(){
 	$('#btnSearch').click(function(){
@@ -679,7 +683,7 @@ $(document).ready(function(){
             success: function (response) {
                     $.ajax({
                             type: 'GET',
-                            url: '/Flight/SendVacationPackagePreferencesToTheServer',
+                            url: '/Flight/RequestFullVacationPackageRecommendation',
                             success: function (response) {
                               
                               console.log(response);
@@ -698,6 +702,7 @@ $(document).ready(function(){
                             var attractionsData = response.attractionsRecommendation
                             var constructAttractions = ""
                             $.each(attractionsData, function( index, value ) {
+                              attractionsList.push(value.name);
                               constructAttractions += "<tr><td><p class=\"u-text u-text-7\">Name: "+ value.name +"</p><p class=\"u-text u-text-7\">Address: "+ value.address +"</p><p class=\"u-text u-text-7\">Rate: " + value.rate +"</p><p class=\"u-text u-text-7\">"+ value.kindsTags +" </p></td></tr>";
                             });
                             
@@ -709,9 +714,9 @@ $(document).ready(function(){
                               
                               $('#flight_search_panel').fadeOut(); //hide
                               $('#vacationServiceTab').fadeOut(); //hide
-                              $('#search_services').fadeOut();
+                              $('#servicesSearchForm').fadeOut();
                               $('#carousel_4ffd').fadeIn(1000);
-                              
+                              $("#carousel_4ffd").removeClass('display_none');
                                      },
                             error: function (response) {
                                        // code on failure

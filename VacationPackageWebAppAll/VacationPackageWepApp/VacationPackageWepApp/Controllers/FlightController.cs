@@ -1,8 +1,8 @@
 ﻿using HttpClients;
 using Microsoft.AspNetCore.Mvc;
-using VacationPackageWepApp.Models;
 using VacationPackageWepApp.Models.Mappers;
 using VacationPackageWepApp.UiDataStoring.Enums;
+using VacationPackageWepApp.UiDataStoring.Evaluation;
 using VacationPackageWepApp.UiDataStoring.Preference;
 using VacationPackageWepApp.UiDataStoring.PreferencesPackageResponse;
 using VacationPackageWepApp.UiDataStoring.Singleton;
@@ -47,14 +47,30 @@ public class FlightController : Controller
     }
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> SendVacationPackagePreferencesToTheServer()
+    public async Task<IActionResult> RequestFullVacationPackageRecommendation()
     {
         using var preferencesPackageClient =
             new GenericRestfulCrudHttpClient<PreferencesRequest, PreferencesResponse>("http://localhost:7071/", "VacationPackage/RequestVacationRecommendation/");
         PreferencesPayloadSingleton.Instance.CustomerId = new Guid("141fcf23-a053-1d6e-b5df-c0cacbb84b21");
 
         var preferencesResponse = await preferencesPackageClient.PostAsync<PreferencesResponse>(PreferencesPayloadSingleton.Instance);
-        
+
+        EvaluationServicesSingleton.Instance.ClientRequestId = (Guid)preferencesResponse.ClientRequestId;
+        EvaluationServicesSingleton.Instance.AttractionEvaluation = new AllAttractionEvaluationPointDto
+            {
+                AttractionEvaluations = new List<AttractionEvaluationDto>()
+            };
+
+        foreach (var attraction in preferencesResponse.AttractionsRecommendationResponse.AttractionRecommendationList)
+        {
+            EvaluationServicesSingleton.Instance.AttractionEvaluation.AttractionEvaluations.Add(
+                new AttractionEvaluationDto()
+                {
+                    AttractionId = attraction.Attraction.Xid,
+                    AttractionName = attraction.Attraction.Name
+                });
+        }
+
         ResetPreferencesPayload();
         var recommendation = preferencesResponse.ToRecommendationUiModel(); 
         return new JsonResult(recommendation);
@@ -342,7 +358,6 @@ public class FlightController : Controller
             departurePeriodPreference;
     }
     
-    [HttpGet("[action]")]
     public void ResetPreferencesPayload()
     {
         PreferencesPayloadSingleton.ResetInstance();

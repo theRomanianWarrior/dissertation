@@ -1160,6 +1160,7 @@ section
 .display_none
 {
 	display: none;
+	visibility: hidden;
 }
 .rate_button
 {
