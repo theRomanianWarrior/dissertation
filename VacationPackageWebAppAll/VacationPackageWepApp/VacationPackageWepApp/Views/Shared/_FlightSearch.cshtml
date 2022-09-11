@@ -7,14 +7,14 @@
           <div class="search_item">
             <div>departure
             </div>
-            <select name="departure" id="departure" class="dropdown_item_select search_input" required="required">
+            <select name="departure" id="departure" class="dropdown_item_select search_input" required>
             </select>
           </div> 
         </div>
         <div class="col-sm-3 order-sm-1 order-2  ">
           <div class="search_item">
             <div>destination</div>
-            <select name="destination" id="destination" class="dropdown_item_select search_input" required="required">
+            <select name="destination" id="destination" class="dropdown_item_select search_input" required>
             <option value="none" selected disabled hidden>SELECT CITY
             </option>
             </select>
@@ -24,21 +24,21 @@
           <div class="search_item">
             <div>check in
             </div>
-            <input type="date" id="check-in-date" class="check_in search_input" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" placeholder="MM-DD-YYYY" required="required">
+            <input type="date" id="check-in-date" class="check_in search_input" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" placeholder="MM-DD-YYYY" required>
           </div>
         </div>
         <div class="col-sm-3 order-sm-1 order-2  ">
           <div class="search_item">
             <div>period (days)
             </div>
-            <input id = "periodNumber" type="number" min="0" class="destination search_input" required="required">
+            <input id = "periodNumber" type="number" min="0" class="destination search_input" required>
           </div>
         </div>
         <div class="col-sm-3 order-sm-1 order-2  ">
           <div class="search_item">
             <div>adults
             </div>
-            <input id = "adultsNumber" type="number" min="0" class="destination search_input" required="required">
+            <input id = "adultsNumber" type="number" min="0" class="destination search_input" required>
           </div>
         </div>
         <div class="col-sm-3 order-sm-1 order-2  ">
@@ -75,7 +75,7 @@
           <div class="search_item">
             <div>class
             </div>
-            <select id = "selectedDepartureClass" name="destination" class="dropdown_item_select search_input" required="required">
+            <select id = "selectedDepartureClass" name="destination" class="dropdown_item_select search_input" required>
               <option value="none" selected disabled hidden>SELECT CLASS
               </option>
               <option value="Economy">Economy
@@ -164,7 +164,7 @@
           <div class="search_item">
             <div>class
             </div>
-            <select id = "selectedReturnClass" name="destination" class="dropdown_item_select search_input" required="required">
+            <select id = "selectedReturnClass" name="destination" class="dropdown_item_select search_input" required>
               <option value="none" selected disabled hidden>SELECT CLASS
               </option>
               <option value="Economy">Economy
@@ -237,13 +237,12 @@
 </form>
 </div>
 
-<script src="js/jquery-3.2.1.min.js"></script>
-
+<script src="~/js/jquery-3.2.1.min.js"></script>
 
 <script>
 $(document).ready(function(){ 
   $('#destination').change(function() 
-{ ///////////////////////////////////// emil
+{
       let selectedDepartureCityAndCountry = $("#departure").val();
       let selectedDestinationCityAndCountry = jQuery(this).val();
 

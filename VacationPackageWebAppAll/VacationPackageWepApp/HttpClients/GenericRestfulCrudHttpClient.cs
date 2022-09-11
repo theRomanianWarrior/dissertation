@@ -60,7 +60,7 @@ public class GenericRestfulCrudHttpClient<T, TResourceIdentifier> : IDisposable 
         return await responseMessage.Content.ReadAsAsync<IEnumerable<T>>();
     }
      
-    public async Task<T> GetAsync(TResourceIdentifier identifier)
+    public async Task<T?> GetAsync(TResourceIdentifier identifier)
     {
         var responseMessage = await httpClient.GetAsync(addressSuffix + identifier.ToString());
         responseMessage.EnsureSuccessStatusCode();

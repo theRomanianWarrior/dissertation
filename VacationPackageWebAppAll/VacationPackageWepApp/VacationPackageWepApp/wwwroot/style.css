@@ -1,0 +1,616 @@
+@import url('https://fonts.googleapis.com/css2?family=Engagement&family=Open+Sans:wght@400;800&display=swap');
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    position: relative;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.text-red{
+    color: red;
+}
+.container{
+    width: 100%;
+    height: 100vh;
+    background: url('https://technext.github.io/travelix/images/home_slider.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.go-back{
+    font-size: 1.5rem;
+    font-family: inherit;
+    position: absolute;
+    top: 4rem;
+    left: 3rem;
+    text-transform: uppercase;
+    color: white;
+    z-index: 2;
+    transition: 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.go-back:hover{
+    color: orange;
+}
+
+.container .cover{
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: rgba(53, 10, 78, 0.5);
+}
+
+.first-navbar{
+    width: 100%;
+    height: 2.25rem;
+    background-color: rgb(53, 10, 78);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: inherit;
+    font-size: 0.65rem;
+}
+
+.first-navbar .contact-no{
+    margin: 0 2.25rem 0 13rem;
+    color: white;
+}
+
+.first-navbar .social-icons i{
+    margin: auto 0.75rem;
+    color: white;
+    transition: 0.15s ease;
+    cursor: pointer;
+}
+
+.first-navbar .social-icons i:hover{
+    color: orange;
+}
+
+.first-navbar .join{
+    display: flex;
+    color: white;
+    margin-left: 40rem;
+}
+
+.first-navbar .join a{
+    margin: 0 0.75rem;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+    transition: 0.15s ease;
+}
+
+.first-navbar .join a:hover{
+    color: orange;
+}
+
+.first-navbar .join a.disabled{
+    pointer-events: none;
+    cursor: default;
+}
+
+
+.second-navbar{
+    width: 100%;
+    height: 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 2.25rem;
+    background-color: rgba(53, 10, 78, 0.5);
+}
+
+.second-navbar .logo{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.second-navbar .logo img{
+    width: 2rem;
+    margin: auto 0.5rem;
+    height: auto;
+}
+
+.second-navbar .logo .title{
+    color: white;
+    text-transform: uppercase;
+    font-size: 1.9rem;
+    font-weight: 800;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.second-navbar .tabs{
+    margin: 0 5rem 0 16rem;
+}
+
+.second-navbar .tabs span{
+    width: 20%;
+    padding-bottom: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600; 
+    text-transform: uppercase;
+    color: white;  
+    margin: auto 1.2rem;
+    cursor: pointer;
+    transition: 0.5s ease;
+    border: 2px solid transparent;
+}
+
+.second-navbar .tabs span:hover{
+    border-bottom: 2px solid orange;
+}
+
+.second-navbar .search{
+    margin: auto 5rem;
+}
+
+.second-navbar .search i{
+    color: white;
+    transform: rotateZ(90deg);
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.second-navbar .search i:hover{
+    color: orange;
+}
+
+.nav-buttons{
+    border: 3px solid white;
+    color: white;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    padding: 0.3rem 0.45rem;
+    cursor: pointer;
+    transition: 0.5s ease;
+    transform: translateY(-50%);
+}
+
+.nav-buttons:hover{
+    color: orange;
+    border-color: orange;
+}
+
+.nav-buttons.right{
+    right: 3rem;
+}
+
+.nav-buttons.left{
+    left: 3rem;
+}
+
+.nav-buttons i{
+    color: inherit;
+    font-size: 0.8rem;
+}
+
+.center{
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.center .welcome-text{
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 7rem;
+}
+
+.center .explore{
+    font-family: 'Engagement', cursive;
+    font-size: 9rem;
+    position: relative;
+    transform: translateY(-3rem);
+}
+
+.center .explore-button{
+    padding: 1.2rem 3rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    position: relative;
+    transform: translateY(-50%);
+    text-transform: uppercase;
+    display: inline-block;
+    border-radius: 30px;
+    background: orange;
+    transition: 0.2s ease;
+    color: white;
+}
+
+.center .explore-button:hover{
+    cursor: pointer;
+    background: rgb(53, 10, 78);
+}
+
+
+.center .explore-button span{
+    padding: 3px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.center .explore-button span:nth-of-type(1){
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.center .explore-button span:nth-of-type(2){
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.center .explore-button span:nth-of-type(3){
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.travel-navigation{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 6rem;
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-right-radius: 500px;
+    border-top-left-radius: 500px;
+    overflow: hidden;
+}
+
+.travel-navigation .options{
+    width: calc(100% / 6);
+    text-transform: uppercase;
+    height: 100%;
+    color: black;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.4s ease;
+
+}
+
+.travel-navigation .options i{
+    color: inherit;
+    margin: auto 1rem;
+}
+
+.travel-navigation .options:hover{
+    color: white;
+    background: orange;
+}
+
+.travel-navigation .options.active{
+    background: orange;
+    color: white;
+}
+
+.slide-numbers{
+    position: absolute;
+    bottom: 4rem;
+    right: 2rem;
+}
+
+.slide-numbers span{
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: 0.4s ease;
+    margin: 0.2rem;
+}
+
+.slide-numbers span:hover{
+    color: orange;
+    border-color: orange;
+}
+
+.slide-numbers span.active{
+    border: 2px solid white;
+}
+
+.slide-numbers span.active:hover{
+    border-color: orange;
+}
+
+.search-area{
+    width: 100%;
+    height: 20vh;
+    background: linear-gradient(to right, #fa9e1b, #8d4fff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-area .input-area{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    font-family: inherit;
+    margin: auto 0.5rem;
+}
+
+.search-area .input-area label{
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    
+}
+
+.search-area .input-area input{
+    font-size: 1rem;
+    border: 0;
+    height: 2rem;
+}
+
+.search-area .input-area input::placeholder{
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-area button{
+    padding: 1rem 3rem;
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    color: white;
+    background: rgb(53, 10, 78);
+    border-radius: 25px;
+    border: 0;
+    margin-left: 1rem;
+    transform: translateY(10px);
+}
+
+/* Login Page */
+
+.login-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    font-family: inherit;
+}
+
+.login-container .cover-photo{
+    margin-top: 2.25rem;
+    width: 100%;
+    height: 30vh;
+    background: url('https://technext.github.io/travelix/images/home_slider.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.login-container .login{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+    flex-direction: column;
+    width: 40%;
+    position: relative;
+}
+
+.login-container .login form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 2rem;
+    margin-left: 2rem;
+    width: 80%;
+}
+
+.login h1{
+    font-size: 3rem;
+    color: rgb(53, 10, 78);
+    position: relative;
+    align-self: center;
+}
+
+.login p{
+    display: inline-block;
+    margin-bottom: 5rem;
+}
+
+.login a{
+    text-decoration: none;
+    color: rgb(53, 10, 78, 0.6);
+    transition: 0.2s ease;
+}
+
+.login a:hover{
+    color: black;
+}
+
+.login form input{
+    width: 100%;
+    height: 2rem;
+    border: 0;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 2px solid rgba(53, 10, 78, 0.5);
+    transition: 0.3s ease-in;
+}
+
+.login form input:focus{
+    outline: none;
+    border-bottom-color: lawngreen;
+}
+
+.login form .submit{
+    width: 100%;
+    color: white;
+    background: orange;
+    border: 0;
+    height: 2.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+
+}
+
+.login form .submit:hover{
+    background: rgb(53, 10, 78);
+}
+
+
+.login form label{
+    margin: 2rem 0 0 0;
+}
+
+.login form a{
+    text-decoration: none;
+    color: rgb(53, 10, 78, 0.6);
+    margin: 1rem 0;
+    transition: 0.2s ease;
+}
+
+.login form a:hover{
+    color: black;
+}
+
+/* Sign Up */
+
+
+.signup-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    font-family: inherit;
+}
+
+.signup-container .cover-photo{
+    margin-top: 2.25rem;
+    width: 100%;
+    height: 30vh;
+    background: url('https://technext.github.io/travelix/images/home_slider.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.signup-container .signup{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-direction: column;
+    width: 40%;
+}
+
+.signup-container .signup form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 2rem;
+    margin-left: 2rem;
+    width: 80%;
+}
+
+.signup p{
+    display: inline-block;
+    margin-bottom: 5rem;
+}
+
+.signup a{
+    text-decoration: none;
+    color: rgb(53, 10, 78, 0.6);
+    transition: 0.2s ease;
+}
+
+.signup a:hover{
+    color: black;
+}
+
+.signup form input{
+    width: 100%;
+    height: 2rem;
+    border: 0;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 2px solid rgba(53, 10, 78, 0.5);
+    transition: 0.3s ease-out;
+}
+
+.signup form input:focus{
+    outline: none;
+    border-bottom-color: lawngreen;
+}
+
+.signup form .submit{
+    width: 100%;
+    color: white;
+    background: orange;
+    border: 0;
+    margin-top: 2rem;
+    height: 2.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+
+}
+
+.signup form .submit:hover{
+    background: rgb(53, 10, 78);
+}
+
+.signup form label{
+    margin: 1rem 0 0 0;
+}
+
+.signup form a{
+    text-decoration: none;
+    color: rgb(53, 10, 78, 0.6);
+    margin: 1rem 0;
+    transition: 0.2s ease;
+}
+
+.signup form a:hover{
+    color: black;
+}
+
+.signup h1{   
+    font-size: 3rem;
+    color: rgb(53, 10, 78);
+    position: relative;
+    align-self: center;
+}

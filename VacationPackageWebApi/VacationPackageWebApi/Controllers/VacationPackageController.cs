@@ -1,13 +1,9 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.CustomerServicesEvaluation;
 using VacationPackageWebApi.Domain.Helpers;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest;
-using VacationPackageWebApi.Domain.PreferencesPackageResponse;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace VacationPackageWebApi.API.Controllers
 {
@@ -53,7 +49,7 @@ namespace VacationPackageWebApi.API.Controllers
         {
             await _preferencesPackageService.SaveEvaluation(serviceEvaluation);
             UserReportHelper.ClearCurrentProcessingAgentSelfExpertLogData();
-            return Created(string.Empty, string.Empty);
+            return new JsonResult("Success");
         }
     }
 }

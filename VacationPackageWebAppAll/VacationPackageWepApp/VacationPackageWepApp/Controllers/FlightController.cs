@@ -51,7 +51,7 @@ public class FlightController : Controller
     {
         using var preferencesPackageClient =
             new GenericRestfulCrudHttpClient<PreferencesRequest, PreferencesResponse>("http://localhost:7071/", "VacationPackage/RequestVacationRecommendation/");
-        PreferencesPayloadSingleton.Instance.CustomerId = new Guid("141fcf23-a053-1d6e-b5df-c0cacbb84b21");
+        PreferencesPayloadSingleton.Instance.CustomerId = new Guid(HttpContext.Session.GetString("userId")!);
 
         var preferencesResponse = await preferencesPackageClient.PostAsync<PreferencesResponse>(PreferencesPayloadSingleton.Instance);
 

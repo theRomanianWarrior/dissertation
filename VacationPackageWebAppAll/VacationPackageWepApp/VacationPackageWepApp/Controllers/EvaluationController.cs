@@ -1,8 +1,6 @@
 ﻿using HttpClients;
 using Microsoft.AspNetCore.Mvc;
 using VacationPackageWepApp.UiDataStoring.Evaluation;
-using VacationPackageWepApp.UiDataStoring.Preference;
-using VacationPackageWepApp.UiDataStoring.PreferencesPackageResponse;
 using VacationPackageWepApp.UiDataStoring.Singleton;
 
 namespace VacationPackageWepApp.Controllers;
@@ -17,10 +15,11 @@ public class EvaluationController : Controller
         var listOfLikedDepartureFlightEvaluations = departureFlightEvaluation.Split(", ").ToList();
         var flightEvaluation = new FlightEvaluationDto
         {
-            Class = listOfLikedDepartureFlightEvaluations[0] == "yes",
-            Company = listOfLikedDepartureFlightEvaluations[1] == "yes",
-            FlightDate = listOfLikedDepartureFlightEvaluations[2] == "yes",
-            FlightTime = listOfLikedDepartureFlightEvaluations[3] == "yes"
+            Class = listOfLikedDepartureFlightEvaluations[0] == "true",
+            Company = listOfLikedDepartureFlightEvaluations[1] == "true",
+            FlightDate = listOfLikedDepartureFlightEvaluations[2] == "true",
+            FlightTime = listOfLikedDepartureFlightEvaluations[3] == "true",
+            Price = true
         };
 
         EvaluationServicesSingleton.Instance.FlightEvaluation = new FlightDirectionEvaluationDto
@@ -35,10 +34,11 @@ public class EvaluationController : Controller
         var listOfLikedReturnFlightEvaluations = returnFlightEvaluation.Split(", ").ToList();
         EvaluationServicesSingleton.Instance.FlightEvaluation.ReturnNavigation = new FlightEvaluationDto
         {
-            Class = listOfLikedReturnFlightEvaluations[0] == "yes", ///////////////verifica consecventa corecta
-            Company = listOfLikedReturnFlightEvaluations[1] == "yes",
-            FlightDate = listOfLikedReturnFlightEvaluations[2] == "yes",
-            FlightTime = listOfLikedReturnFlightEvaluations[3] == "yes"
+            Class = listOfLikedReturnFlightEvaluations[0] == "true",
+            Company = listOfLikedReturnFlightEvaluations[1] == "true",
+            FlightDate = listOfLikedReturnFlightEvaluations[2] == "true",
+            FlightTime = listOfLikedReturnFlightEvaluations[3] == "true",
+            Price = true
         };
     }
     
@@ -48,31 +48,40 @@ public class EvaluationController : Controller
         var listOfPropertyEvaluations = propertyEvaluation.Split(", ").ToList();
         EvaluationServicesSingleton.Instance.PropertyEvaluation = new PropertyEvaluationDto()
         {
-            PropertyType = listOfPropertyEvaluations[0] == "yes",
-            PlaceType = listOfPropertyEvaluations[1] == "yes",
-            RoomsAndBeds = listOfPropertyEvaluations[2] == "yes",
-            Amenities = listOfPropertyEvaluations[3] == "yes"
+            PropertyType = listOfPropertyEvaluations[0] == "true",
+            PlaceType = listOfPropertyEvaluations[1] == "true",
+            RoomsAndBeds = listOfPropertyEvaluations[2] == "true",
+            Amenities = listOfPropertyEvaluations[3] == "true"
         };
     }
     
     [HttpPost("[action]/{attractionEvaluation}")]
-    public async Task StoreAttractionsEvaluation(string attractionEvaluation)
+    public async Task<IActionResult> StoreAttractionsEvaluation(string attractionEvaluation)
     {
         var listOfAttractionsEvaluations = attractionEvaluation.Split(", ").ToList();
 
         for (var attractionIterator = 0; attractionIterator < listOfAttractionsEvaluations.Count; attractionIterator++)
         {
             EvaluationServicesSingleton.Instance.AttractionEvaluation.AttractionEvaluations[attractionIterator].Rate =
-                listOfAttractionsEvaluations[attractionIterator] == "yes";
+                listOfAttractionsEvaluations[attractionIterator] == "true";
         }
 
         await SaveToDatabaseUserEvaluation();
+        await ResetEvaluationInstance();
+        return new JsonResult("");
     }
 
     public async Task SaveToDatabaseUserEvaluation()
     {
         using var evaluationClient =
             new GenericRestfulCrudHttpClient<ServiceEvaluationDto, ActionResult>("http://localhost:7071/", "VacationPackage/SaveEvaluations/");
-        await evaluationClient.PostAsync<PreferencesResponse>(EvaluationServicesSingleton.Instance);
+        await evaluationClient.PostAsync<string>(EvaluationServicesSingleton.Instance);
     }
+    
+    public Task ResetEvaluationInstance()
+    {
+        EvaluationServicesSingleton.ResetInstance();
+        
+        return Task.CompletedTask;
+    } 
 }

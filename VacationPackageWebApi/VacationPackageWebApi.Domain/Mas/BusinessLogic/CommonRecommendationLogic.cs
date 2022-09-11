@@ -55,7 +55,7 @@ public static class CommonRecommendationLogic
          var defaultCustomizedExpertRate = new Dictionary<TaskType, float>();
          for (var taskType = TaskType.Flight; taskType < TaskType.Default; taskType++)
          {
-             defaultCustomizedExpertRate.Add(taskType, 0.5f);
+             defaultCustomizedExpertRate.Add(taskType, 0.0f);
          }
 
          return defaultCustomizedExpertRate;

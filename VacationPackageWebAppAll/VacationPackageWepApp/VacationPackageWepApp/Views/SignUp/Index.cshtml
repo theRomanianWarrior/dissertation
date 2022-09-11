@@ -1,0 +1,57 @@
+﻿@model Customer
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travelix | Signup</title>
+    <link rel="stylesheet" href="~/style.css">
+    <script src="https://kit.fontawesome.com/a04b068b1e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <a href="/Login" class="go-back"><i class="fas fa-chevron-left"></i> Go Back</a>
+    <div class="first-navbar">
+        <div class="social-icons">
+            <i class="fab fa-pinterest"></i>
+            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-dribbble"></i>
+            <i class="fab fa-behance"></i>
+            <i class="fab fa-linkedin-in"></i>
+        </div>
+        <div class="join">
+            <a href="/Login" class="login">Login</a>
+            <p>|</p>
+            <a href="#" class="register disabled">Register</a>
+        </div>
+    </div>
+
+    <div class="signup-container">    
+        <div class="cover-photo">
+        </div>
+
+        <div class="signup">
+            <h1>Join Us!</h1>
+            <form asp-controller="SignUp" asp-action="RegisterNew" method="post">
+                <label for="FirstName">First name: </label>
+                <input asp-for="FirstName" type="text" required>
+                <label for="LastName">Last name: </label>
+                <input asp-for="LastName" type="text" required>
+                <label for="Login">Login: </label>
+                <input asp-for="Login" type="text" required>
+                <label for="Email">Email: </label>
+                <input asp-for="Email" type="email" required>
+                <label for="Password">Set Password: </label>
+                <input asp-for="Password" type="password" required>
+                <input type="submit" class="submit" value="Sign Up">
+            </form>
+            <p>Already have an account? <a href="loginPage.html">Login!</a></p>
+
+        </div>
+    </div>
+</body>
+</html>

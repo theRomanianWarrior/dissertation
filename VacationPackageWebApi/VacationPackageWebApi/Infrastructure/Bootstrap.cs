@@ -4,6 +4,7 @@ using VacationPackageWebApi.Application.Services;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Contracts;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
 using VacationPackageWebApi.Domain.Attractions.Contracts;
+using VacationPackageWebApi.Domain.Customer.Contracts;
 using VacationPackageWebApi.Domain.Flight.Contracts;
 using VacationPackageWebApi.Domain.PreferencesPackageRequest.Contracts;
 using VacationPackageWebApi.Domain.Property.Contracts;
@@ -52,12 +53,14 @@ namespace VacationPackageWebApi.API.Infrastructure
             services.AddScoped<IRecommendationService, RecommendationService>();
             services.AddScoped<IEvaluationService, EvaluationService>();
             services.AddScoped<IPreferencesPayloadInitializerServices, PreferencesPayloadInitializerServices>();
+            services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddScoped<IPreferencesPackageRequestRepository, PreferencesPackageRequestRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();
             services.AddScoped<IAgentRepository, AgentRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IAttractionRepository, AttractionsRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             services.AddControllers();
 

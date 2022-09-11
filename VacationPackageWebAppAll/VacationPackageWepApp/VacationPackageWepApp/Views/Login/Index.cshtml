@@ -1,0 +1,59 @@
+﻿@model Customer
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travelix | Login</title>
+    <link rel="stylesheet" href="~/style.css" asp-append-version="true">
+    <script src="https://kit.fontawesome.com/a04b068b1e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="first-navbar">
+    <div class="social-icons">
+        <i class="fab fa-pinterest"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-dribbble"></i>
+        <i class="fab fa-behance"></i>
+        <i class="fab fa-linkedin-in"></i>
+    </div>
+    <div class="join">
+        <a href="#" class="login disabled">Login</a>
+        <p>|</p>
+        <a href="/SignUp" class="register">Register</a>
+    </div>
+</div>
+
+<div class="login-container">    
+    <div class="cover-photo">
+
+    </div>
+
+    <div class="login">
+        <h1>Login</h1>
+        <form asp-controller="Login" asp-action="Index" method="get">
+            <label for="email">Email: </label>
+            <input asp-for="Email" type="email" required>
+            <label for="password">Password: </label>
+            <input asp-for="Password" type="password" required>
+            <input type="submit" class="submit" value="Login">
+            @if (ViewContext.ViewData.ModelState.ContainsKey("InvalidLogin"))
+            {
+                ViewContext.ViewData.ModelState.ClearValidationState("InvalidLogin");
+                <div class="text-red">Wrong email or password</div>
+            }
+        </form>
+        <p>Don't have an account?<a href="/SignUp">Sign Up!</a></p>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
