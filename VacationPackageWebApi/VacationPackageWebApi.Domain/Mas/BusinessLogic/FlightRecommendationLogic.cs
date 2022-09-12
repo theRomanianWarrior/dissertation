@@ -106,8 +106,6 @@ public static class FlightRecommendationLogic
             {
                 Type = (short) StopsTypePreferenceId.Direct
             };
-        // if (preferencesRequest.CustomerFlightNavigation.DepartureNavigation.Class.Class == (short) ClassTypeId.Default)
-        //     preferencesRequest.CustomerFlightNavigation.DepartureNavigation.Class.Class = (short) ClassTypeId.Economy;
     }
 
     private static bool CheckFlightDayMatch(string dayOfFlightPreferred, FlightBusinessModel flight)
@@ -149,7 +147,7 @@ public static class FlightRecommendationLogic
     }
 
     private static TimeOnly GetEarliestFlightTimeBasedOnPeriodPreference(FlightBusinessModel flight,
-        DeparturePeriodsPreferenceDto? departurePeriodsPreference) // aici lucrez acum
+        DeparturePeriodsPreferenceDto? departurePeriodsPreference)
     {
         var groupedFlightsByDayPeriod = GroupFlightTimeByDayPeriods(flight.AvailableDepartureTime.DepartureHour);
         // check each true preference about part of the day with grouped flights by parts of the day
@@ -584,7 +582,7 @@ public static class FlightRecommendationLogic
                 }
             },
             FlightDate = departureDate,
-            Status = "Up-to-date", ////////////////////////////////////
+            Status = "Up-to-date",
             Stops = 0
         };
     }

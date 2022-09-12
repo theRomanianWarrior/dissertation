@@ -39,7 +39,6 @@ public static class MasEnvVarsInitializer
             TaskType.Property
         };
 
-        //MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] = "undone";
         MasEnvironmentSingleton.Instance.Memory["PreferencesPayload"] = new PreferencesRequest();
         MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] = new PreferencesResponse();
         MasEnvironmentSingleton.Instance.Memory["AgentsTrustRates"] =

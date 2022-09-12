@@ -77,7 +77,7 @@ public class MasVacationAgent : Agent
                                 if (availableAgents.Contains(TourismAgent.Name))
                                     availableAgents.Remove(TourismAgent.Name);
 
-                                if (!availableAgents.Any()) return; //// ??????????????????????????/
+                                if (!availableAgents.Any()) return;
 
                                 foreach (var trustRateInAgent in TourismAgent.TrustGradeInOtherAgent)
                                     if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
@@ -155,7 +155,7 @@ public class MasVacationAgent : Agent
                                 if (availableAgents.Contains(TourismAgent.Name))
                                     availableAgents.Remove(TourismAgent.Name);
 
-                                if (!availableAgents.Any()) return; //// ??????????????????????????/
+                                if (!availableAgents.Any()) return; 
 
                                 foreach (var trustRateInAgent in TourismAgent.TrustGradeInOtherAgent)
                                     if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
@@ -196,7 +196,7 @@ public class MasVacationAgent : Agent
                                 if (availableAgents.Contains(TourismAgent.Name))
                                     availableAgents.Remove(TourismAgent.Name);
 
-                                if (!availableAgents.Any()) return; //// ??????????????????????????/
+                                if (!availableAgents.Any()) return; 
 
                                 foreach (var trustRateInAgent in TourismAgent.TrustGradeInOtherAgent)
                                     if (availableAgents.Contains(trustRateInAgent.TrustedAgentName))
