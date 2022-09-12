@@ -1,7 +1,6 @@
-﻿namespace VacationPackageWebApi.Domain.PreferencesPackageRequest
+﻿namespace VacationPackageWebApi.Domain.PreferencesPackageRequest;
+
+public record StopsTypePreferenceDto
 {
-    public record StopsTypePreferenceDto
-    {
-        public short Type { get; set; }
-    }
+    public short Type { get; set; }
 }

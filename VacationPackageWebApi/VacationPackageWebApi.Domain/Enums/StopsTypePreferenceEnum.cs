@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWebApi.Domain.Enums
+﻿namespace VacationPackageWebApi.Domain.Enums;
+
+public enum StopsTypePreferenceId
 {
-    public enum StopsTypePreferenceId
-    {
-        Direct = 1,
-        OneStop,
-        TwoOrMoreStops,
-        Default
-    }
+    Direct = 1,
+    OneStop,
+    TwoOrMoreStops,
+    Default
 }

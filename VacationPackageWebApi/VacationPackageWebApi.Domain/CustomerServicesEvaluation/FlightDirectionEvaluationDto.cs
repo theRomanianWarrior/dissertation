@@ -1,9 +1,8 @@
-﻿namespace VacationPackageWebApi.Domain.CustomerServicesEvaluation
+﻿namespace VacationPackageWebApi.Domain.CustomerServicesEvaluation;
+
+public class FlightDirectionEvaluationDto
 {
-    public class FlightDirectionEvaluationDto
-    {
-        public FlightEvaluationDto DepartureNavigation { get; set; }
-        public FlightEvaluationDto ReturnNavigation { get; set; }
-        public float? FinalFlightRating { get; set; }
-    }
+    public FlightEvaluationDto DepartureNavigation { get; set; }
+    public FlightEvaluationDto ReturnNavigation { get; set; }
+    public float? FinalFlightRating { get; set; }
 }

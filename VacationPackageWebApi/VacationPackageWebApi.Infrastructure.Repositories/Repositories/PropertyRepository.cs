@@ -14,7 +14,7 @@ public class PropertyRepository : IPropertyRepository
     {
         _context = context;
     }
-    
+
     public async Task<List<PropertyBusinessModel>> GetAllPropertiesAsync()
     {
         return await _context.Properties.Include(c => c.City).ThenInclude(ctr => ctr.Country)

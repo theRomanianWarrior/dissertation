@@ -7,5 +7,4 @@ public class PersonalAgentSelfExpertRateLogModel
     public int DaysDifferenceFromToday { get; set; }
     public string ServiceType { get; set; }
     public SelfExpertRatePropertiesLogModel ExpertServiceRatings { get; set; }
-
 }

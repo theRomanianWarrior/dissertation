@@ -6,7 +6,7 @@ public static class AirportMapper
 {
     public static AirportBusinessModel ToBusinessModel(this Airport airport)
     {
-        return new AirportBusinessModel()
+        return new AirportBusinessModel
         {
             Id = airport.Id,
             City = airport.City.ToBusinessModel(),

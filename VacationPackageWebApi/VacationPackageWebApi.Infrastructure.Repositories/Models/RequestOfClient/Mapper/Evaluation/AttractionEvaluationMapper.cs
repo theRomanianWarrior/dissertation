@@ -5,7 +5,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
 
 public static class AttractionEvaluationMapper
 {
-    public static AttractionEvaluation ToEntity(this AttractionEvaluationDto attractionEvaluation, Guid attractionPointId)
+    public static AttractionEvaluation ToEntity(this AttractionEvaluationDto attractionEvaluation,
+        Guid attractionPointId)
     {
         return new AttractionEvaluation
         {

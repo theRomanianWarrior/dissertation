@@ -6,7 +6,7 @@ public static class FlightPriceMapper
 {
     public static FlightPriceBusinessModel ToBusinessModel(this FlightPrice flightPrice)
     {
-        return new FlightPriceBusinessModel()
+        return new FlightPriceBusinessModel
         {
             Id = flightPrice.Id,
             Class = flightPrice.Class.ToBusinessModel(),

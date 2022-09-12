@@ -6,5 +6,4 @@ public class CustomerPersonalAgentRateBusinessModel
 {
     public Guid AgentId { get; set; }
     public Dictionary<TaskType, float> ServiceExpertRate { get; set; }
-
 }

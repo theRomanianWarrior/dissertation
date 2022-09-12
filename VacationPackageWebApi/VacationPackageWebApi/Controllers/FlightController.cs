@@ -14,20 +14,20 @@ public class FlightController : Controller
         _flightService = flightService;
     }
 
-    
+
     [HttpGet]
     public List<string> GetFlightDepartureCities()
     {
         return _flightService.GetFlightDepartureCities();
     }
-    
+
 
     [HttpGet("{flightDepartureCity}")]
     public List<string> GetFlightArrivalCities(string flightDepartureCity)
     {
         return _flightService.GetFlightArrivalCities(flightDepartureCity);
     }
-    
+
     [HttpGet("{departureAndDestinationCity}")]
     public List<string> GetFlightCompaniesForDepartureDestinationCity(string departureAndDestinationCity)
     {

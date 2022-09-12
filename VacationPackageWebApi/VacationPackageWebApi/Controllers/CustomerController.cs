@@ -19,7 +19,7 @@ public class CustomerController : Controller
     {
         return await _customerService.GetCustomerModel(userData);
     }
-    
+
     [HttpPost]
     public async Task<ActionResult> CreateNew([FromBody] CustomerDto customer)
     {

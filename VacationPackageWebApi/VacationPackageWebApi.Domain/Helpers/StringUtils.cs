@@ -7,7 +7,7 @@ public static class StringUtils
         var myStr = timeData.Split(' ');
         return myStr.Select(TimeOnly.Parse).ToList();
     }
-    
+
     private static DayOfWeek? ConvertStringToDayOfWeek(this string dayOfWeek)
     {
         return dayOfWeek switch
@@ -22,7 +22,7 @@ public static class StringUtils
             _ => null
         };
     }
-    
+
     public static List<DayOfWeek> ConvertStringDaysOfWeekListToEnumList(this string daysOfFlightList)
     {
         var myStr = daysOfFlightList.Split(' ');

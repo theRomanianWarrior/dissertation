@@ -1,8 +1,7 @@
-﻿namespace VacationPackageWebApi.Domain.Flight
+﻿namespace VacationPackageWebApi.Domain.Flight;
+
+public class CountryBusinessModel
 {
-    public class CountryBusinessModel
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
 }

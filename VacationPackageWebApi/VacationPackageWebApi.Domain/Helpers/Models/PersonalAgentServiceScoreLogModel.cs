@@ -6,5 +6,4 @@ public class PersonalAgentServiceScoreLogModel
     public int FlightRecommendationsDoneForCurrentUser { get; set; }
     public int PropertyRecommendationsDoneForCurrentUser { get; set; }
     public int AttractionsRecommendationsDoneForCurrentUser { get; set; }
-
 }

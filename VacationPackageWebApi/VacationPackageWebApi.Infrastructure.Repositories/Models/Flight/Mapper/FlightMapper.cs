@@ -5,7 +5,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.Flight.Mapper
 
 public static class FlightMapper
 {
-    public static FlightBusinessModel ToBusinessModel(this Flight flight, List<FlightPriceBusinessModel> flightPriceList)
+    public static FlightBusinessModel ToBusinessModel(this Flight flight,
+        List<FlightPriceBusinessModel> flightPriceList)
     {
         return new FlightBusinessModel
         {
@@ -16,10 +17,10 @@ public static class FlightMapper
             DepartureAirport = flight.DepartureAirport.ToBusinessModel(),
             Duration = flight.Duration,
             WeekDaysOfFlight = flight.WeekDaysOfFlight.ToBusinessModel(),
-            FlightPriceList = flightPriceList,
+            FlightPriceList = flightPriceList
         };
     }
-    
+
     public static FlightDepartureCities ToUiDepartureCitiesModel(this Flight flight)
     {
         return new FlightDepartureCities
@@ -28,7 +29,7 @@ public static class FlightMapper
             DepartureCountryName = flight.DepartureAirport.City.Country.Name
         };
     }
-    
+
     public static FlightDestinationCities ToUiDestinationCitiesModel(this Flight flight)
     {
         return new FlightDestinationCities

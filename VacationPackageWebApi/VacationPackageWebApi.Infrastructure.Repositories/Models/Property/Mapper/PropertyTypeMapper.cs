@@ -6,7 +6,7 @@ public static class PropertyTypeMapper
 {
     public static PropertyTypeBusinessModel ToBusinessModel(this PropertyType propertyType)
     {
-        return new PropertyTypeBusinessModel()
+        return new PropertyTypeBusinessModel
         {
             Id = propertyType.Id,
             Type = propertyType.Type

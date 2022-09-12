@@ -12,15 +12,15 @@ public class PreferencesPayloadInitializerServices : IPreferencesPayloadInitiali
     {
         _agentService = agentService;
     }
-    
+
     public void FulfillCustomizedExpertAgentsRates(ref PreferencesRequest preferencesPayload)
     {
         preferencesPayload.CustomizedExpertAgentRates ??= new Dictionary<Guid, Dictionary<TaskType, float>>();
-                    
-        var customerPersonalAgentsServicesRates = _agentService.GetCustomerPersonalAgentsServicesRates(preferencesPayload.CustomerId);
+
+        var customerPersonalAgentsServicesRates =
+            _agentService.GetCustomerPersonalAgentsServicesRates(preferencesPayload.CustomerId);
         foreach (var customerPersonalAgentServicesRates in customerPersonalAgentsServicesRates)
-        {
-            preferencesPayload.CustomizedExpertAgentRates.Add(customerPersonalAgentServicesRates.AgentId, customerPersonalAgentServicesRates.ServiceExpertRate);
-        }     
+            preferencesPayload.CustomizedExpertAgentRates.Add(customerPersonalAgentServicesRates.AgentId,
+                customerPersonalAgentServicesRates.ServiceExpertRate);
     }
 }

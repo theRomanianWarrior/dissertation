@@ -6,7 +6,7 @@ public static class CustomerMapper
 {
     public static CustomerDto ToEntity(this Customer customer)
     {
-        return new CustomerDto()
+        return new CustomerDto
         {
             Id = customer.Id,
             Email = customer.Email,
@@ -16,10 +16,10 @@ public static class CustomerMapper
             Login = customer.Login
         };
     }
-    
+
     public static Customer ToDatabaseModel(this CustomerDto customer)
     {
-        return new Customer()
+        return new Customer
         {
             Id = customer.Id,
             Email = customer.Email,

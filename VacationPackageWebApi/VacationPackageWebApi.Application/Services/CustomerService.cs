@@ -12,10 +12,11 @@ public class CustomerService : ICustomerService
     {
         _customerRepository = customerRepository;
     }
+
     public async Task<CustomerDto?> GetCustomerModel(string userData)
     {
         var customerData = userData.Split(", ");
-        return await _customerRepository.GetCustomerModel( new CustomerLoginRequest()
+        return await _customerRepository.GetCustomerModel(new CustomerLoginRequest
         {
             email = customerData[0],
             password = customerData[1]

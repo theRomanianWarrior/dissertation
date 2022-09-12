@@ -16,5 +16,5 @@ public static class PropertyEvaluationMapper
             Amenities = propertyEvaluation.Amenities,
             FinalPropertyRating = (float) propertyEvaluation.FinalPropertyRating!
         };
-    } 
+    }
 }

@@ -23,7 +23,7 @@ public class AgentRepository : IAgentRepository
     }
 
     public List<CustomerPersonalAgentRateBusinessModel> GetCustomerPersonalAgentsServicesRates(Guid customerId)
-    { 
+    {
         return _context.CustomerPersonalAgentRates.Where(r => r.CustomerId == customerId)
             .Select(rbm => rbm.ToBusinessModel()).ToList();
     }
@@ -33,7 +33,8 @@ public class AgentRepository : IAgentRepository
         var agents = _context.Agents.ToList();
         foreach (var agent in agents)
         {
-            var personalAgentRates = _context.CustomerPersonalAgentRates.Any(r => r.Agent.Id == agent.Id && r.CustomerId == customerId);
+            var personalAgentRates =
+                _context.CustomerPersonalAgentRates.Any(r => r.Agent.Id == agent.Id && r.CustomerId == customerId);
             if (!personalAgentRates)
             {
                 var customerPersonalAgentRates = new CustomerPersonalAgentRate
@@ -61,11 +62,6 @@ public class AgentRepository : IAgentRepository
         return agents.ToDictionary(agent => agent.Id, agent => GetTrustInOtherAgentsOfAgentWithId(agent.Id));
     }
 
-    public string GetAgentNameById(Guid agentId)
-    {
-        return _context.Agents.Single(a => a.Id == agentId).Name;
-    }
-    
     public List<TrustAgentRateBusinessModel> GetTrustInOtherAgentsOfAgentWithId(Guid agentId)
     {
         var trustedAgentsRates = new List<TrustAgentRateBusinessModel>();
@@ -75,10 +71,13 @@ public class AgentRepository : IAgentRepository
             .Include(tsa => tsa.TrustedAgentRateNavigation).ThenInclude(sac => sac.AttractionsTrustNavigation).ToList();
 
         foreach (var trustedAgentRate in trustedAgents)
-        {
             trustedAgentsRates.Add(trustedAgentRate.ToBusinessModel(GetAgentNameById(trustedAgentRate.TrustedAgentId)));
-        }
 
         return trustedAgentsRates;
+    }
+
+    public string GetAgentNameById(Guid agentId)
+    {
+        return _context.Agents.Single(a => a.Id == agentId).Name;
     }
 }

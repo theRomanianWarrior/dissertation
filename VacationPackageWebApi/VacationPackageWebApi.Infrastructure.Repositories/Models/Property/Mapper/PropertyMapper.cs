@@ -7,7 +7,7 @@ public static class PropertyMapper
 {
     public static PropertyBusinessModel ToBusinessModel(this Property property)
     {
-        return new PropertyBusinessModel()
+        return new PropertyBusinessModel
         {
             Id = property.Id,
             AmenitiesPackage = property.AmenitiesPackage.ToBusinessModel(),
@@ -16,7 +16,7 @@ public static class PropertyMapper
             Name = property.Name,
             Pet = property.Pet,
             PlaceType = property.PlaceType.ToBusinessModel(),
-            PropertyType = property.PropertyType.ToBusinessModel(),
+            PropertyType = property.PropertyType.ToBusinessModel()
         };
     }
 }

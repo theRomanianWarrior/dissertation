@@ -1,11 +1,10 @@
-﻿namespace VacationPackageWebApi.Domain.Enums
+﻿namespace VacationPackageWebApi.Domain.Enums;
+
+public enum PropertyTypeId
 {
-    public enum PropertyTypeId
-    {
-        Apartment = 1,
-        GuestHouse,
-        House,
-        Hotel,
-        Default
-    }
+    Apartment = 1,
+    GuestHouse,
+    House,
+    Hotel,
+    Default
 }

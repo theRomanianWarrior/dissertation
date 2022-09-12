@@ -10,12 +10,12 @@ public static class FlightEvaluationMapper
         return new FlightEvaluation
         {
             Id = Guid.NewGuid(),
-            Class= flightEvaluation.Class,
-            Price= flightEvaluation.Price,
-            Company= flightEvaluation.Company,
-            FlightDate= flightEvaluation.FlightDate,
-            FlightTime= flightEvaluation.FlightTime,
-            FlightRating= (float) flightEvaluation.FlightRating!
+            Class = flightEvaluation.Class,
+            Price = flightEvaluation.Price,
+            Company = flightEvaluation.Company,
+            FlightDate = flightEvaluation.FlightDate,
+            FlightTime = flightEvaluation.FlightTime,
+            FlightRating = (float) flightEvaluation.FlightRating!
         };
     }
 }

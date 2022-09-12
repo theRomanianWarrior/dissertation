@@ -6,7 +6,7 @@ public static class AmenitiesPackageMapper
 {
     public static AmenitiesPackageBusinessModel ToBusinessModel(this AmenitiesPackage amenitiesPackage)
     {
-        return new AmenitiesPackageBusinessModel()
+        return new AmenitiesPackageBusinessModel
         {
             Id = amenitiesPackage.Id,
             AirConditioning = amenitiesPackage.AirConditioning,

@@ -5,13 +5,14 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
 
 public static class PropertyRecommendationMapper
 {
-    public static PropertyRecommendation ToEntity(this PropertyRecommendationBModel propertyRecommendation, Guid initialAssignedAgentId)
+    public static PropertyRecommendation ToEntity(this PropertyRecommendationBModel propertyRecommendation,
+        Guid initialAssignedAgentId)
     {
         return new PropertyRecommendation
         {
             Id = Guid.NewGuid(),
             PropertyId = propertyRecommendation.Property.Id,
-            SourceAgentId = propertyRecommendation.SourceAgentId, 
+            SourceAgentId = propertyRecommendation.SourceAgentId,
             InitialAssignedAgentId = initialAssignedAgentId
         };
     }

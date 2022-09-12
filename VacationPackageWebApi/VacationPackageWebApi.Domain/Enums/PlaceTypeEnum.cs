@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWebApi.Domain.Enums
+﻿namespace VacationPackageWebApi.Domain.Enums;
+
+public enum PlaceTypeId
 {
-    public enum PlaceTypeId
-    {
-        EntirePlace = 1,
-        PrivateRoom,
-        SharedRoom,
-        Default
-    }
+    EntirePlace = 1,
+    PrivateRoom,
+    SharedRoom,
+    Default
 }

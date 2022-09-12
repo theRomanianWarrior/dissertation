@@ -6,7 +6,7 @@ public static class WeekDaysOfFlightMapper
 {
     public static WeekDaysOfFlightBusinessModel ToBusinessModel(this WeekDaysOfFlight weekDaysOfFlight)
     {
-        return new WeekDaysOfFlightBusinessModel()
+        return new WeekDaysOfFlightBusinessModel
         {
             Id = weekDaysOfFlight.Id,
             DaysList = weekDaysOfFlight.DaysList

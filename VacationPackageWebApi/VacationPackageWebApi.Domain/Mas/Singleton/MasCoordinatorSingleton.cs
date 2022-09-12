@@ -2,12 +2,11 @@
 
 public sealed class MasCoordinatorSingleton
 {
-    private static readonly Lazy<MasCoordinatorAgent> _lazy =
-        new Lazy<MasCoordinatorAgent>(() => new MasCoordinatorAgent());
-
-    public static MasCoordinatorAgent Instance => _lazy.Value;
+    private static readonly Lazy<MasCoordinatorAgent> _lazy = new(() => new MasCoordinatorAgent());
 
     private MasCoordinatorSingleton()
     {
     }
+
+    public static MasCoordinatorAgent Instance => _lazy.Value;
 }

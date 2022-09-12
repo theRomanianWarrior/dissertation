@@ -1,5 +1,4 @@
-﻿using VacationPackageWebApi.Domain.PreferencesPackageResponse.AttractionsPreferencesResponse;
-using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
+﻿using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Recommendation;
 

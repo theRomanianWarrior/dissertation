@@ -6,7 +6,7 @@ public static class FlightCompanyMapper
 {
     public static FlightCompanyBusinessModel ToBusinessModel(this FlightCompany flightCompany)
     {
-        return new FlightCompanyBusinessModel()
+        return new FlightCompanyBusinessModel
         {
             Id = flightCompany.Id,
             Name = flightCompany.Name

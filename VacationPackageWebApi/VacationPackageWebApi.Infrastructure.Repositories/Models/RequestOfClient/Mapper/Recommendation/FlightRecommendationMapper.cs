@@ -5,15 +5,16 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
 
 public static class FlightRecommendationMapper
 {
-    public static FlightRecommendation ToEntity(this FlightRecommendationBModel flightRecommendation, Guid initialAssignedAgentId)
+    public static FlightRecommendation ToEntity(this FlightRecommendationBModel flightRecommendation,
+        Guid initialAssignedAgentId)
     {
         return new FlightRecommendation
         {
             Id = Guid.NewGuid(),
-            SourceAgentId = flightRecommendation.SourceAgentId, 
+            SourceAgentId = flightRecommendation.SourceAgentId,
             InitialAssignedAgentId = initialAssignedAgentId,
-            FlightDate = DateOnly.FromDateTime(flightRecommendation.FlightDate), 
-            Stops = flightRecommendation.Stops, 
+            FlightDate = DateOnly.FromDateTime(flightRecommendation.FlightDate),
+            Stops = flightRecommendation.Stops,
             Time = TimeOnly.FromDateTime(flightRecommendation.DepartureTime)
         };
     }

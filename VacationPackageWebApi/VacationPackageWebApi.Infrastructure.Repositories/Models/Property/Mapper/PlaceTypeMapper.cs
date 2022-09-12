@@ -6,7 +6,7 @@ public static class PlaceTypeMapper
 {
     public static PlaceTypeBusinessModel ToBusinessModel(this PlaceType placeType)
     {
-        return new PlaceTypeBusinessModel()
+        return new PlaceTypeBusinessModel
         {
             Id = placeType.Id,
             Type = placeType.Type

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models;
 
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models
+public record FlightCompanyDto
 {
-    public record FlightCompanyDto
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

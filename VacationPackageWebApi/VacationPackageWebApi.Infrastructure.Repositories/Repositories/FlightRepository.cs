@@ -23,10 +23,10 @@ public class FlightRepository : IFlightRepository
             .Include(c => c.Company)
             .Include(w => w.WeekDaysOfFlight)
             .Include(av => av.AvailableDepartureTime).ToListAsync();
-        
+
         var prices = await _context.FlightPrices.Include(c => c.Class).ToListAsync();
-        
-       return 
+
+        return
             (from flight in flights
                 join flightPrice in prices on flight.Id equals flightPrice.FlightId into pricesOfFlight
                 select flight.ToBusinessModel(pricesOfFlight.Select(fp => fp.ToBusinessModel()).ToList())).ToList();
@@ -34,7 +34,8 @@ public class FlightRepository : IFlightRepository
 
     public List<FlightDepartureCities> GetFlightsByUniqueDepartureArrivalAirport()
     {
-        return _context.Flights.Include(fd => fd.DepartureAirport).ThenInclude(fdc => fdc.City).ThenInclude(fdcc => fdcc.Country)
+        return _context.Flights.Include(fd => fd.DepartureAirport).ThenInclude(fdc => fdc.City)
+            .ThenInclude(fdcc => fdcc.Country)
             .Select(f => f.ToUiDepartureCitiesModel()).ToList().OrderBy(c => c.DepartureCountryName).ToList();
     }
 
@@ -49,6 +50,7 @@ public class FlightRepository : IFlightRepository
     public List<string> GetFlightCompaniesForCities(string departureCity, string destinationCity)
     {
         return _context.Flights.Where(f => f.DepartureAirport.City.Name == departureCity &&
-                                    f.ArrivalAirport.City.Name == destinationCity).Select(fc => fc.Company.Name).ToList();
+                                           f.ArrivalAirport.City.Name == destinationCity).Select(fc => fc.Company.Name)
+            .ToList();
     }
 }

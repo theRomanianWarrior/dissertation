@@ -6,7 +6,7 @@ public static class AttractionMapper
 {
     public static AttractionBusinessModel ToBusinessModel(this OpenTripMapAttraction attraction)
     {
-        return new AttractionBusinessModel()
+        return new AttractionBusinessModel
         {
             Xid = attraction.Xid,
             Country = attraction.Country,
@@ -38,7 +38,7 @@ public static class AttractionMapper
             Town = attraction.Town,
             Width = attraction.Width,
             Wikidata = attraction.Wikidata,
-            Wikipedia = attraction.Wikipedia,
+            Wikipedia = attraction.Wikipedia
         };
     }
 }

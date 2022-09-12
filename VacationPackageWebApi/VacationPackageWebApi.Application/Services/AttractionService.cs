@@ -12,7 +12,7 @@ public class AttractionService : IAttractionService
     {
         _attractionRepository = attractionRepository;
     }
-    
+
     public async Task<List<AttractionBusinessModel>> GetAllAttractionsAsync()
     {
         return await _attractionRepository.GetAllAttractionsAsync();

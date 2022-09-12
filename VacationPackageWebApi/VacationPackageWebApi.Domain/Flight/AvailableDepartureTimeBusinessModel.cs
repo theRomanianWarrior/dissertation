@@ -1,8 +1,7 @@
-﻿namespace VacationPackageWebApi.Domain.Flight
+﻿namespace VacationPackageWebApi.Domain.Flight;
+
+public record AvailableDepartureTimeBusinessModel
 {
-    public record AvailableDepartureTimeBusinessModel
-    {
-        public Guid Id { get; set; }
-        public string DepartureHour { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string DepartureHour { get; set; }
 }

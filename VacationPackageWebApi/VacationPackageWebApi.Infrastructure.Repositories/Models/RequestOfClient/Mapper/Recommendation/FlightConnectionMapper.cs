@@ -1,5 +1,4 @@
 ﻿using VacationPackageWebApi.Domain.Flight;
-using VacationPackageWebApi.Domain.PreferencesPackageResponse.FlightPreferencesResponse;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Recommendation;
 
 namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Recommendation;

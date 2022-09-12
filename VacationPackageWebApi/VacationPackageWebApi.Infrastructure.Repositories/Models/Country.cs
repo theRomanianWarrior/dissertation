@@ -1,15 +1,14 @@
-﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models
+﻿namespace VacationPackageWebApi.Infrastructure.Repositories.Models;
+
+public class Country
 {
-    public class Country
+    public Country()
     {
-        public Country()
-        {
-            Cities = new HashSet<City>();
-        }
-
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-
-        public virtual ICollection<City> Cities { get; set; }
+        Cities = new HashSet<City>();
     }
+
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+
+    public virtual ICollection<City> Cities { get; set; }
 }

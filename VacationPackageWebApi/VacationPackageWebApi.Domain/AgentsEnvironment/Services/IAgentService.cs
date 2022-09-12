@@ -7,6 +7,7 @@ public interface IAgentService
     public Task<List<TourismAgent>> GetAllAgentsAsync();
 
     public Task InitializeCustomerPersonalAgentsRate(Guid customerId);
+
     public List<CustomerPersonalAgentRateBusinessModel> GetCustomerPersonalAgentsServicesRates(
         Guid customerId);
 

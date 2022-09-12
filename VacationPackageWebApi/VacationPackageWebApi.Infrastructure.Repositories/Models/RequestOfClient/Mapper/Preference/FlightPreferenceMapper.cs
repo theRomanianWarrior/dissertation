@@ -1,19 +1,19 @@
 ﻿using VacationPackageWebApi.Domain.PreferencesPackageRequest;
 using VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.MainResources.Preference;
 
-namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Preference
+namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClient.Mapper.Preference;
+
+public static class FlightPreferenceMapper
 {
-    public static class FlightPreferenceMapper
+    public static FlightPreference? ToEntity(this FlightPreferenceDto? flightPreferenceDto,
+        DeparturePeriodsPreference departurePeriodsPreference)
     {
-        public static FlightPreference? ToEntity(this FlightPreferenceDto? flightPreferenceDto, DeparturePeriodsPreference departurePeriodsPreference)
+        return new FlightPreference
         {
-            return new FlightPreference
-            {
-                Id = Guid.NewGuid(),
-                DeparturePeriodPreferenceId = departurePeriodsPreference.Id,
-                Stops = flightPreferenceDto!.StopsNavigation.Type,
-                Class = flightPreferenceDto.Class.Class
-            };
-        }
+            Id = Guid.NewGuid(),
+            DeparturePeriodPreferenceId = departurePeriodsPreference.Id,
+            Stops = flightPreferenceDto!.StopsNavigation!.Type,
+            Class = flightPreferenceDto.Class!.Class
+        };
     }
 }

@@ -6,7 +6,7 @@ public static class RoomAndBedMapper
 {
     public static RoomAndBedBusinessModel ToBusinessModel(this RoomAndBed roomAndBed)
     {
-        return new RoomAndBedBusinessModel()
+        return new RoomAndBedBusinessModel
         {
             Id = roomAndBed.Id,
             Bathroom = roomAndBed.Bathroom,

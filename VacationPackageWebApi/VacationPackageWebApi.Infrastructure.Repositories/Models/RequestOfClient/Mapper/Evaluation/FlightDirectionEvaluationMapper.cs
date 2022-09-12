@@ -5,7 +5,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
 
 public static class FlightDirectionEvaluationMapper
 {
-    public static FlightDirectionEvaluation ToEntity(this FlightDirectionEvaluationDto flightDirectionEvaluation, Guid departureFlightEvaluationId, Guid returnFlightEvaluationId)
+    public static FlightDirectionEvaluation ToEntity(this FlightDirectionEvaluationDto flightDirectionEvaluation,
+        Guid departureFlightEvaluationId, Guid returnFlightEvaluationId)
     {
         return new FlightDirectionEvaluation
         {

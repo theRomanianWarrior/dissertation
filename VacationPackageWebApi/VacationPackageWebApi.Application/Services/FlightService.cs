@@ -7,7 +7,7 @@ namespace VacationPackageWebApi.Application.Services;
 public class FlightService : IFlightService
 {
     private readonly IFlightRepository _flightRepository;
-    
+
     public FlightService(IFlightRepository flightRepository)
     {
         _flightRepository = flightRepository;
@@ -22,13 +22,15 @@ public class FlightService : IFlightService
     {
         var flightsDepartureDestinationCities = _flightRepository.GetFlightsByUniqueDepartureArrivalAirport();
 
-        return flightsDepartureDestinationCities.Select(flightDepartureDestination => flightDepartureDestination.DepartureCityName + ", " + flightDepartureDestination.DepartureCountryName).Distinct().ToList();
+        return flightsDepartureDestinationCities.Select(flightDepartureDestination =>
+                flightDepartureDestination.DepartureCityName + ", " + flightDepartureDestination.DepartureCountryName)
+            .Distinct().ToList();
     }
 
     public List<string> GetFlightArrivalCities(string flightDepartureCity)
     {
-        var flightArrivalCities =  _flightRepository.GetFlightArrivalCities(flightDepartureCity);
-        
+        var flightArrivalCities = _flightRepository.GetFlightArrivalCities(flightDepartureCity);
+
         /* Destinations black list
          * Athens
          * Kazan
@@ -36,7 +38,6 @@ public class FlightService : IFlightService
          * Sabetta
          This is a temporary implementation. */
         foreach (var city in flightArrivalCities.ToList())
-        {
             switch (city.DestinationCityName)
             {
                 case "Athens":
@@ -46,9 +47,10 @@ public class FlightService : IFlightService
                     flightArrivalCities.Remove(city);
                     break;
             }
-        }
-        
-        return flightArrivalCities.Select(flightArrivalDestination => flightArrivalDestination.DestinationCityName + ", " + flightArrivalDestination.DestinationCountryName).Distinct().ToList();
+
+        return flightArrivalCities.Select(flightArrivalDestination => flightArrivalDestination.DestinationCityName +
+                                                                      ", " + flightArrivalDestination
+                                                                          .DestinationCountryName).Distinct().ToList();
     }
 
     public List<string> GetFlightCompaniesForDepartureDestinationCity(string departureAndDestinationCity)

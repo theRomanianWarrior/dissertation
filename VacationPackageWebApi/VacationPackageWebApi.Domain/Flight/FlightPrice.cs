@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWebApi.Domain.Flight
-{
-    public record FlightPriceBusinessModel
-    {
-        public Guid Id { get; set; }
-        public short Price { get; set; }
+﻿namespace VacationPackageWebApi.Domain.Flight;
 
-        public FlightClassBusinessModel Class { get; set; }
-    }
+public record FlightPriceBusinessModel
+{
+    public Guid Id { get; set; }
+    public short Price { get; set; }
+
+    public FlightClassBusinessModel Class { get; set; }
 }

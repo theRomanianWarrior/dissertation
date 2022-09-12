@@ -1,7 +1,6 @@
-﻿namespace VacationPackageWebApi.Domain.PreferencesPackageRequest
+﻿namespace VacationPackageWebApi.Domain.PreferencesPackageRequest;
+
+public record CountryDto
 {
-    public record CountryDto
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

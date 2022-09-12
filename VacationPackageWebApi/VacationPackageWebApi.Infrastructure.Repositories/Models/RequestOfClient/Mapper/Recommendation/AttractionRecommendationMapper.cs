@@ -5,7 +5,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
 
 public static class AttractionRecommendationMapper
 {
-    public static AttractionRecommendation ToEntity(this AttractionBusinessModel attraction, Guid allAttractionRecommendationId)
+    public static AttractionRecommendation ToEntity(this AttractionBusinessModel attraction,
+        Guid allAttractionRecommendationId)
     {
         return new AttractionRecommendation
         {

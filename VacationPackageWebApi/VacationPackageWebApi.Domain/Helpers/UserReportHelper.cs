@@ -13,7 +13,7 @@ public static class UserReportHelper
 
     private static string _currentProcessingAgentSelfExpertRate = string.Empty;
     private static string _currentProcessingAgentSelfExpertService = string.Empty;
-    private static bool _personalAgentServiceScoreHeaderInitialized = false;
+    private static bool _personalAgentServiceScoreHeaderInitialized;
 
     public static void WriteUserPreferencesRequest(PreferencesRequest preferencesPayload, DateTime requestTimestamp)
     {
@@ -67,11 +67,10 @@ public static class UserReportHelper
                 }
 
                 fileStreamWriter.WriteLine(
-                    $"\tClass: {((ClassTypeId) preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.Class.Class).ToString()}");
+                    $"\tClass: {((ClassTypeId) preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.Class!.Class).ToString()}");
 
                 fileStreamWriter.WriteLine("\t \t Stops:");
                 if (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.StopsNavigation != null)
-                {
                     switch (preferencesPayload.CustomerFlightNavigation!.DepartureNavigation!.StopsNavigation.Type)
                     {
                         case (short) StopsTypePreferenceId.Direct:
@@ -84,7 +83,6 @@ public static class UserReportHelper
                             fileStreamWriter.WriteLine("\t \tTwo or More Stops");
                             break;
                     }
-                }
             }
 
             fileStreamWriter.WriteLine("\n \tReturn Flight Preferences");
@@ -117,11 +115,10 @@ public static class UserReportHelper
                 }
 
                 fileStreamWriter.WriteLine(
-                    $"\tClass: {((ClassTypeId) preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.Class.Class).ToString()}");
+                    $"\tClass: {((ClassTypeId) preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.Class!.Class).ToString()}");
 
                 fileStreamWriter.WriteLine("\tStops:");
                 if (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.StopsNavigation != null)
-                {
                     switch (preferencesPayload.CustomerFlightNavigation!.ReturnNavigation!.StopsNavigation.Type)
                     {
                         case (short) StopsTypePreferenceId.Direct:
@@ -134,7 +131,6 @@ public static class UserReportHelper
                             fileStreamWriter.WriteLine("\t \tTwo or More Stops");
                             break;
                     }
-                }
             }
         }
 
@@ -238,92 +234,120 @@ public static class UserReportHelper
         fileStreamWriter.WriteLine("________________________________________________");
     }
 
-    public static void WritePreferencesResponse(PreferencesResponse preferencesResponse, string departureFlightSourceAgentName, string returnFlightSourceAgentName, string propertySourceAgentName, string attractionsSourceAgentName)
+    public static void WritePreferencesResponse(PreferencesResponse preferencesResponse,
+        string departureFlightSourceAgentName, string returnFlightSourceAgentName, string propertySourceAgentName,
+        string attractionsSourceAgentName)
     {
         using var fileStreamWriter = File.AppendText(_pathToLogFile + _fileName);
 
         fileStreamWriter.WriteLine("________________________________________________");
         fileStreamWriter.WriteLine("Flight recommendations ");
         fileStreamWriter.WriteLine("\n \tDeparture flight: ");
-        fileStreamWriter.WriteLine($"\tFlight Date: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightDate:dd-MM-yyyy}");
-        fileStreamWriter.WriteLine($"\tDeparture Time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.DepartureTime:HH:mm}");
+        fileStreamWriter.WriteLine(
+            $"\tFlight Date: {preferencesResponse.FlightRecommendationResponse!.FlightDirectionRecommendation!.DepartureFlightRecommendation!.FlightDate:dd-MM-yyyy}");
+        fileStreamWriter.WriteLine(
+            $"\tDeparture Time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.DepartureTime:HH:mm}");
 
         fileStreamWriter.WriteLine("\tClass:");
-        switch (preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightClass)
+        switch (preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation
+                    .DepartureFlightRecommendation.FlightClass)
         {
-            case (short) ClassTypeId.Business :
+            case (short) ClassTypeId.Business:
                 fileStreamWriter.WriteLine("\t \tBusiness");
                 break;
-            case (short) ClassTypeId.Economy :
+            case (short) ClassTypeId.Economy:
                 fileStreamWriter.WriteLine("\t \tEconomy");
                 break;
-            case (short) ClassTypeId.First :
+            case (short) ClassTypeId.First:
                 fileStreamWriter.WriteLine("\t \tFirst");
                 break;
         }
-        
-        fileStreamWriter.WriteLine("\tMore flight information");
-        fileStreamWriter.WriteLine($"\t \tDeparture Country: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.City.Country.Name}");
-        fileStreamWriter.WriteLine($"\t \tDeparture City: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.City.Name}");
-        fileStreamWriter.WriteLine($"\t \tDeparture Airport: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.Name}");
-        fileStreamWriter.WriteLine($"\t \tFlight Company: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.Company.Name}");
-        fileStreamWriter.WriteLine($"\t \tFlight is each: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.WeekDaysOfFlight.DaysList}");
-        fileStreamWriter.WriteLine($"\t \tAvailable departure time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.AvailableDepartureTime.DepartureHour}");
 
-        fileStreamWriter.WriteLine($"\tInitial assigned agent name: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.InitialAssignedAgentName}");
+        fileStreamWriter.WriteLine("\tMore flight information");
+        fileStreamWriter.WriteLine(
+            $"\t \tDeparture Country: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.City.Country.Name}");
+        fileStreamWriter.WriteLine(
+            $"\t \tDeparture City: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.City.Name}");
+        fileStreamWriter.WriteLine(
+            $"\t \tDeparture Airport: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.Name}");
+        fileStreamWriter.WriteLine(
+            $"\t \tFlight Company: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.Company.Name}");
+        fileStreamWriter.WriteLine(
+            $"\t \tFlight is each: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.WeekDaysOfFlight.DaysList}");
+        fileStreamWriter.WriteLine(
+            $"\t \tAvailable departure time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.FlightConnection.First().Flight.AvailableDepartureTime.DepartureHour}");
+
+        fileStreamWriter.WriteLine(
+            $"\tInitial assigned agent name: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.DepartureFlightRecommendation.InitialAssignedAgentName}");
         fileStreamWriter.WriteLine($"\tSource agent name: {departureFlightSourceAgentName}");
-        
-        
+
+
         fileStreamWriter.WriteLine("\n \tReturn flight: ");
-        fileStreamWriter.WriteLine($"\tFlight Date: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightDate:dd-MM-yyyy}");
-        fileStreamWriter.WriteLine($"\tDeparture Time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.DepartureTime:HH:mm}");
+        fileStreamWriter.WriteLine(
+            $"\tFlight Date: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation!.FlightDate:dd-MM-yyyy}");
+        fileStreamWriter.WriteLine(
+            $"\tDeparture Time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.DepartureTime:HH:mm}");
 
         fileStreamWriter.WriteLine("\tClass ");
-        switch (preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightClass)
+        switch (preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation
+                    .ReturnFlightRecommendation.FlightClass)
         {
-            case (short) ClassTypeId.Business :
+            case (short) ClassTypeId.Business:
                 fileStreamWriter.WriteLine("\t \tBusiness");
                 break;
-            case (short) ClassTypeId.Economy :
+            case (short) ClassTypeId.Economy:
                 fileStreamWriter.WriteLine("\t \tEconomy");
                 break;
-            case (short) ClassTypeId.First :
+            case (short) ClassTypeId.First:
                 fileStreamWriter.WriteLine("\t \tFirst");
                 break;
         }
-        
-        fileStreamWriter.WriteLine("\n \tMore flight information");
-        fileStreamWriter.WriteLine($"\t \tDeparture Country: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.City.Country.Name}");
-        fileStreamWriter.WriteLine($"\t \tDeparture City: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.City.Name}");
-        fileStreamWriter.WriteLine($"\t \tDeparture Airport: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.Name}");
-        fileStreamWriter.WriteLine($"\t \tFlight Company: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.Company.Name}");
-        fileStreamWriter.WriteLine($"\t \tFlight is each: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.WeekDaysOfFlight.DaysList}");
-        fileStreamWriter.WriteLine($"\t \tAvailable departure time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.AvailableDepartureTime.DepartureHour}");
 
-        fileStreamWriter.WriteLine($"\n \tInitial assigned agent name: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.InitialAssignedAgentName}");
+        fileStreamWriter.WriteLine("\n \tMore flight information");
+        fileStreamWriter.WriteLine(
+            $"\t \tDeparture Country: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.City.Country.Name}");
+        fileStreamWriter.WriteLine(
+            $"\t \tDeparture City: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.City.Name}");
+        fileStreamWriter.WriteLine(
+            $"\t \tDeparture Airport: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.DepartureAirport.Name}");
+        fileStreamWriter.WriteLine(
+            $"\t \tFlight Company: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.Company.Name}");
+        fileStreamWriter.WriteLine(
+            $"\t \tFlight is each: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.WeekDaysOfFlight.DaysList}");
+        fileStreamWriter.WriteLine(
+            $"\t \tAvailable departure time: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.FlightConnection.First().Flight.AvailableDepartureTime.DepartureHour}");
+
+        fileStreamWriter.WriteLine(
+            $"\n \tInitial assigned agent name: {preferencesResponse.FlightRecommendationResponse.FlightDirectionRecommendation.ReturnFlightRecommendation.InitialAssignedAgentName}");
         fileStreamWriter.WriteLine($"\tSource agent name: {returnFlightSourceAgentName}");
 
         fileStreamWriter.WriteLine("\nProperty recommendations");
-        fileStreamWriter.WriteLine($"\t City {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.City.Name}");
-        if(preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.Pet)
+        fileStreamWriter.WriteLine(
+            $"\t City {preferencesResponse.PropertyPreferencesResponse!.PropertyRecommendationBModel.Property.City.Name}");
+        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.Pet)
             fileStreamWriter.WriteLine("\t Pet: yes");
         fileStreamWriter.WriteLine("\tAmenities:");
         if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage.WiFi)
             fileStreamWriter.WriteLine("\t \t Wifi");
 
-        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage.Kitchen)
+        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage
+            .Kitchen)
             fileStreamWriter.WriteLine("\t \t Kitchen");
 
-        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage.Washer)
+        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage
+            .Washer)
             fileStreamWriter.WriteLine("\t \t Washer");
 
-        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage.Dryer)
+        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage
+            .Dryer)
             fileStreamWriter.WriteLine("\t \t Dryer");
 
-        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage.AirConditioning)
+        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage
+            .AirConditioning)
             fileStreamWriter.WriteLine("\t \t Air Conditioning");
 
-        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage.Heating)
+        if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage
+            .Heating)
             fileStreamWriter.WriteLine("\t \t Heating");
 
         if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage.Tv)
@@ -332,29 +356,35 @@ public static class UserReportHelper
         if (preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.AmenitiesPackage.Iron)
             fileStreamWriter.WriteLine("\t \t Iron");
 
-        fileStreamWriter.WriteLine($"\tProperty type: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.PropertyType.Type}");
-        fileStreamWriter.WriteLine($"\tPlace type: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.PlaceType.Type}");
-        fileStreamWriter.WriteLine($"\tBedrooms: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.RoomAndBed.Bedroom}");
-        fileStreamWriter.WriteLine($"\tBeds: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.RoomAndBed.Bed}");
-        fileStreamWriter.WriteLine($"\tBathrooms: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.RoomAndBed.Bathroom}");
+        fileStreamWriter.WriteLine(
+            $"\tProperty type: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.PropertyType.Type}");
+        fileStreamWriter.WriteLine(
+            $"\tPlace type: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.PlaceType.Type}");
+        fileStreamWriter.WriteLine(
+            $"\tBedrooms: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.RoomAndBed.Bedroom}");
+        fileStreamWriter.WriteLine(
+            $"\tBeds: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.RoomAndBed.Bed}");
+        fileStreamWriter.WriteLine(
+            $"\tBathrooms: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.RoomAndBed.Bathroom}");
 
-        fileStreamWriter.WriteLine($"\n \tInitial assigned agent name: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.InitialAssignedAgentName}");
+        fileStreamWriter.WriteLine(
+            $"\n \tInitial assigned agent name: {preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.InitialAssignedAgentName}");
         fileStreamWriter.WriteLine($"\tSource agent name: {propertySourceAgentName}");
 
         fileStreamWriter.WriteLine("Attractions recommendations ");
-        foreach (var attraction in preferencesResponse.AttractionsRecommendationResponse.AttractionRecommendationList)
+        foreach (var attraction in preferencesResponse.AttractionsRecommendationResponse!.AttractionRecommendationList)
         {
             fileStreamWriter.WriteLine($"\t City: {attraction.Attraction.Town}");
             fileStreamWriter.WriteLine($"\t Name: {attraction.Attraction.Name}");
             fileStreamWriter.WriteLine($"\t Kind pattern: {attraction.Attraction.Kinds}");
             fileStreamWriter.WriteLine();
         }
-        
-        fileStreamWriter.WriteLine($"\n \tInitial assigned agent name: {preferencesResponse.AttractionsRecommendationResponse.InitialAssignedAgentName}");
-        fileStreamWriter.WriteLine($"\tSource agent name: {attractionsSourceAgentName}");
-        
-        fileStreamWriter.WriteLine("________________________________________________");
 
+        fileStreamWriter.WriteLine(
+            $"\n \tInitial assigned agent name: {preferencesResponse.AttractionsRecommendationResponse.InitialAssignedAgentName}");
+        fileStreamWriter.WriteLine($"\tSource agent name: {attractionsSourceAgentName}");
+
+        fileStreamWriter.WriteLine("________________________________________________");
     }
 
     public static void WriteUserEvaluation(ServiceEvaluationDto serviceEvaluation)
@@ -375,7 +405,7 @@ public static class UserReportHelper
         fileStreamWriter.WriteLine(
             $"\t Flight Company: {(serviceEvaluation.FlightEvaluation.DepartureNavigation.Company ? "yes" : "no")}");
         fileStreamWriter.WriteLine(
-            $"\tFlight Rating: {Math.Round((double) serviceEvaluation.FlightEvaluation.DepartureNavigation.FlightRating, 2)}");
+            $"\tFlight Rating: {Math.Round((double) serviceEvaluation.FlightEvaluation.DepartureNavigation.FlightRating!, 2)}");
 
         fileStreamWriter.WriteLine("\n Return flight evaluation");
         fileStreamWriter.WriteLine(
@@ -389,10 +419,10 @@ public static class UserReportHelper
         fileStreamWriter.WriteLine(
             $"\t Flight Company: {(serviceEvaluation.FlightEvaluation.ReturnNavigation.Company ? "yes" : "no")}");
         fileStreamWriter.WriteLine(
-            $"\t Flight Rating: {Math.Round((double) serviceEvaluation.FlightEvaluation.ReturnNavigation.FlightRating, 2)}");
+            $"\t Flight Rating: {Math.Round((double) serviceEvaluation.FlightEvaluation.ReturnNavigation.FlightRating!, 2)}");
 
         fileStreamWriter.WriteLine(
-            $"\n \t Entire Flight Rating: {Math.Round((double) serviceEvaluation.FlightEvaluation.FinalFlightRating, 2)}");
+            $"\n \t Entire Flight Rating: {Math.Round((double) serviceEvaluation.FlightEvaluation.FinalFlightRating!, 2)}");
 
         fileStreamWriter.WriteLine("\nProperty evaluation");
         fileStreamWriter.WriteLine(
@@ -404,7 +434,7 @@ public static class UserReportHelper
         fileStreamWriter.WriteLine(
             $"\t Amenities: {(serviceEvaluation.PropertyEvaluation.Amenities ? "yes" : "no")}");
         fileStreamWriter.WriteLine(
-            $"\t Rating: {Math.Round((double) serviceEvaluation.PropertyEvaluation.FinalPropertyRating, 2)}");
+            $"\t Rating: {Math.Round((double) serviceEvaluation.PropertyEvaluation.FinalPropertyRating!, 2)}");
 
 
         fileStreamWriter.WriteLine("\nAttractions evaluation");
@@ -415,12 +445,13 @@ public static class UserReportHelper
         }
 
         fileStreamWriter.WriteLine(
-            $"\n \t Final rating: {Math.Round((double) serviceEvaluation.AttractionEvaluation.FinalAttractionEvaluation, 2)}");
+            $"\n \t Final rating: {Math.Round((double) serviceEvaluation.AttractionEvaluation.FinalAttractionEvaluation!, 2)}");
 
         fileStreamWriter.WriteLine("________________________________________________");
     }
 
-    public static void WriteCustomerPersonalAgentRate(List<PersonalAgentRateLogModel> personalAgentRateLogList, bool isFirstCall = true)
+    public static void WriteCustomerPersonalAgentRate(List<PersonalAgentRateLogModel> personalAgentRateLogList,
+        bool isFirstCall = true)
     {
         using var fileStreamWriter = File.AppendText(_pathToLogFile + _fileName);
         fileStreamWriter.WriteLine("________________________________________________");
@@ -430,15 +461,14 @@ public static class UserReportHelper
         fileStreamWriter.WriteLine("\t \t \t \t FlightRating \t PropertyRating \t AttractionsRating");
 
         foreach (var customerPersonalAgentRate in personalAgentRateLogList)
-        {
             fileStreamWriter.WriteLine(
                 $"\t {customerPersonalAgentRate.AgentName} \t \t {Math.Round(customerPersonalAgentRate.FlightExpertRate, 2)} \t \t {Math.Round(customerPersonalAgentRate.PropertyExpertRate, 2)} \t \t \t {Math.Round(customerPersonalAgentRate.AttractionsExpertRate, 2)}");
-        }
 
         fileStreamWriter.WriteLine("________________________________________________");
     }
 
-    public static void WriteCustomerPersonalAgentServiceRecommendationsCounter(PersonalAgentServiceScoreLogModel personalAgentServiceScoreLogModel)
+    public static void WriteCustomerPersonalAgentServiceRecommendationsCounter(
+        PersonalAgentServiceScoreLogModel personalAgentServiceScoreLogModel)
     {
         using var fileStreamWriter = File.AppendText(_pathToLogFile + _fileName);
         if (_personalAgentServiceScoreHeaderInitialized == false)
@@ -452,19 +482,19 @@ public static class UserReportHelper
         fileStreamWriter.WriteLine(
             $"\t {personalAgentServiceScoreLogModel.AgentName} \t \t {personalAgentServiceScoreLogModel.FlightRecommendationsDoneForCurrentUser} \t \t {personalAgentServiceScoreLogModel.PropertyRecommendationsDoneForCurrentUser} \t \t \t {personalAgentServiceScoreLogModel.AttractionsRecommendationsDoneForCurrentUser}");
     }
-    
+
     public static void WriteAgentsUpdatedSelfExpertRate(
         PersonalAgentSelfExpertRateLogModel personalAgentSelfExpertRateLogModel)
     {
         using var fileStreamWriter = File.AppendText(_pathToLogFile + _fileName);
-        if(_currentProcessingAgentSelfExpertRate == string.Empty)
+        if (_currentProcessingAgentSelfExpertRate == string.Empty)
             fileStreamWriter.WriteLine("\nAgents updating self expert logic");
-        
+
         if (_currentProcessingAgentSelfExpertRate != personalAgentSelfExpertRateLogModel.AgentName)
         {
             _currentProcessingAgentSelfExpertRate = personalAgentSelfExpertRateLogModel.AgentName;
             _currentProcessingAgentSelfExpertService = personalAgentSelfExpertRateLogModel.ServiceType;
-            
+
             fileStreamWriter.WriteLine($"\nName: {personalAgentSelfExpertRateLogModel.AgentName}");
             fileStreamWriter.WriteLine($"Service type: {personalAgentSelfExpertRateLogModel.ServiceType}");
         }
@@ -474,11 +504,14 @@ public static class UserReportHelper
             _currentProcessingAgentSelfExpertService = personalAgentSelfExpertRateLogModel.ServiceType;
             fileStreamWriter.WriteLine($"\nService type: {personalAgentSelfExpertRateLogModel.ServiceType}");
         }
-        
+
         fileStreamWriter.WriteLine($"\n\tDate of request: {personalAgentSelfExpertRateLogModel.DateOfRequest}");
-        fileStreamWriter.WriteLine($"\tDifference between today and request date: {personalAgentSelfExpertRateLogModel.DaysDifferenceFromToday}");
-        fileStreamWriter.WriteLine($"\tOriginal value: {personalAgentSelfExpertRateLogModel.ExpertServiceRatings.OriginalValue}");
-        fileStreamWriter.WriteLine($"\tActual value: {personalAgentSelfExpertRateLogModel.ExpertServiceRatings.ActualValue}");
+        fileStreamWriter.WriteLine(
+            $"\tDifference between today and request date: {personalAgentSelfExpertRateLogModel.DaysDifferenceFromToday}");
+        fileStreamWriter.WriteLine(
+            $"\tOriginal value: {personalAgentSelfExpertRateLogModel.ExpertServiceRatings.OriginalValue}");
+        fileStreamWriter.WriteLine(
+            $"\tActual value: {personalAgentSelfExpertRateLogModel.ExpertServiceRatings.ActualValue}");
     }
 
     public static void ClearCurrentProcessingAgentSelfExpertLogData()

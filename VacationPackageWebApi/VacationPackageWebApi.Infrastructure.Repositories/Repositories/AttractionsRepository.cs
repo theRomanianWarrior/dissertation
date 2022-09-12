@@ -14,7 +14,7 @@ public class AttractionsRepository : IAttractionRepository
     {
         _context = context;
     }
-    
+
     public async Task<List<AttractionBusinessModel>> GetAllAttractionsAsync()
     {
         return await _context.OpenTripMapAttractions.Select(a => a.ToBusinessModel()).ToListAsync();

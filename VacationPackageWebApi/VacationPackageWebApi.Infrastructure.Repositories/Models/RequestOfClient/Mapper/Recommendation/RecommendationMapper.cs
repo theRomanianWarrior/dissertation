@@ -2,7 +2,8 @@
 
 public static class RecommendationMapper
 {
-    public static MainResources.Recommendation.Recommendation ToEntity(Guid flightRecommendationId, Guid propertyRecommendationId, Guid attractionRecommendationId)
+    public static MainResources.Recommendation.Recommendation ToEntity(Guid flightRecommendationId,
+        Guid propertyRecommendationId, Guid attractionRecommendationId)
     {
         return new MainResources.Recommendation.Recommendation
         {

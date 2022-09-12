@@ -1,8 +1,7 @@
-﻿namespace VacationPackageWebApi.Domain.Flight
+﻿namespace VacationPackageWebApi.Domain.Flight;
+
+public record WeekDaysOfFlightBusinessModel
 {
-    public record WeekDaysOfFlightBusinessModel
-    {
-        public Guid Id { get; set; }
-        public string DaysList { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string DaysList { get; set; }
 }

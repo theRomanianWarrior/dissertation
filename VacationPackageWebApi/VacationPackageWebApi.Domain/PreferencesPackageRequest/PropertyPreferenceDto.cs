@@ -1,14 +1,11 @@
-﻿using VacationPackageWebApi.Domain.Enums;
+﻿namespace VacationPackageWebApi.Domain.PreferencesPackageRequest;
 
-namespace VacationPackageWebApi.Domain.PreferencesPackageRequest
+public record PropertyPreferenceDto
 {
-    public record PropertyPreferenceDto
-    {
-        public bool Pets { get; set; }
+    public bool Pets { get; set; }
 
-        public AmenitiesPreferenceDto? AmenitiesNavigation { get; set; }
-        public PlaceTypePreferenceDto? PlaceTypeNavigation { get; set; }
-        public PropertyTypePreferenceDto? PropertyTypeNavigation { get; set; }
-        public RoomsAndBedsPreferenceDto? RoomsAndBedsNavigation { get; set; }
-    }
+    public AmenitiesPreferenceDto? AmenitiesNavigation { get; set; }
+    public PlaceTypePreferenceDto? PlaceTypeNavigation { get; set; }
+    public PropertyTypePreferenceDto? PropertyTypeNavigation { get; set; }
+    public RoomsAndBedsPreferenceDto? RoomsAndBedsNavigation { get; set; }
 }

@@ -4,12 +4,10 @@ namespace VacationPackageWebApi.Domain.Helpers;
 
 public static class TimeoutFunctionHandler
 {
-
     public static async Task CheckRecommendationReadyUntilSuccessOrTimeout(CancellationToken cancellationToken)
     {
         try
         {
-
             await Task.Run(async () =>
             {
                 while (!cancellationToken.IsCancellationRequested)
@@ -25,7 +23,7 @@ public static class TimeoutFunctionHandler
         }
         catch (TaskCanceledException)
         {
-            if(!cancellationToken.IsCancellationRequested) throw;
+            if (!cancellationToken.IsCancellationRequested) throw;
         }
     }
 }

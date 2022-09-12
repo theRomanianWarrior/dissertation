@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWebApi.Domain.Enums
+﻿namespace VacationPackageWebApi.Domain.Enums;
+
+public enum TaskType
 {
-    public enum TaskType
-    {
-        Flight = 1,
-        Property,
-        Attractions,
-        Default
-    }
+    Flight = 1,
+    Property,
+    Attractions,
+    Default
 }

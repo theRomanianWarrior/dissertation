@@ -9,10 +9,9 @@ public class MasCoordinatorAgent : Agent
 {
     private const int TotalNumberOfServices = 4;
     private readonly List<CoordinatorTasksDone> _tasksDone = new();
-    
+
     public override void Setup()
     {
-
     }
 
     public override void Act(Message message)
@@ -21,7 +20,7 @@ public class MasCoordinatorAgent : Agent
         {
             Console.WriteLine($"\t{message.Format()}");
             message.Parse(out var action, out string parameters);
-            
+
             switch (action)
             {
                 case "departure_flight_recommendation_done":
@@ -42,17 +41,16 @@ public class MasCoordinatorAgent : Agent
             {
                 _tasksDone.Clear();
                 CommonRecommendationLogic.SetPreferencesResponseStatusDone();
-                ("____________________________________________________________").WriteDebug();
+                "____________________________________________________________".WriteDebug();
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-        }  
+        }
     }
-    
+
     public override void ActDefault()
     {
-        
     }
 }

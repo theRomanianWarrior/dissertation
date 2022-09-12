@@ -5,7 +5,8 @@ namespace VacationPackageWebApi.Infrastructure.Repositories.Models.RequestOfClie
 
 public static class ServiceEvaluationMapper
 {
-    public static ServiceEvaluation ToEntity(this ServiceEvaluationDto serviceEvaluation, Guid flightEvaluationId, Guid propertyEvaluationId, Guid attractionEvaluationId)
+    public static ServiceEvaluation ToEntity(this ServiceEvaluationDto serviceEvaluation, Guid flightEvaluationId,
+        Guid propertyEvaluationId, Guid attractionEvaluationId)
     {
         return new ServiceEvaluation
         {
@@ -14,5 +15,5 @@ public static class ServiceEvaluationMapper
             PropertyEvaluationId = propertyEvaluationId,
             AttractionEvaluationId = attractionEvaluationId
         };
-    } 
+    }
 }

@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWebApi.Domain.Property
+﻿namespace VacationPackageWebApi.Domain.Property;
+
+public class RoomAndBedBusinessModel
 {
-    public class RoomAndBedBusinessModel
-    {
-        public Guid Id { get; set; }
-        public short Bedroom { get; set; }
-        public short Bed { get; set; }
-        public short Bathroom { get; set; }
-    }
+    public Guid Id { get; set; }
+    public short Bedroom { get; set; }
+    public short Bed { get; set; }
+    public short Bathroom { get; set; }
 }

@@ -7,7 +7,7 @@ namespace VacationPackageWebApi.Application.Services;
 public class AgentService : IAgentService
 {
     private readonly IAgentRepository _agentRepository;
-    
+
     public AgentService(IAgentRepository agentRepository)
     {
         _agentRepository = agentRepository;
@@ -32,7 +32,7 @@ public class AgentService : IAgentService
     {
         return _agentRepository.GetAllAgentsTrustInOtherAgent();
     }
-    
+
     public List<TrustAgentRateBusinessModel> GetTrustInOtherAgentsOfAgentWithId(Guid agentId)
     {
         return _agentRepository.GetTrustInOtherAgentsOfAgentWithId(agentId);

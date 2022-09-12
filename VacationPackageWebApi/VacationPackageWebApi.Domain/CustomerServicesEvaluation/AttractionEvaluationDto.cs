@@ -1,9 +1,8 @@
-﻿namespace VacationPackageWebApi.Domain.CustomerServicesEvaluation
+﻿namespace VacationPackageWebApi.Domain.CustomerServicesEvaluation;
+
+public class AttractionEvaluationDto
 {
-    public class AttractionEvaluationDto
-    {
-        public string AttractionId { get; set; }
-        public string AttractionName {get; set; }
-        public bool Rate { get; set; }
-    }
+    public string AttractionId { get; set; }
+    public string AttractionName { get; set; }
+    public bool Rate { get; set; }
 }

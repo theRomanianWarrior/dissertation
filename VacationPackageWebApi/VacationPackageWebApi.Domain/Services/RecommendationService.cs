@@ -16,8 +16,8 @@ public class RecommendationService : IRecommendationService
         var cancellationTokenSource = new CancellationTokenSource();
 
         await CommonRecommendationLogic.SetPreferencesPayload(preferencesPayload);
-        
-        ("____________________________________________________________").WriteDebug();
+
+        "____________________________________________________________".WriteDebug();
         MasCoordinatorSingleton.Instance.SendToMany(listOfAvailableAgents, "new_recommendation_request");
 
         cancellationTokenSource.CancelAfter(100000);
@@ -30,14 +30,10 @@ public class RecommendationService : IRecommendationService
             cancellationTokenSource.TryReset();
             return null;
         }
+
         var readRecommendation = MasEnvironmentSingleton.Instance.Memory["PreferencesResponse"] as PreferencesResponse;
 
         MasEnvVarsInitializer.ResetAll();
-
-        //if (MasEnvironmentSingleton.Instance.Memory["PreferencesResponseStatus"] != "done")
-       // {
-        //    return null!; // was canceled
-        //}
 
         return readRecommendation!;
     }
