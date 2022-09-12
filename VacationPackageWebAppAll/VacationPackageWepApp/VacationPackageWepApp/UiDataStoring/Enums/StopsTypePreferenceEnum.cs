@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Enums
+﻿namespace VacationPackageWepApp.UiDataStoring.Enums;
+
+public enum StopsTypePreferenceId
 {
-    public enum StopsTypePreferenceId
-    {
-        Direct = 1,
-        OneStop,
-        TwoOrMoreStops,
-        Default
-    }
+    Direct = 1,
+    OneStop,
+    TwoOrMoreStops,
+    Default
 }

@@ -4,14 +4,13 @@ namespace VacationPackageWepApp.UiDataStoring.Singleton;
 
 public sealed class EvaluationServicesSingleton
 {
-    private static Lazy<ServiceEvaluationDto> _lazy =
-        new Lazy<ServiceEvaluationDto>(() => new ServiceEvaluationDto());
-
-    public static ServiceEvaluationDto Instance => _lazy.Value;
+    private static Lazy<ServiceEvaluationDto> _lazy = new(() => new ServiceEvaluationDto());
 
     private EvaluationServicesSingleton()
     {
     }
+
+    public static ServiceEvaluationDto Instance => _lazy.Value;
 
     public static void ResetInstance()
     {

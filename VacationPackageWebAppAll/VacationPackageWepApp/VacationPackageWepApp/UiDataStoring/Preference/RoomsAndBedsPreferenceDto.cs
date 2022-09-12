@@ -1,9 +1,8 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Preference
+﻿namespace VacationPackageWepApp.UiDataStoring.Preference;
+
+public record RoomsAndBedsPreferenceDto
 {
-    public record RoomsAndBedsPreferenceDto
-    {
-        public short Bedrooms { get; set; }
-        public short Beds { get; set; }
-        public short Bathrooms { get; set; }
-    }
+    public short Bedrooms { get; set; }
+    public short Beds { get; set; }
+    public short Bathrooms { get; set; }
 }

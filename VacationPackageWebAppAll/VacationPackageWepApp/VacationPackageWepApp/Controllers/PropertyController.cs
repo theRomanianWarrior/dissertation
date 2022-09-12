@@ -18,10 +18,10 @@ public class PropertyController : Controller
                 PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.AmenitiesNavigation = null;
             return;
         }
-        
+
         PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation ??= new PropertyPreferenceDto();
 
-        var amenitiesPreference = new AmenitiesPreferenceDto()
+        var amenitiesPreference = new AmenitiesPreferenceDto
         {
             WiFi = false,
             AirConditioning = false,
@@ -64,7 +64,7 @@ public class PropertyController : Controller
 
         PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.AmenitiesNavigation = amenitiesPreference;
     }
-    
+
     [HttpPost("[action]/{placesType}")]
     public void StorePlaceType(string? placesType)
     {
@@ -76,14 +76,14 @@ public class PropertyController : Controller
                 PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.PlaceTypeNavigation = null;
             return;
         }
-        
+
         PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation ??= new PropertyPreferenceDto();
 
-        var propertyType = new PlaceTypePreferenceDto()
+        var propertyType = new PlaceTypePreferenceDto
         {
             EntirePlace = false,
             PrivateRoom = false,
-            SharedRoom = false,
+            SharedRoom = false
         };
 
 
@@ -116,20 +116,23 @@ public class PropertyController : Controller
     {
         var roomsAndBedsList = roomsAndBeds.Split(", ").ToList();
 
-        if (roomsAndBedsList.Count != 3)
-        {
-            roomsAndBedsList = roomsAndBeds.Split(",").ToList();
-        }
-        
+        if (roomsAndBedsList.Count != 3) roomsAndBedsList = roomsAndBeds.Split(",").ToList();
+
         PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation ??= new PropertyPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.RoomsAndBedsNavigation =
             new RoomsAndBedsPreferenceDto();
-        
-        if (roomsAndBedsList[0] != string.Empty && roomsAndBedsList[0] != " ") PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.RoomsAndBedsNavigation.Bathrooms = short.Parse(roomsAndBedsList[0]);
-        if (roomsAndBedsList[1] != string.Empty && roomsAndBedsList[1] != " ") PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.RoomsAndBedsNavigation.Beds = short.Parse(roomsAndBedsList[1]);
-        if (roomsAndBedsList[2] != string.Empty && roomsAndBedsList[2] != " ") PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.RoomsAndBedsNavigation.Bedrooms = short.Parse(roomsAndBedsList[2]);
+
+        if (roomsAndBedsList[0] != string.Empty && roomsAndBedsList[0] != " ")
+            PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.RoomsAndBedsNavigation.Bathrooms =
+                short.Parse(roomsAndBedsList[0]);
+        if (roomsAndBedsList[1] != string.Empty && roomsAndBedsList[1] != " ")
+            PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.RoomsAndBedsNavigation.Beds =
+                short.Parse(roomsAndBedsList[1]);
+        if (roomsAndBedsList[2] != string.Empty && roomsAndBedsList[2] != " ")
+            PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.RoomsAndBedsNavigation.Bedrooms =
+                short.Parse(roomsAndBedsList[2]);
     }
-    
+
     [HttpPost("[action]/{propertiesType}")]
     public void StorePropertyType(string? propertiesType)
     {
@@ -141,7 +144,7 @@ public class PropertyController : Controller
                 PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation.PropertyTypeNavigation = null;
             return;
         }
-        
+
         PreferencesPayloadSingleton.Instance.CustomerPropertyNavigation ??= new PropertyPreferenceDto();
 
         var propertyType = new PropertyTypePreferenceDto

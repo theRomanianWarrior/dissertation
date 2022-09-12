@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Preference
+﻿namespace VacationPackageWepApp.UiDataStoring.Preference;
+
+public record DeparturePeriodsPreferenceDto
 {
-    public record DeparturePeriodsPreferenceDto
-    {
-        public bool EarlyMorning { get; set; }
-        public bool Morning { get; set; }
-        public bool Afternoon { get; set; }
-        public bool Night { get; set; }
-    }
+    public bool EarlyMorning { get; set; }
+    public bool Morning { get; set; }
+    public bool Afternoon { get; set; }
+    public bool Night { get; set; }
 }

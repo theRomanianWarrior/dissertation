@@ -8,7 +8,7 @@ public static class PropertyUiMapper
     {
         return new PropertyUiModel
         {
-            PropertyName = preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.Name,
+            PropertyName = preferencesResponse.PropertyPreferencesResponse!.PropertyRecommendationBModel.Property.Name,
             Pets = preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.Pet
                 ? "yes"
                 : "no",
@@ -23,7 +23,7 @@ public static class PropertyUiMapper
                 .ToString(),
             Bathroom = preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property.RoomAndBed
                 .Bathroom.ToString(),
-            Amenities = new AmenitiesUiModel()
+            Amenities = new AmenitiesUiModel
             {
                 WiFi = preferencesResponse.PropertyPreferencesResponse.PropertyRecommendationBModel.Property
                     .AmenitiesPackage.WiFi

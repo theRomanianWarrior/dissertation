@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Enums
+﻿namespace VacationPackageWepApp.UiDataStoring.Enums;
+
+public enum TaskType
 {
-    public enum TaskType
-    {
-        Flight = 1,
-        Property,
-        Attractions,
-        Default
-    }
+    Flight = 1,
+    Property,
+    Attractions,
+    Default
 }

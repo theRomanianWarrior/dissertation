@@ -8,7 +8,6 @@ namespace VacationPackageWepApp.Controllers;
 [Route("[controller]")]
 public class EvaluationController : Controller
 {
-
     [HttpPost("[action]/{departureFlightEvaluation}")]
     public void StoreDepartureFlightEvaluation(string departureFlightEvaluation)
     {
@@ -27,7 +26,7 @@ public class EvaluationController : Controller
             DepartureNavigation = flightEvaluation
         };
     }
-    
+
     [HttpPost("[action]/{returnFlightEvaluation}")]
     public void StoreReturnFlightEvaluation(string returnFlightEvaluation)
     {
@@ -41,12 +40,12 @@ public class EvaluationController : Controller
             Price = true
         };
     }
-    
+
     [HttpPost("[action]/{propertyEvaluation}")]
     public void StorePropertyEvaluation(string propertyEvaluation)
     {
         var listOfPropertyEvaluations = propertyEvaluation.Split(", ").ToList();
-        EvaluationServicesSingleton.Instance.PropertyEvaluation = new PropertyEvaluationDto()
+        EvaluationServicesSingleton.Instance.PropertyEvaluation = new PropertyEvaluationDto
         {
             PropertyType = listOfPropertyEvaluations[0] == "true",
             PlaceType = listOfPropertyEvaluations[1] == "true",
@@ -54,17 +53,15 @@ public class EvaluationController : Controller
             Amenities = listOfPropertyEvaluations[3] == "true"
         };
     }
-    
+
     [HttpPost("[action]/{attractionEvaluation}")]
     public async Task<IActionResult> StoreAttractionsEvaluation(string attractionEvaluation)
     {
         var listOfAttractionsEvaluations = attractionEvaluation.Split(", ").ToList();
 
         for (var attractionIterator = 0; attractionIterator < listOfAttractionsEvaluations.Count; attractionIterator++)
-        {
             EvaluationServicesSingleton.Instance.AttractionEvaluation.AttractionEvaluations[attractionIterator].Rate =
                 listOfAttractionsEvaluations[attractionIterator] == "true";
-        }
 
         await SaveToDatabaseUserEvaluation();
         await ResetEvaluationInstance();
@@ -74,14 +71,15 @@ public class EvaluationController : Controller
     public async Task SaveToDatabaseUserEvaluation()
     {
         using var evaluationClient =
-            new GenericRestfulCrudHttpClient<ServiceEvaluationDto, ActionResult>("http://localhost:7071/", "VacationPackage/SaveEvaluations/");
+            new GenericRestfulCrudHttpClient<ServiceEvaluationDto, ActionResult>("http://localhost:7071/",
+                "VacationPackage/SaveEvaluations/");
         await evaluationClient.PostAsync<string>(EvaluationServicesSingleton.Instance);
     }
-    
+
     public Task ResetEvaluationInstance()
     {
         EvaluationServicesSingleton.ResetInstance();
-        
+
         return Task.CompletedTask;
-    } 
+    }
 }

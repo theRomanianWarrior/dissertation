@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace VacationPackageWepApp.UiDataStoring.PreferencesPackageResponse.AttractionsPreferencesResponse;
+﻿namespace VacationPackageWepApp.UiDataStoring.PreferencesPackageResponse.AttractionsPreferencesResponse;
 
 public record AttractionsRecommendationResponse : BaseRecommendationBModel
 {

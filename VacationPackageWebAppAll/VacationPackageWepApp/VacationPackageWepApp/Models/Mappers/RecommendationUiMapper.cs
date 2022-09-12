@@ -6,7 +6,7 @@ public static class RecommendationUiMapper
 {
     public static RecommendationUiModel ToRecommendationUiModel(this PreferencesResponse preferencesResponse)
     {
-        return new RecommendationUiModel()
+        return new RecommendationUiModel
         {
             FlightRecommendation = preferencesResponse.ToFlightUiModel(),
             PropertyRecommendation = preferencesResponse.ToPropertyUiModel(),

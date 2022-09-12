@@ -1,7 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Travelix
+<head>
+    <title>
+        Travelix
     </title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,27 +21,27 @@
     <link rel="stylesheet" type="text/css" href="~/nicepage/nicepage.css" asp-append-version="true">
 
 
-  </head>
-  <body>
-    @RenderBody()
+</head>
+<body>
+@RenderBody()
 
-  <!--<script src="js/jquery-3.2.1.min.js"></script> -->
-  <script src="~/nicepage/jquery.js"></script>
-  <script src="~/nicepage/nicepage.js"></script>
+<!--<script src="js/jquery-3.2.1.min.js"></script> -->
+<script src="~/nicepage/jquery.js"></script>
+<script src="~/nicepage/nicepage.js"></script>
 
-    <script src="~/styles/bootstrap4/popper.js">
+<script src="~/styles/bootstrap4/popper.js">
     </script>
-    <script src="~/styles/bootstrap4/bootstrap.min.js">
+<script src="~/styles/bootstrap4/bootstrap.min.js">
     </script>
-    <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js">
+<script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js">
     </script>
-    <script src="~/plugins/easing/easing.js">
+<script src="~/plugins/easing/easing.js">
     </script>
-    <script src="~/js/custom.js">
+<script src="~/js/custom.js">
     </script>
-  
-  
-  <script>
+
+
+<script>
       $(document).ready(function(){
         $('#SameForReturnFlight').change(function(){
           if(this.checked)
@@ -54,7 +55,7 @@
       }
                        );
     </script>
-    <script>
+<script>
       let propertyTypeList = document.getElementById('propertyTypeUIList');
       propertyTypeList.getElementsByClassName('anchor')[0].onclick = function(evt) {
         if (propertyTypeList.classList.contains('visible'))
@@ -77,7 +78,7 @@
           amenitiesList.classList.add('visible');
       }
     </script>
-    <script>
+<script>
       let checkList = document.getElementById('departurePeriodsUIList');
       checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
         if (checkList.classList.contains('visible'))
@@ -93,7 +94,7 @@
           checkListDeparturePeriodsReturnFlight.classList.add('visible');
       }
     </script>
-    <script>
+<script>
       let flightCompaniesUICheckList = document.getElementById('flightCompaniesUIList');
       flightCompaniesUICheckList.getElementsByClassName('anchor')[0].onclick = function(evt) {
         if (flightCompaniesUICheckList.classList.contains('visible'))
@@ -109,5 +110,5 @@
           flightCompaniesReturnUICheckList.classList.add('visible');
       }
     </script>
-  </body>
+</body>
 </html>

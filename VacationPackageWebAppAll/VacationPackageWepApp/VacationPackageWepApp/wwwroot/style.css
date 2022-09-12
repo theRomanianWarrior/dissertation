@@ -1,20 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Engagement&family=Open+Sans:wght@400;800&display=swap');
 
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body{
+body {
     position: relative;
     font-family: 'Open Sans', sans-serif;
 }
 
-.text-red{
+.text-red {
     color: red;
 }
-.container{
+
+.container {
     width: 100%;
     height: 100vh;
     background: url('https://technext.github.io/travelix/images/home_slider.jpg');
@@ -23,7 +24,7 @@ body{
     background-position: center center;
 }
 
-.go-back{
+.go-back {
     font-size: 1.5rem;
     font-family: inherit;
     position: absolute;
@@ -37,18 +38,18 @@ body{
     text-decoration: none;
 }
 
-.go-back:hover{
+.go-back:hover {
     color: orange;
 }
 
-.container .cover{
+.container .cover {
     width: 100%;
     height: 100%;
     z-index: 2;
     background: rgba(53, 10, 78, 0.5);
 }
 
-.first-navbar{
+.first-navbar {
     width: 100%;
     height: 2.25rem;
     background-color: rgb(53, 10, 78);
@@ -63,29 +64,29 @@ body{
     font-size: 0.65rem;
 }
 
-.first-navbar .contact-no{
+.first-navbar .contact-no {
     margin: 0 2.25rem 0 13rem;
     color: white;
 }
 
-.first-navbar .social-icons i{
+.first-navbar .social-icons i {
     margin: auto 0.75rem;
     color: white;
     transition: 0.15s ease;
     cursor: pointer;
 }
 
-.first-navbar .social-icons i:hover{
+.first-navbar .social-icons i:hover {
     color: orange;
 }
 
-.first-navbar .join{
+.first-navbar .join {
     display: flex;
     color: white;
     margin-left: 40rem;
 }
 
-.first-navbar .join a{
+.first-navbar .join a {
     margin: 0 0.75rem;
     font-size: 0.65rem;
     text-transform: uppercase;
@@ -94,17 +95,17 @@ body{
     transition: 0.15s ease;
 }
 
-.first-navbar .join a:hover{
+.first-navbar .join a:hover {
     color: orange;
 }
 
-.first-navbar .join a.disabled{
+.first-navbar .join a.disabled {
     pointer-events: none;
     cursor: default;
 }
 
 
-.second-navbar{
+.second-navbar {
     width: 100%;
     height: 9rem;
     display: flex;
@@ -117,19 +118,19 @@ body{
     background-color: rgba(53, 10, 78, 0.5);
 }
 
-.second-navbar .logo{
+.second-navbar .logo {
     display: flex;
     align-items: flex-end;
     justify-content: center;
 }
 
-.second-navbar .logo img{
+.second-navbar .logo img {
     width: 2rem;
     margin: auto 0.5rem;
     height: auto;
 }
 
-.second-navbar .logo .title{
+.second-navbar .logo .title {
     color: white;
     text-transform: uppercase;
     font-size: 1.9rem;
@@ -138,43 +139,43 @@ body{
     margin-bottom: 0;
 }
 
-.second-navbar .tabs{
+.second-navbar .tabs {
     margin: 0 5rem 0 16rem;
 }
 
-.second-navbar .tabs span{
+.second-navbar .tabs span {
     width: 20%;
     padding-bottom: 1rem;
     font-size: 0.8rem;
-    font-weight: 600; 
+    font-weight: 600;
     text-transform: uppercase;
-    color: white;  
+    color: white;
     margin: auto 1.2rem;
     cursor: pointer;
     transition: 0.5s ease;
     border: 2px solid transparent;
 }
 
-.second-navbar .tabs span:hover{
+.second-navbar .tabs span:hover {
     border-bottom: 2px solid orange;
 }
 
-.second-navbar .search{
+.second-navbar .search {
     margin: auto 5rem;
 }
 
-.second-navbar .search i{
+.second-navbar .search i {
     color: white;
     transform: rotateZ(90deg);
     cursor: pointer;
     transition: 0.5s ease;
 }
 
-.second-navbar .search i:hover{
+.second-navbar .search i:hover {
     color: orange;
 }
 
-.nav-buttons{
+.nav-buttons {
     border: 3px solid white;
     color: white;
     border-radius: 10px;
@@ -186,25 +187,25 @@ body{
     transform: translateY(-50%);
 }
 
-.nav-buttons:hover{
+.nav-buttons:hover {
     color: orange;
     border-color: orange;
 }
 
-.nav-buttons.right{
+.nav-buttons.right {
     right: 3rem;
 }
 
-.nav-buttons.left{
+.nav-buttons.left {
     left: 3rem;
 }
 
-.nav-buttons i{
+.nav-buttons i {
     color: inherit;
     font-size: 0.8rem;
 }
 
-.center{
+.center {
     color: white;
     font-family: 'Open Sans', sans-serif;
     position: absolute;
@@ -214,20 +215,20 @@ body{
     transform: translateX(-50%) translateY(-50%);
 }
 
-.center .welcome-text{
+.center .welcome-text {
     text-transform: uppercase;
     font-weight: 800;
     font-size: 7rem;
 }
 
-.center .explore{
+.center .explore {
     font-family: 'Engagement', cursive;
     font-size: 9rem;
     position: relative;
     transform: translateY(-3rem);
 }
 
-.center .explore-button{
+.center .explore-button {
     padding: 1.2rem 3rem;
     font-size: 0.8rem;
     font-weight: 600;
@@ -241,31 +242,31 @@ body{
     color: white;
 }
 
-.center .explore-button:hover{
+.center .explore-button:hover {
     cursor: pointer;
     background: rgb(53, 10, 78);
 }
 
 
-.center .explore-button span{
+.center .explore-button span {
     padding: 3px;
     display: inline-block;
     border-radius: 50%;
 }
 
-.center .explore-button span:nth-of-type(1){
+.center .explore-button span:nth-of-type(1) {
     background: rgba(255, 255, 255, 0.9);
 }
 
-.center .explore-button span:nth-of-type(2){
+.center .explore-button span:nth-of-type(2) {
     background: rgba(255, 255, 255, 0.7);
 }
 
-.center .explore-button span:nth-of-type(3){
+.center .explore-button span:nth-of-type(3) {
     background: rgba(255, 255, 255, 0.5);
 }
 
-.travel-navigation{
+.travel-navigation {
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -280,7 +281,7 @@ body{
     overflow: hidden;
 }
 
-.travel-navigation .options{
+.travel-navigation .options {
     width: calc(100% / 6);
     text-transform: uppercase;
     height: 100%;
@@ -294,28 +295,28 @@ body{
 
 }
 
-.travel-navigation .options i{
+.travel-navigation .options i {
     color: inherit;
     margin: auto 1rem;
 }
 
-.travel-navigation .options:hover{
+.travel-navigation .options:hover {
     color: white;
     background: orange;
 }
 
-.travel-navigation .options.active{
+.travel-navigation .options.active {
     background: orange;
     color: white;
 }
 
-.slide-numbers{
+.slide-numbers {
     position: absolute;
     bottom: 4rem;
     right: 2rem;
 }
 
-.slide-numbers span{
+.slide-numbers span {
     padding: 5px 10px;
     border-radius: 20px;
     font-weight: 600;
@@ -325,20 +326,20 @@ body{
     margin: 0.2rem;
 }
 
-.slide-numbers span:hover{
+.slide-numbers span:hover {
     color: orange;
     border-color: orange;
 }
 
-.slide-numbers span.active{
+.slide-numbers span.active {
     border: 2px solid white;
 }
 
-.slide-numbers span.active:hover{
+.slide-numbers span.active:hover {
     border-color: orange;
 }
 
-.search-area{
+.search-area {
     width: 100%;
     height: 20vh;
     background: linear-gradient(to right, #fa9e1b, #8d4fff);
@@ -347,7 +348,7 @@ body{
     justify-content: center;
 }
 
-.search-area .input-area{
+.search-area .input-area {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -357,25 +358,25 @@ body{
     margin: auto 0.5rem;
 }
 
-.search-area .input-area label{
+.search-area .input-area label {
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
     color: white;
-    
+
 }
 
-.search-area .input-area input{
+.search-area .input-area input {
     font-size: 1rem;
     border: 0;
     height: 2rem;
 }
 
-.search-area .input-area input::placeholder{
+.search-area .input-area input::placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.search-area button{
+.search-area button {
     padding: 1rem 3rem;
     text-transform: uppercase;
     font-size: 1rem;
@@ -391,7 +392,7 @@ body{
 
 /* Login Page */
 
-.login-container{
+.login-container {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -401,7 +402,7 @@ body{
     font-family: inherit;
 }
 
-.login-container .cover-photo{
+.login-container .cover-photo {
     margin-top: 2.25rem;
     width: 100%;
     height: 30vh;
@@ -411,7 +412,7 @@ body{
     background-position: center center;
 }
 
-.login-container .login{
+.login-container .login {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -421,7 +422,7 @@ body{
     position: relative;
 }
 
-.login-container .login form{
+.login-container .login form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -431,29 +432,29 @@ body{
     width: 80%;
 }
 
-.login h1{
+.login h1 {
     font-size: 3rem;
     color: rgb(53, 10, 78);
     position: relative;
     align-self: center;
 }
 
-.login p{
+.login p {
     display: inline-block;
     margin-bottom: 5rem;
 }
 
-.login a{
+.login a {
     text-decoration: none;
     color: rgb(53, 10, 78, 0.6);
     transition: 0.2s ease;
 }
 
-.login a:hover{
+.login a:hover {
     color: black;
 }
 
-.login form input{
+.login form input {
     width: 100%;
     height: 2rem;
     border: 0;
@@ -464,12 +465,12 @@ body{
     transition: 0.3s ease-in;
 }
 
-.login form input:focus{
+.login form input:focus {
     outline: none;
     border-bottom-color: lawngreen;
 }
 
-.login form .submit{
+.login form .submit {
     width: 100%;
     color: white;
     background: orange;
@@ -482,30 +483,30 @@ body{
 
 }
 
-.login form .submit:hover{
+.login form .submit:hover {
     background: rgb(53, 10, 78);
 }
 
 
-.login form label{
+.login form label {
     margin: 2rem 0 0 0;
 }
 
-.login form a{
+.login form a {
     text-decoration: none;
     color: rgb(53, 10, 78, 0.6);
     margin: 1rem 0;
     transition: 0.2s ease;
 }
 
-.login form a:hover{
+.login form a:hover {
     color: black;
 }
 
 /* Sign Up */
 
 
-.signup-container{
+.signup-container {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -515,7 +516,7 @@ body{
     font-family: inherit;
 }
 
-.signup-container .cover-photo{
+.signup-container .cover-photo {
     margin-top: 2.25rem;
     width: 100%;
     height: 30vh;
@@ -525,7 +526,7 @@ body{
     background-position: center center;
 }
 
-.signup-container .signup{
+.signup-container .signup {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -534,7 +535,7 @@ body{
     width: 40%;
 }
 
-.signup-container .signup form{
+.signup-container .signup form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -544,22 +545,22 @@ body{
     width: 80%;
 }
 
-.signup p{
+.signup p {
     display: inline-block;
     margin-bottom: 5rem;
 }
 
-.signup a{
+.signup a {
     text-decoration: none;
     color: rgb(53, 10, 78, 0.6);
     transition: 0.2s ease;
 }
 
-.signup a:hover{
+.signup a:hover {
     color: black;
 }
 
-.signup form input{
+.signup form input {
     width: 100%;
     height: 2rem;
     border: 0;
@@ -570,12 +571,12 @@ body{
     transition: 0.3s ease-out;
 }
 
-.signup form input:focus{
+.signup form input:focus {
     outline: none;
     border-bottom-color: lawngreen;
 }
 
-.signup form .submit{
+.signup form .submit {
     width: 100%;
     color: white;
     background: orange;
@@ -589,26 +590,26 @@ body{
 
 }
 
-.signup form .submit:hover{
+.signup form .submit:hover {
     background: rgb(53, 10, 78);
 }
 
-.signup form label{
+.signup form label {
     margin: 1rem 0 0 0;
 }
 
-.signup form a{
+.signup form a {
     text-decoration: none;
     color: rgb(53, 10, 78, 0.6);
     margin: 1rem 0;
     transition: 0.2s ease;
 }
 
-.signup form a:hover{
+.signup form a:hover {
     color: black;
 }
 
-.signup h1{   
+.signup h1 {
     font-size: 3rem;
     color: rgb(53, 10, 78);
     position: relative;

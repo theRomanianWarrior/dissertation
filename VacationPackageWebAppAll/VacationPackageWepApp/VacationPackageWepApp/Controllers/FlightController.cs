@@ -12,20 +12,20 @@ namespace VacationPackageWepApp.Controllers;
 [Route("[controller]")]
 public class FlightController : Controller
 {
-    private bool disposed = false;
-    private GenericRestfulCrudHttpClient<string, string> flightClient =
-            new("http://localhost:7071/", "Flight/");
+    private readonly GenericRestfulCrudHttpClient<string, string> flightClient =
+        new("http://localhost:7071/", "Flight/");
 
     [HttpPost("[action]/{departureAndDestinationCity}")]
     public IActionResult GetFlightCompaniesForDepartureDestinationCity(string departureAndDestinationCity)
     {
-        flightClient.addressSuffix = "Flight/GetFlightCompaniesForDepartureDestinationCity/" + departureAndDestinationCity;
+        flightClient.addressSuffix =
+            "Flight/GetFlightCompaniesForDepartureDestinationCity/" + departureAndDestinationCity;
         var cities = flightClient.GetManyAsync();
         cities.Wait();
         var response = cities.Result;
         return new JsonResult(response.ToList());
-    }  
-    
+    }
+
     [HttpGet("[action]")]
     public IActionResult GetFlightDepartureCities()
     {
@@ -34,8 +34,8 @@ public class FlightController : Controller
         cities.Wait();
         var response = cities.Result;
         return new JsonResult(response.ToList());
-    }   
-    
+    }
+
     [HttpPost("[action]/{flightDepartureCity}")]
     public IActionResult GetFlightArrivalCities(string flightDepartureCity)
     {
@@ -50,72 +50,72 @@ public class FlightController : Controller
     public async Task<IActionResult> RequestFullVacationPackageRecommendation()
     {
         using var preferencesPackageClient =
-            new GenericRestfulCrudHttpClient<PreferencesRequest, PreferencesResponse>("http://localhost:7071/", "VacationPackage/RequestVacationRecommendation/");
+            new GenericRestfulCrudHttpClient<PreferencesRequest, PreferencesResponse>("http://localhost:7071/",
+                "VacationPackage/RequestVacationRecommendation/");
         PreferencesPayloadSingleton.Instance.CustomerId = new Guid(HttpContext.Session.GetString("userId")!);
 
-        var preferencesResponse = await preferencesPackageClient.PostAsync<PreferencesResponse>(PreferencesPayloadSingleton.Instance);
+        var preferencesResponse =
+            await preferencesPackageClient.PostAsync<PreferencesResponse>(PreferencesPayloadSingleton.Instance);
 
-        EvaluationServicesSingleton.Instance.ClientRequestId = (Guid)preferencesResponse.ClientRequestId;
+        EvaluationServicesSingleton.Instance.ClientRequestId = (Guid) preferencesResponse!.ClientRequestId!;
         EvaluationServicesSingleton.Instance.AttractionEvaluation = new AllAttractionEvaluationPointDto
-            {
-                AttractionEvaluations = new List<AttractionEvaluationDto>()
-            };
-
-        foreach (var attraction in preferencesResponse.AttractionsRecommendationResponse.AttractionRecommendationList)
         {
+            AttractionEvaluations = new List<AttractionEvaluationDto>()
+        };
+
+        foreach (var attraction in preferencesResponse.AttractionsRecommendationResponse!.AttractionRecommendationList)
             EvaluationServicesSingleton.Instance.AttractionEvaluation.AttractionEvaluations.Add(
-                new AttractionEvaluationDto()
+                new AttractionEvaluationDto
                 {
                     AttractionId = attraction.Attraction.Xid,
                     AttractionName = attraction.Attraction.Name
                 });
-        }
 
         ResetPreferencesPayload();
-        var recommendation = preferencesResponse.ToRecommendationUiModel(); 
+        var recommendation = preferencesResponse.ToRecommendationUiModel();
         return new JsonResult(recommendation);
     }
 
     [HttpPost("[action]/{departureCity}")]
     public void StoreSelectedDepartureCity(string departureCity)
     {
-        PreferencesPayloadSingleton.Instance.DepartureCityNavigation = new CityDto()
+        PreferencesPayloadSingleton.Instance.DepartureCityNavigation = new CityDto
         {
             Name = departureCity
         };
     }
-    
+
     [HttpPost("[action]/{destinationCity}")]
     public void StoreSelectedDestinationCity(string destinationCity)
     {
-        PreferencesPayloadSingleton.Instance.DestinationCityNavigation = new CityDto()
+        PreferencesPayloadSingleton.Instance.DestinationCityNavigation = new CityDto
         {
             Name = destinationCity
         };
     }
-    
+
     [HttpPost("[action]/{personsByAge}")]
     public void StorePersonsByAge(string personsByAge)
     {
         var ageList = personsByAge.Split(", ").ToList();
 
-        if (ageList.Count != 3)
-        {
-            ageList = personsByAge.Split(",").ToList();
-        }
+        if (ageList.Count != 3) ageList = personsByAge.Split(",").ToList();
         PreferencesPayloadSingleton.Instance.PersonsByAgeNavigation = new AgeCategoryPreferenceDto();
-        
-        if (ageList[0] != string.Empty && ageList[0] != " ") PreferencesPayloadSingleton.Instance.PersonsByAgeNavigation.Adult = short.Parse(ageList[0]);
-        if (ageList[1] != string.Empty && ageList[1] != " ") PreferencesPayloadSingleton.Instance.PersonsByAgeNavigation.Children = short.Parse(ageList[1]);
-        if (ageList[2] != string.Empty && ageList[2] != " ") PreferencesPayloadSingleton.Instance.PersonsByAgeNavigation.Infant = short.Parse(ageList[2]);
+
+        if (ageList[0] != string.Empty && ageList[0] != " ")
+            PreferencesPayloadSingleton.Instance.PersonsByAgeNavigation.Adult = short.Parse(ageList[0]);
+        if (ageList[1] != string.Empty && ageList[1] != " ")
+            PreferencesPayloadSingleton.Instance.PersonsByAgeNavigation.Children = short.Parse(ageList[1]);
+        if (ageList[2] != string.Empty && ageList[2] != " ")
+            PreferencesPayloadSingleton.Instance.PersonsByAgeNavigation.Infant = short.Parse(ageList[2]);
     }
-    
+
     [HttpPost("[action]/{stopsType}")]
     public void StoreReturnStops(string? stopsType)
     {
-        if(stopsType is null or "null")
+        if (stopsType is null or "null")
             return;
-        
+
         var type = stopsType switch
         {
             "Direct" => (short) StopsTypePreferenceId.Direct,
@@ -127,18 +127,18 @@ public class FlightController : Controller
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation.StopsNavigation =
-            new StopsTypePreferenceDto()
+            new StopsTypePreferenceDto
             {
                 Type = type
             };
     }
-    
+
     [HttpPost("[action]/{classType}")]
     public void StoreDepartureClass(string classType)
     {
-        if(classType is null or "null")
+        if (classType is null or "null")
             return;
-        
+
         var type = classType switch
         {
             "Economy" => (short) ClassTypeId.Economy,
@@ -150,18 +150,18 @@ public class FlightController : Controller
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.DepartureNavigation ??= new FlightPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.DepartureNavigation.Class =
-            new FlightClassDto()
+            new FlightClassDto
             {
                 Class = type
             };
     }
-    
+
     [HttpPost("[action]/{classType}")]
     public void StoreReturnClass(string? classType)
     {
         if (classType is null or "null")
             return;
-        
+
         var type = classType switch
         {
             "Economy" => (short) ClassTypeId.Economy,
@@ -173,16 +173,16 @@ public class FlightController : Controller
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation.Class =
-            new FlightClassDto()
+            new FlightClassDto
             {
                 Class = type
             };
     }
-    
+
     [HttpPost("[action]/{stopsType}")]
     public void StoreDepartureStops(string? stopsType)
     {
-        if(stopsType is null or "null")
+        if (stopsType is null or "null")
             return;
 
         var type = stopsType switch
@@ -196,85 +196,94 @@ public class FlightController : Controller
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.DepartureNavigation ??= new FlightPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.DepartureNavigation.StopsNavigation =
-            new StopsTypePreferenceDto()
+            new StopsTypePreferenceDto
             {
                 Type = type
             };
     }
-    
+
     [HttpPost("[action]/{days}")]
     public void StoreVacationPeriod(short days)
     {
         PreferencesPayloadSingleton.Instance.HolidaysPeriod = days;
     }
-    
+
     [HttpPost("[action]/{date}")] // date format yyyy-mm-dd
     public void StoreSelectedDepartureDate(string? date)
     {
         PreferencesPayloadSingleton.Instance.DepartureDate = Convert.ToDateTime(date);
     }
-    
+
     [HttpGet("[action]")]
     public void CopyOptionalDepartureFlightPreferencesToReturn()
     {
         if (PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation?.StopsNavigation != null)
         {
-            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto();
+            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??=
+                new FlightPreferenceDto();
             PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation.StopsNavigation =
                 PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation?.StopsNavigation;
-
         }
-        
+
         if (PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation?.Class != null)
         {
-            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto();
+            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??=
+                new FlightPreferenceDto();
             PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation.Class =
                 PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation?.Class;
         }
-        
-        if (PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation?.DeparturePeriodPreference != null)
+
+        if (PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation
+                ?.DeparturePeriodPreference != null)
         {
-            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto();
+            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??=
+                new FlightPreferenceDto();
             PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation.DeparturePeriodPreference =
-                PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation?.DeparturePeriodPreference;
-        }
-        
-        if (PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation?.FlightCompaniesNavigationList != null)
-        {
-            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto();
-            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation.FlightCompaniesNavigationList =
-                PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation?.FlightCompaniesNavigationList;
+                PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation
+                    ?.DeparturePeriodPreference;
         }
 
+        if (PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation
+                ?.FlightCompaniesNavigationList != null)
+        {
+            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??=
+                new FlightPreferenceDto();
+            PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation
+                    .FlightCompaniesNavigationList =
+                PreferencesPayloadSingleton.Instance.CustomerFlightNavigation?.DepartureNavigation
+                    ?.FlightCompaniesNavigationList;
+        }
     }
-    
+
     [HttpPost("[action]/{returnFlightCompanies}")]
     public void StoreSelectedReturnFlightCompanies(string? returnFlightCompanies)
     {
         var listOfReturnFlightCompanies = returnFlightCompanies!.Split(", ").ToList();
         listOfReturnFlightCompanies.RemoveAll(e => e.Equals(string.Empty));
-        if(listOfReturnFlightCompanies.Count == 0)
+        if (listOfReturnFlightCompanies.Count == 0)
             return;
-        
+
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto();
-        var preferredDepartureFlightCompanies = listOfReturnFlightCompanies.Select(flightCompany => new FlightCompaniesPreferenceDto() {Company = new FlightCompanyDto() {Name = flightCompany}}).ToList();
+        var preferredDepartureFlightCompanies = listOfReturnFlightCompanies.Select(flightCompany =>
+            new FlightCompaniesPreferenceDto {Company = new FlightCompanyDto {Name = flightCompany}}).ToList();
 
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation
             .FlightCompaniesNavigationList = preferredDepartureFlightCompanies;
     }
-    
+
     [HttpPost("[action]/{departureFlightCompanies}")]
     public void StoreSelectedDepartureFlightCompanies(string? departureFlightCompanies)
     {
         var listOfDepartureFlightCompanies = departureFlightCompanies!.Split(", ").ToList();
         listOfDepartureFlightCompanies.RemoveAll(e => e.Equals(string.Empty));
-        if(listOfDepartureFlightCompanies.Count == 0)
+        if (listOfDepartureFlightCompanies.Count == 0)
             return;
-        
+
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.DepartureNavigation ??= new FlightPreferenceDto();
-        var preferredDepartureFlightCompanies = listOfDepartureFlightCompanies.Select(flightCompany => new FlightCompaniesPreferenceDto() {Company = new FlightCompanyDto() {Name = flightCompany}}).ToList();
+        var preferredDepartureFlightCompanies = listOfDepartureFlightCompanies.Select(flightCompany =>
+            new FlightCompaniesPreferenceDto {Company = new FlightCompanyDto {Name = flightCompany}}).ToList();
 
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.DepartureNavigation
             .FlightCompaniesNavigationList = preferredDepartureFlightCompanies;
@@ -285,14 +294,14 @@ public class FlightController : Controller
     {
         var listOfDeparturePeriods = departurePeriods!.Split(", ").ToList();
         listOfDeparturePeriods.RemoveAll(e => e.Equals(string.Empty));
-        if(listOfDeparturePeriods.Count == 0)
+        if (listOfDeparturePeriods.Count == 0)
             return;
-        
+
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
 
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation ??= new FlightPreferenceDto();
-        
-        var departurePeriodPreference = new DeparturePeriodsPreferenceDto()
+
+        var departurePeriodPreference = new DeparturePeriodsPreferenceDto
         {
             EarlyMorning = false,
             Afternoon = false,
@@ -301,37 +310,39 @@ public class FlightController : Controller
         };
 
         foreach (var departurePeriod in listOfDeparturePeriods)
-        {
             switch (departurePeriod)
             {
-                case "Early Morning" : departurePeriodPreference.EarlyMorning = true;
+                case "Early Morning":
+                    departurePeriodPreference.EarlyMorning = true;
                     break;
-                case "Afternoon" : departurePeriodPreference.Afternoon = true;
+                case "Afternoon":
+                    departurePeriodPreference.Afternoon = true;
                     break;
-                case "Morning" : departurePeriodPreference.Morning = true;
+                case "Morning":
+                    departurePeriodPreference.Morning = true;
                     break;
-                case "Night" : departurePeriodPreference.Night = true;
+                case "Night":
+                    departurePeriodPreference.Night = true;
                     break;
             }
-        }
 
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.ReturnNavigation.DeparturePeriodPreference =
             departurePeriodPreference;
     }
-    
+
     [HttpPost("[action]/{departurePeriods}")]
     public void StoreSelectedDeparturePeriodsDepartureFlight(string? departurePeriods)
     {
         var listOfDeparturePeriods = departurePeriods!.Split(", ").ToList();
         listOfDeparturePeriods.RemoveAll(e => e.Equals(string.Empty));
-        if(listOfDeparturePeriods.Count == 0)
+        if (listOfDeparturePeriods.Count == 0)
             return;
-        
+
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation ??= new FlightDirectionPreferenceDto();
 
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.DepartureNavigation ??= new FlightPreferenceDto();
-        
-        var departurePeriodPreference = new DeparturePeriodsPreferenceDto()
+
+        var departurePeriodPreference = new DeparturePeriodsPreferenceDto
         {
             EarlyMorning = false,
             Afternoon = false,
@@ -340,26 +351,28 @@ public class FlightController : Controller
         };
 
         foreach (var departurePeriod in listOfDeparturePeriods)
-        {
             switch (departurePeriod)
             {
-                case "Early Morning" : departurePeriodPreference.EarlyMorning = true;
+                case "Early Morning":
+                    departurePeriodPreference.EarlyMorning = true;
                     break;
-                case "Afternoon" : departurePeriodPreference.Afternoon = true;
+                case "Afternoon":
+                    departurePeriodPreference.Afternoon = true;
                     break;
-                case "Morning" : departurePeriodPreference.Morning = true;
+                case "Morning":
+                    departurePeriodPreference.Morning = true;
                     break;
-                case "Night" : departurePeriodPreference.Night = true;
+                case "Night":
+                    departurePeriodPreference.Night = true;
                     break;
             }
-        }
 
         PreferencesPayloadSingleton.Instance.CustomerFlightNavigation.DepartureNavigation.DeparturePeriodPreference =
             departurePeriodPreference;
     }
-    
+
     public void ResetPreferencesPayload()
     {
         PreferencesPayloadSingleton.ResetInstance();
-    } 
+    }
 }

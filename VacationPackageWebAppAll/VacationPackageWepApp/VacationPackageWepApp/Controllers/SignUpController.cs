@@ -18,7 +18,7 @@ public class SignUpController : Controller
         if (customer == null) return new ViewResult();
         using var preferencesPackageClient =
             new GenericRestfulCrudHttpClient<Customer, string>("http://localhost:7071/", "Customer/CreateNew");
-            
+
         customer.Id = Guid.NewGuid();
         await preferencesPackageClient.PostAsync<string>(customer);
         return Redirect("/Login/Index");

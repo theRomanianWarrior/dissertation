@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http;
-@inject IHttpContextAccessor Accessor
+﻿@inject IHttpContextAccessor Accessor
 
 @if (Accessor.HttpContext?.Session.GetString("userName") != null)
 {

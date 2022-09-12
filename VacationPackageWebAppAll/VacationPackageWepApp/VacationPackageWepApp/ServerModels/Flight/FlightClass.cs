@@ -1,8 +1,7 @@
-﻿namespace VacationPackageWepApp.ServerModels.Flight
+﻿namespace VacationPackageWepApp.ServerModels.Flight;
+
+public record FlightClassBusinessModel
 {
-    public record FlightClassBusinessModel
-    {
-        public short Id { get; set; }
-        public string Class { get; set; }
-    }
+    public short Id { get; set; }
+    public string Class { get; set; }
 }

@@ -1,8 +1,7 @@
-﻿namespace VacationPackageWepApp.ServerModels.Flight
+﻿namespace VacationPackageWepApp.ServerModels.Flight;
+
+public record AvailableDepartureTimeBusinessModel
 {
-    public record AvailableDepartureTimeBusinessModel
-    {
-        public Guid Id { get; set; }
-        public string DepartureHour { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string DepartureHour { get; set; }
 }

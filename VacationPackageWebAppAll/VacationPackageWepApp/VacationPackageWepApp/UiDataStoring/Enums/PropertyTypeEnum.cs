@@ -1,11 +1,10 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Enums
+﻿namespace VacationPackageWepApp.UiDataStoring.Enums;
+
+public enum PropertyTypeId
 {
-    public enum PropertyTypeId
-    {
-        Apartment = 1,
-        GuestHouse,
-        House,
-        Hotel,
-        Default
-    }
+    Apartment = 1,
+    GuestHouse,
+    House,
+    Hotel,
+    Default
 }

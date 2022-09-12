@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace VacationPackageWepApp.UiDataStoring.PreferencesPackageResponse.FlightPreferencesResponse;
+﻿namespace VacationPackageWepApp.UiDataStoring.PreferencesPackageResponse.FlightPreferencesResponse;
 
 public record FlightDirectionRecommendationBModel
 {

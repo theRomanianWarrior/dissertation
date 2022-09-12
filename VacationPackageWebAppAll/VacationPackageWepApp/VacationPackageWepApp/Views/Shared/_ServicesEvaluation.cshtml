@@ -2,39 +2,39 @@
     <div class="game-details-container">
         <h3>Departure flight</h3>
     </div>
-<div class="container">
-    <div class="row align-items-start">
-        <div class="col">
-            <div class="game-question-container">
-                <h3 id="display-departure-flight-class-question">Did you enjoyed the flight class?</h3>
+    <div class="container">
+        <div class="row align-items-start">
+            <div class="col">
+                <div class="game-question-container">
+                    <h3 id="display-departure-flight-class-question">Did you enjoyed the flight class?</h3>
+                </div>
+                <div class="game-options-container">
+                    <span>
+                        <input type="radio" id="option-yes-departure-flight-class" name="option-departure-flight-class" class="radio" value="yes"/>
+                        <label for="option-yes-departure-flight-class" class="option" id="option-yes-departure-flight-class-label">Yes</label>
+                    </span>
+                    <span>
+                        <input type="radio" id="option-no-departure-flight-class" name="option-departure-flight-class" class="radio" value="no"/>
+                        <label for="option-no-departure-flight-class" class="option" id="option-no-departure-flight-class-label">No</label>
+                    </span>
+                </div>
             </div>
-            <div class="game-options-container">
-                <span>
-                    <input type="radio" id="option-yes-departure-flight-class" name="option-departure-flight-class" class="radio" value="yes"/>
-                    <label for="option-yes-departure-flight-class" class="option" id="option-yes-departure-flight-class-label">Yes</label>
-                </span>
-                <span>
-                    <input type="radio" id="option-no-departure-flight-class" name="option-departure-flight-class" class="radio" value="no"/>
-                    <label for="option-no-departure-flight-class" class="option" id="option-no-departure-flight-class-label">No</label>
-                </span>
+            <div class="col">
+                <div class="game-question-container">
+                    <h3 id="display-departure-flight-company-question">Did you enjoyed the flight company?</h3>
+                </div>
+                <div class="game-options-container">
+                    <span>
+                        <input type="radio" id="option-yes-departure-flight-company" name="option-departure-flight-company" class="radio" value="yes"/>
+                        <label for="option-yes-departure-flight-company" class="option" id="option-yes-departure-flight-company-label">Yes</label>
+                    </span>
+                    <span>
+                        <input type="radio" id="option-no-departure-flight-company" name="option-departure-flight-company" class="radio" value="no"/>
+                        <label for="option-no-departure-flight-company" class="option" id="option-no-departure-flight-company-label">No</label>
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="col">
-            <div class="game-question-container">
-                <h3 id="display-departure-flight-company-question">Did you enjoyed the flight company?</h3>
-            </div>
-            <div class="game-options-container">
-                <span>
-                    <input type="radio" id="option-yes-departure-flight-company" name="option-departure-flight-company" class="radio" value="yes"/>
-                    <label for="option-yes-departure-flight-company" class="option" id="option-yes-departure-flight-company-label">Yes</label>
-                </span>
-                <span>
-                    <input type="radio" id="option-no-departure-flight-company" name="option-departure-flight-company" class="radio" value="no"/>
-                    <label for="option-no-departure-flight-company" class="option" id="option-no-departure-flight-company-label">No</label>
-                </span>
-            </div>
-        </div>
-    </div>
         <div class="row align-items-start">
             <div class="col">
                 <div class="game-question-container">
@@ -224,8 +224,8 @@
     <div class="game-details-container">
         <h3>Attractions</h3>
     </div>
-    <div id = "attractions-table-quiz" class="container">
-        <!-- Here will be generated code --> 
+    <div id="attractions-table-quiz" class="container">
+        <!-- Here will be generated code -->
     </div>
     <div class="next-button-container">
         <button id="send-evaluation">Send</button>
@@ -316,7 +316,7 @@ $(document).ready(function() {
           
             constructAttractionsQuiz += "<div class=\"col\"><div class=\"game-question-container\"><h3 id=\"display-attractionNumb"+ index +"-question\">Did you enjoyed the " + value +"?</h3></div><div class=\"game-options-container\"><span><input type=\"radio\" id=\"option-yes-attractionNumb"+ index+"\" name=\"option-attractionNumb"+ index +"\" class=\"radio\" value=\"yes\"/><label for=\"option-yes-attractionNumb"+ index +"\" class=\"option\" id=\"option-yes-attractionNumb"+ index +"-label\">Yes</label></span><span><input type=\"radio\" id=\"option-no-attractionNumb"+ index +"\" name=\"option-attractionNumb"+ index +"\" class=\"radio\" value=\"no\"/><label for=\"option-no-attractionNumb"+ index +"\" class=\"option\" id=\"option-no-attractionNumb"+ index+"-label\">No</label></span></div></div>";        
         });
-        if (attractionsList.length %2 === 1)
+        if (attractionsList.length % 2 === 1)
         {
             constructAttractionsQuiz += "<div class=\"col\"></div>"
         }

@@ -1,8 +1,7 @@
-﻿namespace VacationPackageWepApp.ServerModels.Flight
+﻿namespace VacationPackageWepApp.ServerModels.Flight;
+
+public class CountryBusinessModel
 {
-    public class CountryBusinessModel
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
 }

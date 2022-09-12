@@ -1,8 +1,7 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Preference
+﻿namespace VacationPackageWepApp.UiDataStoring.Preference;
+
+public record FlightDirectionPreferenceDto
 {
-    public record FlightDirectionPreferenceDto
-    {
-        public FlightPreferenceDto? DepartureNavigation { get; set; }
-        public FlightPreferenceDto? ReturnNavigation { get; set; }
-    }
+    public FlightPreferenceDto? DepartureNavigation { get; set; }
+    public FlightPreferenceDto? ReturnNavigation { get; set; }
 }

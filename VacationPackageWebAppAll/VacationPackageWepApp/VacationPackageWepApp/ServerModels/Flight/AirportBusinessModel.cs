@@ -1,9 +1,8 @@
-﻿namespace VacationPackageWepApp.ServerModels.Flight
+﻿namespace VacationPackageWepApp.ServerModels.Flight;
+
+public record AirportBusinessModel
 {
-    public record AirportBusinessModel
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public  CityBusinessModel City { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public CityBusinessModel City { get; set; }
 }

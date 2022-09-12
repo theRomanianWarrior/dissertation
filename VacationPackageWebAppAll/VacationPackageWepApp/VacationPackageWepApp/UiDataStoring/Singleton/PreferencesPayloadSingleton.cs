@@ -4,14 +4,13 @@ namespace VacationPackageWepApp.UiDataStoring.Singleton;
 
 public sealed class PreferencesPayloadSingleton
 {
-    private static Lazy<PreferencesRequest> _lazy =
-        new Lazy<PreferencesRequest>(() => new PreferencesRequest());
-
-    public static PreferencesRequest Instance => _lazy.Value;
+    private static Lazy<PreferencesRequest> _lazy = new(() => new PreferencesRequest());
 
     private PreferencesPayloadSingleton()
     {
     }
+
+    public static PreferencesRequest Instance => _lazy.Value;
 
     public static void ResetInstance()
     {

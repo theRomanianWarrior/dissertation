@@ -1,7 +1,6 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Preference
+﻿namespace VacationPackageWepApp.UiDataStoring.Preference;
+
+public record CountryDto
 {
-    public record CountryDto
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

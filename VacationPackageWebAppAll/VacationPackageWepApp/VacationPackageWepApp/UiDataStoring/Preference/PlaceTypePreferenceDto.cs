@@ -1,9 +1,8 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Preference
+﻿namespace VacationPackageWepApp.UiDataStoring.Preference;
+
+public record PlaceTypePreferenceDto
 {
-    public record PlaceTypePreferenceDto
-    {
-        public bool EntirePlace { get; set; }
-        public bool PrivateRoom { get; set; }
-        public bool SharedRoom { get; set; }
-    }
+    public bool EntirePlace { get; set; }
+    public bool PrivateRoom { get; set; }
+    public bool SharedRoom { get; set; }
 }

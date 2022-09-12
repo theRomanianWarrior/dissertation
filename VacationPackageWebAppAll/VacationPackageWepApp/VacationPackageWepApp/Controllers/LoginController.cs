@@ -11,16 +11,13 @@ public class LoginController : Controller
     {
         if (customer.Email == null)
         {
-            if (ModelState.ContainsKey("InvalidLogin"))
-            {
-                ModelState.ClearValidationState("InvalidLogin");
-            }
+            if (ModelState.ContainsKey("InvalidLogin")) ModelState.ClearValidationState("InvalidLogin");
             HttpContext.Session.Remove("userName");
             HttpContext.Session.Remove("userId");
 
             return View();
         }
-        
+
         var customerPayload = customer.Email + ", " + customer.Password;
         var addressSuffix = "Customer/GetCustomerModel/" + customerPayload;
 

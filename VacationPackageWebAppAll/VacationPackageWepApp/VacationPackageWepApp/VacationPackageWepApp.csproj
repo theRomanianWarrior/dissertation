@@ -4,18 +4,19 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <NoWarn>CS8618</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="ServerModels" />
+        <Folder Include="ServerModels"/>
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\js\site.js"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\HttpClients\HttpClients.csproj" />
+        <ProjectReference Include="..\HttpClients\HttpClients.csproj"/>
     </ItemGroup>
 
 </Project>

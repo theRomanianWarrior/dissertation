@@ -1,8 +1,7 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Evaluation
+﻿namespace VacationPackageWepApp.UiDataStoring.Evaluation;
+
+public class AllAttractionEvaluationPointDto
 {
-    public class AllAttractionEvaluationPointDto
-    {
-        public List<AttractionEvaluationDto> AttractionEvaluations { get; set; }
-        public float? FinalAttractionEvaluation { get; set; }
-    }
+    public List<AttractionEvaluationDto> AttractionEvaluations { get; set; }
+    public float? FinalAttractionEvaluation { get; set; }
 }

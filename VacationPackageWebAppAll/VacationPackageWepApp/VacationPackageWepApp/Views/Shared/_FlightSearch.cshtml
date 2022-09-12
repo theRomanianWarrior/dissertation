@@ -1,239 +1,276 @@
 ﻿<!-- Flight Search Panel -->
-<div id = "flight_search_panel" class="search_panel active">
-  <form  id = "flightForm" class="search_panel_content d-flex flex-wrap align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
-    <div class="grid">
-      <div class="row">
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>departure
+<div id="flight_search_panel" class="search_panel active">
+<form id="flightForm" class="search_panel_content d-flex flex-wrap align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
+<div class="grid">
+<div class="row">
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                departure
             </div>
             <select name="departure" id="departure" class="dropdown_item_select search_input" required>
             </select>
-          </div> 
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
             <div>destination</div>
             <select name="destination" id="destination" class="dropdown_item_select search_input" required>
-            <option value="none" selected disabled hidden>SELECT CITY
-            </option>
+                <option value="none" selected disabled hidden>
+                    SELECT CITY
+                </option>
             </select>
-          </div>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>check in
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                check in
             </div>
             <input type="date" id="check-in-date" class="check_in search_input" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" placeholder="MM-DD-YYYY" required>
-          </div>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>period (days)
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                period (days)
             </div>
-            <input id = "periodNumber" type="number" min="0" class="destination search_input" required>
-          </div>
+            <input id="periodNumber" type="number" min="0" class="destination search_input" required>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>adults
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                adults
             </div>
-            <input id = "adultsNumber" type="number" min="0" class="destination search_input" required>
-          </div>
+            <input id="adultsNumber" type="number" min="0" class="destination search_input" required>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>children
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                children
             </div>
-            <input id = "childrenNumber" type="number" min="0" class="destination search_input">
-          </div>
+            <input id="childrenNumber" type="number" min="0" class="destination search_input">
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>infants
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                infants
             </div>
-            <input id = "infantsNumber" type="number" min="0" class="destination search_input">
-          </div>
+            <input id="infantsNumber" type="number" min="0" class="destination search_input">
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>stops
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                stops
             </div>
-            <select id = "selectedDepartureStops" name="destination" class="dropdown_item_select search_input">
-              <option value="none" selected disabled hidden>SELECT STOPS
-              </option>
-              <option value="Direct">Direct
-              </option>
-              <option value="OneStop">1 Stop
-              </option>
-              <option value="TwoOrMoreStops">2+ Stops
-              </option>
+            <select id="selectedDepartureStops" name="destination" class="dropdown_item_select search_input">
+                <option value="none" selected disabled hidden>
+                    SELECT STOPS
+                </option>
+                <option value="Direct">
+                    Direct
+                </option>
+                <option value="OneStop">
+                    1 Stop
+                </option>
+                <option value="TwoOrMoreStops">
+                    2+ Stops
+                </option>
             </select>
-          </div>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>class
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                class
             </div>
-            <select id = "selectedDepartureClass" name="destination" class="dropdown_item_select search_input" required>
-              <option value="none" selected disabled hidden>SELECT CLASS
-              </option>
-              <option value="Economy">Economy
-              </option>
-              <option value="Business">Business
-              </option>
-              <option value="First">First
-              </option>
+            <select id="selectedDepartureClass" name="destination" class="dropdown_item_select search_input" required>
+                <option value="none" selected disabled hidden>
+                    SELECT CLASS
+                </option>
+                <option value="Economy">
+                    Economy
+                </option>
+                <option value="Business">
+                    Business
+                </option>
+                <option value="First">
+                    First
+                </option>
             </select>
-          </div>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>day periods
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                day periods
             </div>
             <div id="departurePeriodsUIList" class="search_input dropdown-check-list">
-              <span class="search_input anchor">Select periods
-              </span>
-              <ul class="items">
-                <li>
-                  <input type="checkbox" name="departurePeriodsValue" value = "Early Morning"/>Early Morning (00:00 - 05:00)
-                </li>
-                <li>
-                  <input name="departurePeriodsValue" type="checkbox" value = "Morning"/>Morning (05:01 - 12:00)
-                </li>
-                <li>
-                  <input name="departurePeriodsValue" type="checkbox" value = "Afternoon"/>Afternoon (12:01 - 18:00)
-                </li>
-                <li>
-                  <input name="departurePeriodsValue" type="checkbox" value = "Night"/>Night (18:01 - 23:59)
-                </li>
-              </ul>
+                <span class="search_input anchor">
+                    Select periods
+                </span>
+                <ul class="items">
+                    <li>
+                        <input type="checkbox" name="departurePeriodsValue" value="Early Morning"/>Early Morning (00:00 - 05:00)
+                    </li>
+                    <li>
+                        <input name="departurePeriodsValue" type="checkbox" value="Morning"/>Morning (05:01 - 12:00)
+                    </li>
+                    <li>
+                        <input name="departurePeriodsValue" type="checkbox" value="Afternoon"/>Afternoon (12:01 - 18:00)
+                    </li>
+                    <li>
+                        <input name="departurePeriodsValue" type="checkbox" value="Night"/>Night (18:01 - 23:59)
+                    </li>
+                </ul>
             </div>
-          </div>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>flight companies
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                flight companies
             </div>
             <div id="flightCompaniesUIList" class="search_input dropdown-check-list">
-              <span class="search_input anchor">Select company
-              </span>
-              <ul class="items" id = "departureItemFlightCompanies">
-                <li>
-                  <input type="checkbox" name = "departureFlightCompanies" value = "First flight company"/>First flight company
-                </li>
-                <li>
-                  <input type="checkbox" name = "departureFlightCompanies" value = "Second flight company" />Second flight company
-                </li>
-                <li>
-                  <input type="checkbox" name = "departureFlightCompanies" value = "Third flight company"/>Third flight company
-                </li>
-                <li>
-                  <input type="checkbox" name = "departureFlightCompanies" value = "Fourth flight company"/>Fourth flight company
-                </li>
-              </ul>
+                <span class="search_input anchor">
+                    Select company
+                </span>
+                <ul class="items" id="departureItemFlightCompanies">
+                    <li>
+                        <input type="checkbox" name="departureFlightCompanies" value="First flight company"/>First flight company
+                    </li>
+                    <li>
+                        <input type="checkbox" name="departureFlightCompanies" value="Second flight company"/>Second flight company
+                    </li>
+                    <li>
+                        <input type="checkbox" name="departureFlightCompanies" value="Third flight company"/>Third flight company
+                    </li>
+                    <li>
+                        <input type="checkbox" name="departureFlightCompanies" value="Fourth flight company"/>Fourth flight company
+                    </li>
+                </ul>
             </div>
-          </div>
         </div>
-        <div class="col-sm-8 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>Same for return flight
+    </div>
+    <div class="col-sm-8 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                Same for return flight
             </div>
             <input type="checkbox" id="SameForReturnFlight" name="SameForReturnFlight">
-          </div>
         </div>
-      </div>
-      <div class = "row" id = "returnFlightPreferencesUI">
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>stops
+    </div>
+</div>
+<div class="row" id="returnFlightPreferencesUI">
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                stops
             </div>
-            <select id = "selectedReturnStops" name="destination" class="dropdown_item_select search_input">
-                 <option value="none" selected disabled hidden>SELECT STOPS
-                 </option>
-                 <option value="Direct">Direct
-                 </option>
-                 <option value="OneStop">1 Stop
-                 </option>
-                 <option value="TwoOrMoreStops">2+ Stops
-                 </option>
+            <select id="selectedReturnStops" name="destination" class="dropdown_item_select search_input">
+                <option value="none" selected disabled hidden>
+                    SELECT STOPS
+                </option>
+                <option value="Direct">
+                    Direct
+                </option>
+                <option value="OneStop">
+                    1 Stop
+                </option>
+                <option value="TwoOrMoreStops">
+                    2+ Stops
+                </option>
             </select>
-          </div>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>class
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                class
             </div>
-            <select id = "selectedReturnClass" name="destination" class="dropdown_item_select search_input" required>
-              <option value="none" selected disabled hidden>SELECT CLASS
-              </option>
-              <option value="Economy">Economy
-              </option>
-              <option value="Business">Business
-              </option>
-              <option value="First">First
-              </option>
+            <select id="selectedReturnClass" name="destination" class="dropdown_item_select search_input" required>
+                <option value="none" selected disabled hidden>
+                    SELECT CLASS
+                </option>
+                <option value="Economy">
+                    Economy
+                </option>
+                <option value="Business">
+                    Business
+                </option>
+                <option value="First">
+                    First
+                </option>
             </select>
-          </div>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>day periods
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                day periods
             </div>
             <div id="departurePeriodsReturnUIList" class="search_input dropdown-check-list">
-              <span class="search_input anchor">Select periods
-              </span>
-              <ul class="items">
-                <li>
-                  <input type="checkbox" name="departurePeriodsReturnValue" value = "Early Morning"/>Early Morning (00:00 - 05:00)
-                </li>
-                <li>
-                  <input name="departurePeriodsReturnValue" type="checkbox" value = "Morning"/>Morning (05:01 - 12:00)
-                </li>
-                <li>
-                  <input name="departurePeriodsReturnValue" type="checkbox" value = "Afternoon"/>Afternoon (12:01 - 18:00)
-                </li>
-                <li>
-                  <input name="departurePeriodsReturnValue" type="checkbox" value = "Night"/>Night (18:01 - 23:59)
-                </li>
-              </ul>
+                <span class="search_input anchor">
+                    Select periods
+                </span>
+                <ul class="items">
+                    <li>
+                        <input type="checkbox" name="departurePeriodsReturnValue" value="Early Morning"/>Early Morning (00:00 - 05:00)
+                    </li>
+                    <li>
+                        <input name="departurePeriodsReturnValue" type="checkbox" value="Morning"/>Morning (05:01 - 12:00)
+                    </li>
+                    <li>
+                        <input name="departurePeriodsReturnValue" type="checkbox" value="Afternoon"/>Afternoon (12:01 - 18:00)
+                    </li>
+                    <li>
+                        <input name="departurePeriodsReturnValue" type="checkbox" value="Night"/>Night (18:01 - 23:59)
+                    </li>
+                </ul>
             </div>
-          </div>
         </div>
-        <div class="col-sm-3 order-sm-1 order-2  ">
-          <div class="search_item">
-            <div>flight companies
+    </div>
+    <div class="col-sm-3 order-sm-1 order-2  ">
+        <div class="search_item">
+            <div>
+                flight companies
             </div>
             <div id="flightCompaniesReturnUIList" class="search_input dropdown-check-list">
-              <span class="search_input anchor">Select company
-              </span>
-              <ul class="items" id = "returnItemFlightCompanies">
-                <li>
-                  <input type="checkbox" name = "returnFlightCompanies" value = "First flight company"/>First flight company
-                </li>
-                <li>
-                  <input type="checkbox" name = "returnFlightCompanies" value = "Second flight company" />Second flight company
-                </li>
-                <li>
-                  <input type="checkbox" name = "returnFlightCompanies" value = "Third flight company"/>Third flight company
-                </li>
-                <li>
-                  <input type="checkbox" name = "returnFlightCompanies" value = "Fourth flight company"/>Fourth flight company
-                </li>
-              </ul>
+                <span class="search_input anchor">
+                    Select company
+                </span>
+                <ul class="items" id="returnItemFlightCompanies">
+                    <li>
+                        <input type="checkbox" name="returnFlightCompanies" value="First flight company"/>First flight company
+                    </li>
+                    <li>
+                        <input type="checkbox" name="returnFlightCompanies" value="Second flight company"/>Second flight company
+                    </li>
+                    <li>
+                        <input type="checkbox" name="returnFlightCompanies" value="Third flight company"/>Third flight company
+                    </li>
+                    <li>
+                        <input type="checkbox" name="returnFlightCompanies" value="Fourth flight company"/>Fourth flight company
+                    </li>
+                </ul>
             </div>
-          </div>
         </div>
-      </div>
-      <div id = "btnSearch" class="button search_button">search
-        <span>
-        </span>
-        <span>
-        </span>
-        <span>
-        </span>
-      </div>
-</div>    
+    </div>
+</div>
+<div id="btnSearch" class="button search_button">
+    search
+    <span>
+    </span>
+    <span>
+    </span>
+    <span>
+    </span>
+</div>
+</div>
 </form>
 </div>
 
@@ -269,7 +306,6 @@ $(document).ready(function(){
       
       selectedDepartureDestinationCities = selectedDestinationCity + ", " + selectedDepartureCity;
       url = '/Flight/GetFlightCompaniesForDepartureDestinationCity/' + selectedDepartureDestinationCities;
-            constructFlight = "";
             $.ajax({
                     type: 'POST',
                     url: url,
@@ -472,29 +508,5 @@ $('#departure').change(function()
                    }
   });
 
-});
-</script>
-
-<script>
-/*$(document).ready(function() {
-
-    $.ajax({
-            type: 'GET',
-            url: '/Flight/ResetPreferencesPayload',
-            success: function (response) {
-                     },
-            error: function (response) {
-                       // code on failure
-                   }
-  });
-});*/
-</script>
-
-<script>
-$(document).ready(function() {
-
-    function getCharsAfter(str, chr) {
-        return str.substring(str.lastIndexOf(chr) + 2);
-    }
 });
 </script>

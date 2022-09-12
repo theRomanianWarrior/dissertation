@@ -1,10 +1,9 @@
-﻿namespace VacationPackageWepApp.UiDataStoring.Enums
+﻿namespace VacationPackageWepApp.UiDataStoring.Enums;
+
+public enum PlaceTypeId
 {
-    public enum PlaceTypeId
-    {
-        EntirePlace = 1,
-        PrivateRoom,
-        SharedRoom,
-        Default
-    }
+    EntirePlace = 1,
+    PrivateRoom,
+    SharedRoom,
+    Default
 }
