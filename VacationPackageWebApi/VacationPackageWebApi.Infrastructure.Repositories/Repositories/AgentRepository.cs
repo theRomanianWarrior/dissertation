@@ -41,9 +41,9 @@ public class AgentRepository : IAgentRepository
                     Id = Guid.NewGuid(),
                     AgentId = agent.Id,
                     CustomerId = customerId,
-                    FlightExpertRate = 0.5f,
-                    AttractionsExpertRate = 0.5f,
-                    PropertyExpertRate = 0.5f
+                    FlightExpertRate = 0.0f,
+                    AttractionsExpertRate = 0.0f,
+                    PropertyExpertRate = 0.0f
                 };
 
                 _context.CustomerPersonalAgentRates.Add(customerPersonalAgentRates);

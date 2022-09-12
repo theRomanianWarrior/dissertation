@@ -22,8 +22,8 @@ public class EvaluationService : IEvaluationService
 
     private float CalculateFlightEvaluationRating(FlightEvaluationDto flightEvaluation)
     {
-        return ((float)Convert.ToInt16(flightEvaluation.Class) + Convert.ToInt16(flightEvaluation.Company) + Convert.ToInt16(flightEvaluation.Price) +
-                Convert.ToInt16(flightEvaluation.FlightDate) + Convert.ToInt16(flightEvaluation.FlightTime)) / 5;
+        return ((float)Convert.ToInt16(flightEvaluation.Class) + Convert.ToInt16(flightEvaluation.Company) +
+                Convert.ToInt16(flightEvaluation.FlightDate) + Convert.ToInt16(flightEvaluation.FlightTime)) / 4f;
     }
     
     private float CalculatePropertyEvaluationRating(PropertyEvaluationDto propertyEvaluation)

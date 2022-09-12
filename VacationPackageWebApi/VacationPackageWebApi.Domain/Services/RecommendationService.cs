@@ -17,6 +17,7 @@ public class RecommendationService : IRecommendationService
 
         await CommonRecommendationLogic.SetPreferencesPayload(preferencesPayload);
         
+        ("____________________________________________________________").WriteDebug();
         MasCoordinatorSingleton.Instance.SendToMany(listOfAvailableAgents, "new_recommendation_request");
 
         cancellationTokenSource.CancelAfter(100000);

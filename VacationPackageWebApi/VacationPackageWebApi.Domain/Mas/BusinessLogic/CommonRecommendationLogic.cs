@@ -10,30 +10,38 @@ public static class CommonRecommendationLogic
 {
     public const int Match = 1;
     public const int NoMatch = 0;
+    private static readonly Random Random = new();
     
     public static TaskType AccessPreferencesAndChoseTask(object taskDistributionLock, TourismAgent agent)
     {
-        var taskTypeToWorkOn = TaskType.Default;
-
         lock (taskDistributionLock)
         {
-            var availableTasks = GetListOfAvailableTasks();
+            var availableTasks = GetListOfAvailableTasks()?.ToList();
             
             if (availableTasks == null) return TaskType.Default;
             if (!availableTasks.Any()) return TaskType.Default;
 
+            if (agent.ConfInd[TaskType.Flight] == 0 && agent.ConfInd[TaskType.Property] == 0 &&
+                agent.ConfInd[TaskType.Attractions] == 0)
+            {
+                var randomIndexTaskType = Random.Next(availableTasks.Count);
+                RemoveTaskFromAvailableTasks(availableTasks[randomIndexTaskType]);
+                RemoveAgentFromAvailableAgentsList(agent.Name);
+                return availableTasks[randomIndexTaskType];
+                
+            }
+            
             foreach (var (key, _) in agent.ConfInd.OrderByDescending(t => t.Value))
             {
                 if (!availableTasks.Contains(key)) continue;
-                taskTypeToWorkOn = key;
-                availableTasks.Remove(key);
+                RemoveTaskFromAvailableTasks(key);
                 RemoveAgentFromAvailableAgentsList(agent.Name);
                 agent.Status = false;
-                break;
+                return key;
             }
         }
 
-        return taskTypeToWorkOn;
+        return TaskType.Default;
     }
 
     public static void StoreAgentsTrustRate(Dictionary<Guid, List<TrustAgentRateBusinessModel>> agentsTrustRates)
@@ -64,6 +72,11 @@ public static class CommonRecommendationLogic
     private static List<TaskType>? GetListOfAvailableTasks()
     {
         return MasEnvironmentSingleton.Instance.Memory["AvailableTasks"];
+    }
+    
+    private static void RemoveTaskFromAvailableTasks(TaskType task)
+    {
+        (MasEnvironmentSingleton.Instance.Memory["AvailableTasks"] as List<TaskType>)!.Remove(task);
     }
     
     public static Task InsertAgentNameToAvailableAgents(string agentName)
