@@ -1,0 +1,24 @@
+Add nullable fields Note: MakeBoolNullable   done
+For not bool add one more row with new id and value "Default" | made nullable
+Add Time column to FlightRecommendation | Done
+Add new table FlightClassPreference | Addes just a new row|Done
+Add FlightId to FlightRecommendation | You don't have to. Already exists in FlightConnection
+Remove from AllAttractionRecommendation all fields | Done| Left only agentId Modified also AttractionRecommendation (also foregin key)
+_______________________ Add to FlightRecommendation the field InitialAssignedAgentId | Done to all services
+_______________________ Remove status from each recommendation | done
+Add DirectionEvaluation |Done
+Change FlightEvaluation | Done
+Make Evaluation from ClientRequest Nullable | Done
+_________________________________________________________________________________________________________________________________________________
+
+
+
+///!!! Be aware of null elements in the payload
+///!!! ATTENTION The expert rate of each agent is good only for current local db datasets. If it change, should be set on default all data of trust and expert rate.
+
+AGENT STATUS UPDATE!!!
+DO NOT FORGET TO UPDATE CALCULATION OF GAUSS MEAN
+DONT FORGET PETS!!!
+
+-DO NOT FORGET TO change GetEarliestFlightTimeBasedOnPeriodPreference. get earliest based on user preference. if not found the period, get to the next one to check if good
+-Departure Date is not correct. Correlate with Day of week

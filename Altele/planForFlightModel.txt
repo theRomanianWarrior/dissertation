@@ -1,0 +1,11 @@
+1. You got the start holiday and end holiday date
+2. Check departure earliest flight in this range.
+	2.1. Get flight in that day of week or a later day of week.
+	2.2. If not found till end of the week any flights, go to next week till same day we started (one day before actually, to be a week of search). Should be a counter of days till flight found day of week.
+	
+3. Check return flight, but if date of departure changed, sum it out if holiday period
+Here will be reverse logic compared to departure
+	3.1. Search for a flight for maximum near of ending of holiday date
+		3.1.1. Get day of week and search reverse for a flight. here we also use a counter.
+	3.2. If found generate the date of this flight and check if departure date is early return date.
+		3.2.1. If departure is not earlier than return flight... Search for  next available return flight in a range later than start searching point 

@@ -1,0 +1,17 @@
+https://www.academia.edu/9011356/Improving_recommendations_through_an_assumption-based_multiagent_approach_An_application_in_the_tourism_domain
+https://www.academia.edu/2888855/A_Multiagent_Recommender_System_with_Task_Based_Agent_Specialization
+https://www.researchgate.net/publication/260264136_Multi-agent_Recommender_System_State_of_the_Art
+
+-utilizatorul alege mereu da o nota rezultatelor afisate
+-agentii cand comunica intre ei, ar trebui sa utilizeze un mecanism "de incredere" intre ei.
+-Pachetul sa fie impartit in subtaskuri pentru agenti
+-Daca sunt date lipsa de la utiizator, agentul le "asuma", adica adauga de la el pe baza unor modele ale userului
+
+-Fiecare agent are baa lui de date cu inregistrarile si lucrurile pe care le-a facut
+-Fiecare agent trebuie sa aiba "confidence degree", ceea ce ar insemna cat de bine stie un agent sa faca un anumit lucru.
+-Exista la agenti si un trust degree care reprezinta increderea dintre agenti. Aceasta se schimba cand acestia discuta sau din cauza utilizatorului
+
+-Trebuie luat in consideratie si cazul in care unul din agenti lipseste si altul va trebui sa-l inlocuiasca
+-The size of the knowledge base of an agent is very important. Should be checked if after a task is complete, the confidence index has increased 
+________________
+In ideea mea, agentii ar trebui sa discute intre ei despre sincronizarea pachetului de vacanta

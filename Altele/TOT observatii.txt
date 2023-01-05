@@ -1,0 +1,4 @@
+Infrastructure = Repository
+Application = Services
+Domain = Domain               (aici vor fi modelele din API)
+API care contine controlerele si startupul

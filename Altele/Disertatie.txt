@@ -1,0 +1,6 @@
+Căutarea unui pachet complet de vacanţă (perioadă, transport, cazare etc.) prin negociere multi-agent
+
+Ce ar prespune negocierea multi-agent?
+https://www.researchgate.net/publication/257581219_Multi-agent_negotiation_based_on_price_schedules_algorithm_for_distributed_collaborative_design
+
+http://turing.cs.pub.ro/blia_06/#materiale

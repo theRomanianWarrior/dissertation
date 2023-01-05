@@ -579,9 +579,17 @@ public class PreferencesPackageRequestRepository : IPreferencesPackageRequestRep
         if (preferencesPayload.CustomerFlightNavigation != null)
             if (departurePeriodsPreference != null)
             {
-                returnFlightPreference =
-                    preferencesPayload.CustomerFlightNavigation.ReturnNavigation.ToEntity(
-                        departurePeriodsPreference);
+                if (preferencesPayload.CustomerFlightNavigation.ReturnNavigation == null)
+                {
+                    returnFlightPreference = new FlightPreference();
+                }
+                else
+                {
+                    returnFlightPreference =
+                        preferencesPayload.CustomerFlightNavigation.ReturnNavigation.ToEntity(
+                            departurePeriodsPreference);
+                }
+                
                 await _context.FlightPreferences.AddAsync(returnFlightPreference!);
             }
 

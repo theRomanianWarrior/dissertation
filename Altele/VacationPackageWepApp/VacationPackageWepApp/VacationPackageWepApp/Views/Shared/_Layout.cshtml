@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+        Travelix
+    </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Travelix Project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="~/styles/bootstrap4/bootstrap.min.css">
+    <link href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="~/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="~/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="~/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/styles/main_styles.css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="~/styles/responsive.css">
+    <link rel="stylesheet" type="text/css" href="~/styles/services_evaluations.css" asp-append-version="true">
+
+    <link rel="stylesheet" type="text/css" href="~/nicepage/Home.css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="~/nicepage/nicepage.css" asp-append-version="true">
+
+
+</head>
+<body>
+@RenderBody()
+
+<!--<script src="js/jquery-3.2.1.min.js"></script> -->
+<script src="~/nicepage/jquery.js"></script>
+<script src="~/nicepage/nicepage.js"></script>
+
+<script src="~/styles/bootstrap4/popper.js">
+    </script>
+<script src="~/styles/bootstrap4/bootstrap.min.js">
+    </script>
+<script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js">
+    </script>
+<script src="~/plugins/easing/easing.js">
+    </script>
+<script src="~/js/custom.js">
+    </script>
+
+
+<script>
+      $(document).ready(function(){
+        $('#SameForReturnFlight').change(function(){
+          if(this.checked)
+          {
+            $('#returnFlightPreferencesUI').fadeOut(1000);
+          }
+          else
+            $('#returnFlightPreferencesUI').fadeIn(1000);
+        }
+                                        );
+      }
+                       );
+    </script>
+<script>
+      let propertyTypeList = document.getElementById('propertyTypeUIList');
+      propertyTypeList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (propertyTypeList.classList.contains('visible'))
+          propertyTypeList.classList.remove('visible');
+        else
+          propertyTypeList.classList.add('visible');
+      }
+      let placeTypeList = document.getElementById('placeTypeUIList');
+      placeTypeList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (placeTypeList.classList.contains('visible'))
+          placeTypeList.classList.remove('visible');
+        else
+          placeTypeList.classList.add('visible');
+      }
+      let amenitiesList = document.getElementById('amenitiesUIList');
+      amenitiesList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (amenitiesList.classList.contains('visible'))
+          amenitiesList.classList.remove('visible');
+        else
+          amenitiesList.classList.add('visible');
+      }
+    </script>
+<script>
+      let checkList = document.getElementById('departurePeriodsUIList');
+      checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (checkList.classList.contains('visible'))
+          checkList.classList.remove('visible');
+        else
+          checkList.classList.add('visible');
+      }
+      let checkListDeparturePeriodsReturnFlight = document.getElementById('departurePeriodsReturnUIList');
+      checkListDeparturePeriodsReturnFlight.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (checkListDeparturePeriodsReturnFlight.classList.contains('visible'))
+          checkListDeparturePeriodsReturnFlight.classList.remove('visible');
+        else
+          checkListDeparturePeriodsReturnFlight.classList.add('visible');
+      }
+    </script>
+<script>
+      let flightCompaniesUICheckList = document.getElementById('flightCompaniesUIList');
+      flightCompaniesUICheckList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (flightCompaniesUICheckList.classList.contains('visible'))
+          flightCompaniesUICheckList.classList.remove('visible');
+        else
+          flightCompaniesUICheckList.classList.add('visible');
+      }
+      let flightCompaniesReturnUICheckList = document.getElementById('flightCompaniesReturnUIList');
+      flightCompaniesReturnUICheckList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (flightCompaniesReturnUICheckList.classList.contains('visible'))
+          flightCompaniesReturnUICheckList.classList.remove('visible');
+        else
+          flightCompaniesReturnUICheckList.classList.add('visible');
+      }
+    </script>
+</body>
+</html>

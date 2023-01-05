@@ -1,0 +1,13 @@
+        public short Class { get; set; }
+        public short Price { get; set; }
+        public short Company { get; set; }
+		
+		
+		public short Rate { get; set; }
+
+
+        public short PropertyType { get; set; }
+        public short PlaceType { get; set; }
+        public short RoomsAndBeds { get; set; }
+        public short Amenities { get; set; }
+        public short FinalFlightRating { get; set; }

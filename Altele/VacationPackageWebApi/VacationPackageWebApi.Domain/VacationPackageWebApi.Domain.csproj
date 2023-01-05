@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <NoWarn>CS8618</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="ActressMas, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\..\..\..\..\..\00_Dissertation\ActressMas\ActressMAS v3.0\ActressMas Dll\ActressMas.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Mas\BusinessLogic\"/>
+    </ItemGroup>
+
+</Project>

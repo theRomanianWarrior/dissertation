@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <NoWarn>CS8618</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="ServerModels" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\Home\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\Home\Privacy.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\Shared\Error.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\Shared\_AttractionsSearch.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\Shared\_FlightSearch.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\Shared\_Layout.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\Shared\_PropertySearch.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\Shared\_ValidationScriptsPartial.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\_ViewImports.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Views\_ViewStart.cshtml" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\appsettings.Development.json" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\appsettings.json" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\obj\project.assets.json" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\obj\project.packagespec.json" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\obj\VacationPackageWepApp.csproj.nuget.dgspec.json" />
+        <_ContentIncludedByDefault Remove="VacationPackageWepApp\Properties\launchSettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\HttpClients\HttpClients.csproj" />
+    </ItemGroup>
+
+</Project>

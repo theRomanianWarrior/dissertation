@@ -1,0 +1,16 @@
+ de aici am descarcat baza de dae 02/07/2022
+https://airportcodes.io/en/continent/europe/
+
+https://joshclose.github.io/CsvHelper/examples/reading/reading-by-hand/ 05.07.2022
+
+http://insideairbnb.com/get-the-data/ Date Compiled	 05 iunie 2022
+
+https://opentripmap.io/catalog Date pentru Api 
+
+https://techyian.github.io/2018-06-29-generic-httpclient/ pentru GET si POST HTTPclient
+https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-6.0  tot acolo
+
+https://www.codeguru.com/csharp/understanding-onion-architecture/#:~:text=Onion%20architecture%20layers%20interact%20to%20each%20other%20by,other%20towards%20the%20core%20that%20represents%20the%20domain. Onion architecture/#
+https://diatomenterprises.com/asp-net-mvc-business-logic-as-a-separate-layer/#:~:text=The%20layer%20which%20holds%20business%20logic%20can%20be,all%20Repositories%20which%20are%20relevant%20to%20a%20scope.
+https://csharpindepth.com/Articles/Singleton Incercam 
+
