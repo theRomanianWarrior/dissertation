@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="PreferencesPackageRequest\Contracts" />
     <Folder Include="PreferencesPackageRequest\Contracts\" />
   </ItemGroup>
 

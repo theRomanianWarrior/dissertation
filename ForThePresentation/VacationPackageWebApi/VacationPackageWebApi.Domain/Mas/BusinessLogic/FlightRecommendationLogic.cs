@@ -565,8 +565,7 @@ public static class FlightRecommendationLogic
         DateTime departureDate, TimeOnly mostOptimalFlightTime)
     {
         var optimalTime = mostOptimalFlightTime.ToTimeSpan();
-        var sas =
-            DateTime.MinValue.AddHours(optimalTime.Hours).AddMinutes(optimalTime.Minutes);
+
         return new FlightRecommendationBModel
         {
             SourceAgentId = sourceAgentId,

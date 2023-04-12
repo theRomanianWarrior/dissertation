@@ -10,7 +10,7 @@ public static class LoggingHelper
         {
             locker.AcquireWriterLock(100);
             File.AppendAllLines(
-                @"C:\Users\emihailov\OneDrive - ENDAVA\Desktop\VacationPackageWebApi\Log\AgentsCommunicationLog\communication.txt",
+                @"C:\00_Dissertation\dissertation\ForThePresentation\VacationPackageWebApi\Log\AgentsCommunicationLog\communication.txt",
                 new[] {text});
         }
         finally

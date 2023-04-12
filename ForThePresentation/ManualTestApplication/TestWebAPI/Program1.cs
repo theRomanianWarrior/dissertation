@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TestWebAPI.BusinessLogic;
 using TestWebAPI.CustomerServicesEvaluation;
 using TestWebAPI.Enums;
 using TestWebAPI.PreferencesPackageRequest;
@@ -30,7 +31,7 @@ internal static class Program
     {
         using var client = new HttpClient();
 
-        for (int i = 0; i < 100; i++)
+        for (var i = 1; i <= 1000; i++)
         {
             /* 1. Get all departure city flights */
             var responseOfGetFlightDepartureCities = await client.GetAsync(GetFlightDepartureCities);
@@ -79,24 +80,24 @@ internal static class Program
             /* 7. Get departure random flight companies */
             var indexOfRandomFlightCompanyDepart =
                 Random.Next(jsonGetFlightCompaniesForDepartureDestinationCity!.Count);
-            var randomFlightCompanyDepart = jsonGetArrivalCitiesDeserialize[indexOfRandomFlightCompanyDepart];
+            var randomFlightCompanyDepart = jsonGetFlightCompaniesForDepartureDestinationCity[indexOfRandomFlightCompanyDepart];
 
             var indexOfRandomFlightCompanyDepart1 =
                 Random.Next(jsonGetFlightCompaniesForDepartureDestinationCity.Count);
-            var randomFlightCompanyDepart1 = jsonGetArrivalCitiesDeserialize[indexOfRandomFlightCompanyDepart1];
+            var randomFlightCompanyDepart1 = jsonGetFlightCompaniesForDepartureDestinationCity[indexOfRandomFlightCompanyDepart1];
 
             /* 8. Get return random flight companies */
             var indexOfRandomFlightCompanyReturn = Random.Next(jsonGetFlightCompaniesForReturn!.Count);
-            var randomFlightCompanyReturn = jsonGetArrivalCitiesDeserialize[indexOfRandomFlightCompanyReturn];
+            var randomFlightCompanyReturn = jsonGetFlightCompaniesForReturn[indexOfRandomFlightCompanyReturn];
 
             var indexOfRandomFlightCompanyReturn1 = Random.Next(jsonGetFlightCompaniesForReturn.Count);
-            var randomFlightCompanyReturn1 = jsonGetArrivalCitiesDeserialize[indexOfRandomFlightCompanyReturn1];
+            var randomFlightCompanyReturn1 = jsonGetFlightCompaniesForReturn[indexOfRandomFlightCompanyReturn1];
 
             /* 9. Fulfill preferences */
             PreferencesRequest preferencesRequest = new()
             {
                 DepartureDate = DateTime.UtcNow,
-                HolidaysPeriod = 5,
+                HolidaysPeriod = (short)Random.Next(3, 8), // random period from 3 to 7 days
                 CustomerId = new Guid("4a77f1d2-1175-4065-860a-67ee52d5ea1e"),
                 DepartureCityNavigation = new()
                 {
@@ -114,48 +115,49 @@ internal static class Program
                 },
                 CustomerAttractionNavigation = new()
                 {
-                    Architecture = false,
-                    Cultural = false,
-                    Historical = true,
-                    IndustrialFacilities = false,
-                    Natural = true,
-                    Religion = false,
-                    Other = false
+                    Architecture = GetRandomBool(),
+                    Cultural = GetRandomBool(),
+                    Historical = GetRandomBool(),
+                    IndustrialFacilities = GetRandomBool(),
+                    Natural = GetRandomBool(),
+                    Religion = GetRandomBool(),
+                    Other = GetRandomBool()
                 },
                 CustomerPropertyNavigation = new()
                 {
                     PlaceTypeNavigation = new PlaceTypePreferenceDto()
                     {
-                        EntirePlace = true,
-                        PrivateRoom = false,
-                        SharedRoom = false
+                        EntirePlace = GetRandomBool(),
+                        PrivateRoom = GetRandomBool(),
+                        SharedRoom = GetRandomBool()
                     },
                     AmenitiesNavigation = new()
                     {
-                        AirConditioning = true,
-                        Dryer = true,
-                        Heating = true,
-                        Iron = true,
-                        Kitchen = true,
-                        Tv = true,
-                        Washer = true,
-                        WiFi = true
+                        AirConditioning = GetRandomBool(),
+                        Dryer = GetRandomBool(),
+                        Heating = GetRandomBool(),
+                        Iron = GetRandomBool(),
+                        Kitchen = GetRandomBool(),
+                        Tv = GetRandomBool(),
+                        Washer = GetRandomBool(),
+                        WiFi = GetRandomBool()
                     },
 
                     RoomsAndBedsNavigation = new()
                     {
-                        Bathrooms = 2,
-                        Bedrooms = 1,
-                        Beds = 3
+                        // Generate random numbers from 1 to 3
+                        Bathrooms = (short)Random.Next(1, 4),
+                        Bedrooms = (short)Random.Next(1, 4),
+                        Beds = (short)Random.Next(1, 4)
                     },
 
-                    Pets = true,
+                    Pets = GetRandomBool(),
                     PropertyTypeNavigation = new()
                     {
-                        Apartment = true,
-                        GuestHouse = false,
-                        Hotel = false,
-                        House = false
+                        Apartment = GetRandomBool(),
+                        GuestHouse = GetRandomBool(),
+                        Hotel = GetRandomBool(),
+                        House = GetRandomBool()
                     }
                 },
                 CustomerFlightNavigation = new FlightDirectionPreferenceDto()
@@ -164,14 +166,14 @@ internal static class Program
                     {
                         Class = new FlightClassDto()
                         {
-                            Class = (int) ClassTypeId.Economy
+                            Class = (short) Random.Next(1, 4)
                         },
                         DeparturePeriodPreference = new DeparturePeriodsPreferenceDto()
                         {
-                            Afternoon = true,
-                            EarlyMorning = false,
-                            Morning = false,
-                            Night = false
+                            Afternoon = GetRandomBool(),
+                            EarlyMorning = GetRandomBool(),
+                            Morning = GetRandomBool(),
+                            Night = GetRandomBool()
                         },
                         FlightCompaniesNavigationList = new List<FlightCompaniesPreferenceDto>()
                         {
@@ -192,21 +194,21 @@ internal static class Program
                         },
                         StopsNavigation = new StopsTypePreferenceDto
                         {
-                            Type = (int) StopsTypePreferenceId.Direct
+                            Type = (short) Random.Next(1, 4)
                         }
                     },
                     ReturnNavigation = new FlightPreferenceDto
                     {
                         Class = new FlightClassDto
                         {
-                            Class = (int) ClassTypeId.Business
+                            Class = (short)Random.Next(1, 4)
                         },
                         DeparturePeriodPreference = new DeparturePeriodsPreferenceDto
                         {
-                            Afternoon = true,
-                            EarlyMorning = false,
-                            Morning = false,
-                            Night = false,
+                            Afternoon = GetRandomBool(),
+                            EarlyMorning = GetRandomBool(),
+                            Morning = GetRandomBool(),
+                            Night = GetRandomBool(),
                         },
                         FlightCompaniesNavigationList = new List<FlightCompaniesPreferenceDto>
                         {
@@ -227,7 +229,7 @@ internal static class Program
                         },
                         StopsNavigation = new StopsTypePreferenceDto
                         {
-                            Type = (int) StopsTypePreferenceId.Direct
+                            Type = (short) Random.Next(1, 4)
                         }
                     }
                 }
@@ -236,69 +238,93 @@ internal static class Program
             var json = JsonConvert.SerializeObject(preferencesRequest, Formatting.Indented);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-            DateTime T = System.DateTime.UtcNow;
+            //DateTime T = System.DateTime.UtcNow;
             var response = await client.PostAsync(RequestVacationRecommendationUri, data);
-            TimeSpan TT = System.DateTime.UtcNow - T; //--> Note the Time Difference
+            //TimeSpan TT = System.DateTime.UtcNow - T; //--> Note the Time Difference
 
-            Console.WriteLine(TT.Milliseconds);
+           // Console.WriteLine(TT.Milliseconds);
             var result = await response.Content.ReadFromJsonAsync<PreferencesResponse?>();
-            var printResult = await response.Content.ReadAsStringAsync();
 
             /* 10. Fulfill evaluation of recommendation */
-            var attractionEvaluationsList = new List<AttractionEvaluationDto>();
+            await FormTheRecommendation(result, client);
+            
+            var departureFlightMatchingRate = FlightRecommendationLogic.CalculateFlightSimilarityRate(preferencesRequest,
+                                                                                   result!.FlightRecommendationResponse, "Departure");
+            
+            var returnFlightMatchingRate = FlightRecommendationLogic.CalculateFlightSimilarityRate(preferencesRequest,
+                result.FlightRecommendationResponse, "Return");
 
-            var attractionRecommendationList =
-                result!.AttractionsRecommendationResponse!.AttractionRecommendationList.ToList();
-            foreach (var attractionRecommendation in attractionRecommendationList)
-            {
-                var attractionEvaluation = new AttractionEvaluationDto
-                {
-                    AttractionId = attractionRecommendation.Attraction.Xid,
-                    AttractionName = attractionRecommendation.Attraction.Name,
-                    Rate = true
-                };
-                attractionEvaluationsList.Add(attractionEvaluation);
-            }
+            var propertyMatchingRate = PropertyRecommendationLogic.CalculatePropertySimilarityRate(preferencesRequest, result.PropertyPreferencesResponse);
 
-            var serviceEvaluation = new ServiceEvaluationDto
-            {
-                ClientRequestId = (Guid) result.ClientRequestId!,
-                AttractionEvaluation = new AllAttractionEvaluationPointDto
-                {
-                    AttractionEvaluations = attractionEvaluationsList
-                },
-                FlightEvaluation = new FlightDirectionEvaluationDto
-                {
-                    DepartureNavigation = new FlightEvaluationDto
-                    {
-                        Class = true,
-                        Company = true,
-                        FlightDate = true,
-                        FlightTime = true,
-                        Price = true
-                    },
-                    ReturnNavigation = new FlightEvaluationDto
-                    {
-                        Class = true,
-                        Company = true,
-                        FlightDate = true,
-                        FlightTime = true,
-                        Price = true
-                    }
-                },
-                PropertyEvaluation = new PropertyEvaluationDto
-                {
-                    Amenities = true,
-                    PlaceType = true,
-                    PropertyType = true,
-                    RoomsAndBeds = true
-                }
-            };
+            var attractionsMatchingRate = AttractionsRecommendationLogic.CalculateAttractionsSimilarityRate(preferencesRequest, result.AttractionsRecommendationResponse!.AttractionRecommendationList);
 
-            var json1 = JsonConvert.SerializeObject(serviceEvaluation, Formatting.Indented);
-            var data1 = new StringContent(json1, Encoding.UTF8, "application/json");
-
-            await client.PostAsync(SaveEvaluationsUri, data1);
+            var mean = (departureFlightMatchingRate + returnFlightMatchingRate + propertyMatchingRate +
+                       attractionsMatchingRate) / 4;
+            
+            Console.WriteLine($"{i} {departureFlightMatchingRate} {returnFlightMatchingRate} {propertyMatchingRate} {attractionsMatchingRate} {mean}");
         }
+    }
+
+    private static async Task FormTheRecommendation(PreferencesResponse? result, HttpClient client)
+    {
+        var attractionEvaluationsList = new List<AttractionEvaluationDto>();
+
+        var attractionRecommendationList =
+            result!.AttractionsRecommendationResponse!.AttractionRecommendationList.ToList();
+        foreach (var attractionRecommendation in attractionRecommendationList)
+        {
+            var attractionEvaluation = new AttractionEvaluationDto
+            {
+                AttractionId = attractionRecommendation.Attraction.Xid,
+                AttractionName = attractionRecommendation.Attraction.Name,
+                Rate = GetRandomBool()
+            };
+            attractionEvaluationsList.Add(attractionEvaluation);
+        }
+
+        var serviceEvaluation = new ServiceEvaluationDto
+        {
+            ClientRequestId = (Guid) result.ClientRequestId!,
+            AttractionEvaluation = new AllAttractionEvaluationPointDto
+            {
+                AttractionEvaluations = attractionEvaluationsList
+            },
+            FlightEvaluation = new FlightDirectionEvaluationDto
+            {
+                DepartureNavigation = new FlightEvaluationDto
+                {
+                    Class = GetRandomBool(),
+                    Company = GetRandomBool(),
+                    FlightDate = GetRandomBool(),
+                    FlightTime = GetRandomBool(),
+                    Price = GetRandomBool()
+                },
+                ReturnNavigation = new FlightEvaluationDto
+                {
+                    Class = GetRandomBool(),
+                    Company = GetRandomBool(),
+                    FlightDate = GetRandomBool(),
+                    FlightTime = GetRandomBool(),
+                    Price = GetRandomBool()
+                }
+            },
+            PropertyEvaluation = new PropertyEvaluationDto
+            {
+                Amenities = GetRandomBool(),
+                PlaceType = GetRandomBool(),
+                PropertyType = GetRandomBool(),
+                RoomsAndBeds = GetRandomBool()
+            }
+        };
+
+        var json1 = JsonConvert.SerializeObject(serviceEvaluation, Formatting.Indented);
+        var data1 = new StringContent(json1, Encoding.UTF8, "application/json");
+
+        await client.PostAsync(SaveEvaluationsUri, data1);
+    }
+
+    private static bool GetRandomBool()
+    {
+        return Random.Next(2) == 0;
     }
 }

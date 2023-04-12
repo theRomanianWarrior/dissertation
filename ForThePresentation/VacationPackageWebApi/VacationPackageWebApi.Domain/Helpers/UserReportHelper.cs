@@ -8,7 +8,7 @@ namespace VacationPackageWebApi.Domain.Helpers;
 
 public static class UserReportHelper
 {
-    private const string _pathToLogFile = @"C:\Users\emihailov\OneDrive - ENDAVA\Desktop\VacationPackageWebApi\Log\";
+    private const string _pathToLogFile = @"C:\00_Dissertation\dissertation\ForThePresentation\VacationPackageWebApi\Log\";
     private static string _fileName;
 
     private static string _currentProcessingAgentSelfExpertRate = string.Empty;
