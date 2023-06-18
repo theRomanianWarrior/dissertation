@@ -1,4 +1,6 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using VacationPackageWebApi.API.Infrastructure.OpenApi;
 using VacationPackageWebApi.Application.Services;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Contracts;
 using VacationPackageWebApi.Domain.AgentsEnvironment.Services;
@@ -33,12 +35,24 @@ public static class Bootstrap
             .UseConfiguration(configuration)
             .UseUrls(configuration.GetValue<string>("Hostings:Urls"));
 
+        builder.Services.AddOpenApiDocumentation(configuration);
+
         ConfigureServices(builder.Services, configuration);
 
         var app = builder.Build();
 
         ConfigureApp(app);
 
+        if (configuration.GetValue<bool>("SwaggerSettings:Enable"))
+        {
+            app.UseOpenApi();
+            app.UseSwaggerUi3(options =>
+            {
+                options.DefaultModelsExpandDepth = -1;
+                options.DocExpansion = "none";
+                options.TagsSorter = "alpha";
+            });
+        }
         return app;
     }
 
@@ -69,8 +83,9 @@ public static class Bootstrap
 
         services.AddRouting(options => options.LowercaseUrls = true);
 
+        services.AddSwaggerGen();
         AddDb(services, configuration);
-
+        
         LoadMassEnvironment(services);
     }
 
@@ -105,6 +120,7 @@ public static class Bootstrap
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(AppSettingsPath, false, true)
+            .AddJsonFile("openapi.json", false, true)
             .AddEnvironmentVariables();
 
         return builder.Build();

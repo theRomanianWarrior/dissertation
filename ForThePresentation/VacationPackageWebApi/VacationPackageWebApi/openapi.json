@@ -1,0 +1,8 @@
+{
+  "SwaggerSettings": {
+    "Enable": true,
+    "Title": "Complete Vacation Package API using MAS",
+    "Version": "v1",
+    "Description": "This API is used to return a complete vacation package based on user preferences. The core of the API is a multiagent system."
+  }
+}

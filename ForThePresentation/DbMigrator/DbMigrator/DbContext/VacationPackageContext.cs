@@ -7,10 +7,5 @@ namespace DbMigrator.DbContext
         public VacationPackageContext(DbContextOptions options) : base(options)
         {
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }
